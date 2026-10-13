@@ -6,9 +6,10 @@ Inventário de tudo que existe fora do código. Atualizar no mesmo momento em qu
 
 | Recurso | Nome | ID / URL | Criado em | Por |
 |---|---|---|---|---|
-| Repositório GitHub | `nr-diagnostico-ml` | `https://github.com/nthan-061/nr-diagnostico-ml` | 2026-10-13 | Codex |
+| Repositório GitHub | `SyncAssessoriaMedica/nathan-ritter` | `https://github.com/SyncAssessoriaMedica/nathan-ritter` | 2026-10-13 | Nathan / Codex |
 | Projeto Vercel | `nr-diagnostico-ml` | `prj_psW6Ob5p0L2fcyxn7vnRNDQq22ED` | 2026-10-13 | Codex |
 | URL pública | URL padrão da Vercel | `https://nr-diagnostico-ml.vercel.app` | 2026-10-13 | Codex |
+| Deploy Vercel | Primeiro deploy de produção | `dpl_ECABgEwvDkiffJekeiDsmseURyrs` · READY | 2026-10-13 | Codex |
 | Formulário de mentoria | Respondi | `https://form.respondi.app/6ZJ4HSZC` | já existente | Nathan |
 | Checkout Kiwify | Máquina de Vendas 2.0 | `https://pay.kiwify.com.br/InK3eLE` | já existente | Nathan |
 | Planilha Google | `NR · Diagnóstico ML · Leads` | `1RDYGQsl3PcRjYiCHwERy2sEcnV5Z-u87zyocUUYG6a0` · `https://docs.google.com/spreadsheets/d/1RDYGQsl3PcRjYiCHwERy2sEcnV5Z-u87zyocUUYG6a0/edit` | 2026-10-13 | Codex |
@@ -21,6 +22,8 @@ Inventário de tudo que existe fora do código. Atualizar no mesmo momento em qu
 | Instância Evolution | `nr-nathan` | | | |
 | Webhook Kiwify | | | | |
 | Pixel Meta | Nathan Ritter | `2015455052410421` | já existente | |
+
+Observação: o código foi enviado ao repositório oficial acima. A conexão automática GitHub → Vercel ainda depende de conceder ao aplicativo GitHub da Vercel acesso de escrita ao repositório da organização `SyncAssessoriaMedica`; o deploy manual de produção está ativo.
 
 ## Recursos do funil GMN (somente leitura)
 
