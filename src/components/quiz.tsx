@@ -612,8 +612,12 @@ export function Quiz() {
                 primeiras vendas: escolha de produto e controle de margem.
               </p>
             )}
-            <button className="btn-primary" onClick={showOffer}>
-              {missing.length ? "Ver como aprender" : "Ver o curso"}
+            <button
+              className="btn-primary"
+              style={{ marginTop: 32 }}
+              onClick={showOffer}
+            >
+              QUERO O CURSO MÁQUINA DE VENDAS
             </button>
           </section>
         ) : null}
