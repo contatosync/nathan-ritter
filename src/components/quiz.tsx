@@ -146,7 +146,9 @@ export function Quiz() {
     timeAgo: null,
   });
   const [showBuyerToast, setShowBuyerToast] = useState(false);
+  const [videoPlayed, setVideoPlayed] = useState(false);
   const hasTrackedPayment = useRef(false);
+  const hasTrackedVideo = useRef(false);
   const utms = useRef<Record<string, string>>({});
   const missing = useMemo(
     () =>
@@ -429,6 +431,40 @@ export function Quiz() {
     record("oferta", 60, { viu_oferta_em: new Date().toISOString() });
     setScreen("oferta");
   }
+  function playCourseVideo() {
+    setVideoPlayed(true);
+    let alreadyTracked = hasTrackedVideo.current;
+    if (!alreadyTracked && typeof window !== "undefined") {
+      try {
+        if (
+          sessionStorage.getItem("nr_assistiu_video") === "1" ||
+          (sessionId &&
+            sessionStorage.getItem(`nr_assistiu_video_${sessionId}`) === "1")
+        ) {
+          alreadyTracked = true;
+        }
+      } catch {
+        // fallback silencioso
+      }
+    }
+    if (!alreadyTracked) {
+      hasTrackedVideo.current = true;
+      if (typeof window !== "undefined") {
+        try {
+          sessionStorage.setItem("nr_assistiu_video", "1");
+          if (sessionId) {
+            sessionStorage.setItem(`nr_assistiu_video_${sessionId}`, "1");
+          }
+        } catch {
+          // fallback silencioso
+        }
+      }
+      record("assistiu_video", currentStage(screen, question), {
+        assistiu_video_em: new Date().toISOString(),
+      });
+      meta("AssistiuVideoCurso");
+    }
+  }
   function checkout() {
     const eventId = meta("CliqueCheckout");
     record("clique_checkout", 70, {
@@ -708,6 +744,53 @@ export function Quiz() {
                 >
                   QUERO O CURSO MÁQUINA DE VENDAS
                 </button>
+              </div>
+            </section>
+            <section className="offer-section video-section">
+              <div className="video-header">
+                <h3>Ainda tem dúvidas sobre o curso?</h3>
+                <p>
+                  No vídeo abaixo, o Nathan explica cada parte do Máquina de
+                  Vendas. E logo depois tem o que você recebe, os 10 módulos e
+                  resultados de alunos.
+                </p>
+              </div>
+              <div className="video-wrapper">
+                {videoPlayed ? (
+                  <iframe
+                    className="video-iframe"
+                    src="https://www.youtube.com/embed/RXcBV_dWnh4?autoplay=1&playsinline=1&rel=0&modestbranding=1"
+                    title="Vídeo de Apresentação Máquina de Vendas"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                ) : (
+                  <button
+                    type="button"
+                    className="video-thumbnail-btn"
+                    onClick={playCourseVideo}
+                    aria-label="Assistir vídeo sobre o curso"
+                  >
+                    <Image
+                      src="https://i.ytimg.com/vi/RXcBV_dWnh4/maxresdefault.jpg"
+                      alt="Capa do vídeo Máquina de Vendas"
+                      fill
+                      className="video-thumbnail-img"
+                      priority={false}
+                      unoptimized
+                    />
+                    <span className="video-play-btn" aria-hidden="true">
+                      <svg
+                        viewBox="0 0 24 24"
+                        width="30"
+                        height="30"
+                        fill="#0A0F1C"
+                      >
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                    </span>
+                  </button>
+                )}
               </div>
             </section>
             <section className="offer-section">

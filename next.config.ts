@@ -5,6 +5,14 @@ const nextConfig: NextConfig = {
   env: {
     VENDAS_BASE: process.env.VENDAS_BASE || "177",
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "i.ytimg.com",
+      },
+    ],
+  },
   cacheComponents: true,
   partialPrefetching: true,
   turbopack: {
