@@ -24,7 +24,7 @@ export const DIAGNOSTIC_TOPICS: DiagnosticModuleTopic[] = [
     badge: "MÓDULO 05 · PRODUTO CAMPEÃO",
     point: "Como encontrar produtos com procura e pouca concorrência",
     howToLearn:
-      "Você aprende a ler a busca do Mercado Livre para achar produtos que já vendem e ainda têm poucos vendedores bem posicionados. Também vê como descartar os que só competem por preço, antes de comprar a primeira unidade.",
+      "Como ler a busca do Mercado Livre para achar produtos que vendem e têm poucos concorrentes bons.",
     coverImage: "/imagens/modulos-kiwify/modulo-05-produto-campeao.webp",
   },
   {
@@ -32,7 +32,7 @@ export const DIAGNOSTIC_TOPICS: DiagnosticModuleTopic[] = [
     badge: "MÓDULO 05 · PRODUTO CAMPEÃO",
     point: "Como encontrar fornecedores nacionais confiáveis",
     howToLearn:
-      "O Nathan mostra onde procura fornecedores no Brasil, como negocia o primeiro pedido e como testar o fornecedor com pouca quantidade antes de fechar um volume maior.",
+      "Onde o Nathan encontra fornecedores no Brasil e como testar com pouca quantidade antes de comprar mais.",
     coverImage: "/imagens/modulos-kiwify/modulo-05-produto-campeao.webp",
   },
   {
@@ -40,7 +40,7 @@ export const DIAGNOSTIC_TOPICS: DiagnosticModuleTopic[] = [
     badge: "MÓDULO 02 · O ESSENCIAL PARA COMEÇAR",
     point: "Como calcular a margem antes de vender",
     howToLearn:
-      "Antes de anunciar, você monta a conta do produto com custo, tarifa do Mercado Livre, frete, imposto e embalagem. Com ela pronta, sabe quanto sobra em cada venda e qual é o menor preço que ainda dá lucro.",
+      "Como montar a conta com custo, tarifa, frete e imposto para saber quanto sobra em cada venda.",
     coverImage: "/imagens/modulos-kiwify/modulo-02-essencial-para-comecar.webp",
   },
   {
@@ -48,7 +48,7 @@ export const DIAGNOSTIC_TOPICS: DiagnosticModuleTopic[] = [
     badge: "MÓDULOS 06 E 07 · ANÚNCIO E RANQUEAMENTO",
     point: "Como montar anúncios que aparecem na busca",
     howToLearn:
-      "No Módulo 06 você monta título, fotos e ficha técnica do jeito que o Mercado Livre usa para exibir o anúncio na busca. No 07, aprende o que faz o anúncio subir de posição depois das primeiras vendas.",
+      "Título, fotos e ficha técnica que aparecem na busca, e o que faz o anúncio subir de posição.",
     coverImage: "/imagens/modulos-kiwify/modulo-06-anuncio-campeao.webp",
   },
   {
@@ -56,7 +56,7 @@ export const DIAGNOSTIC_TOPICS: DiagnosticModuleTopic[] = [
     badge: "MÓDULOS 03 E 04 · PRIMEIRA VENDA E LOGÍSTICA",
     point: "Como planejar o investimento inicial e o giro de estoque",
     howToLearn:
-      "Você começa com estoque pequeno, valida se o produto gira e só então repõe em maior quantidade. Assim o dinheiro não fica parado em caixa no depósito enquanto o produto não vende.",
+      "Como começar com estoque pequeno, validar o giro e só depois repor em maior quantidade.",
     coverImage: "/imagens/modulos-kiwify/modulo-03-primeira-venda.webp",
   },
 ];
@@ -64,17 +64,17 @@ export const DIAGNOSTIC_TOPICS: DiagnosticModuleTopic[] = [
 export const MASTERY_TOPICS: MasteryModuleTopic[] = [
   {
     badge: "MÓDULO 07 · ESTRATÉGIA PARA RANQUEAR",
-    text: "O que faz um anúncio que já vende ganhar posição e ficar entre os primeiros da busca.",
+    text: "O que faz um anúncio que já vende ganhar posição na busca.",
     coverImage: "/imagens/modulos-kiwify/modulo-07-estrategia-para-ranquear.webp",
   },
   {
     badge: "MÓDULO 08 · DOMINANDO ADS",
-    text: "Como usar os anúncios pagos dentro do Mercado Livre para escalar sem queimar caixa.",
+    text: "Como usar os anúncios pagos do Mercado Livre sem queimar caixa.",
     coverImage: "/imagens/modulos-kiwify/modulo-08-dominando-ads.webp",
   },
   {
     badge: "MÓDULO 10 · CRESÇA RÁPIDO",
-    text: "Como aumentar o volume de vendas sem perder o controle da operação e do caixa.",
+    text: "Como aumentar o volume de vendas sem perder o controle do caixa.",
     coverImage: "/imagens/modulos-kiwify/modulo-10-cresca-rapido.webp",
   },
 ];
