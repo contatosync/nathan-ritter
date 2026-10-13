@@ -6,9 +6,9 @@ Inventário de tudo que existe fora do código. Atualizar no mesmo momento em qu
 
 | Recurso | Nome | ID / URL | Criado em | Por |
 |---|---|---|---|---|
-| Repositório GitHub | `nr-diagnostico-ml` | | | |
-| Projeto Vercel | `nr-diagnostico-ml` | | | |
-| URL pública | URL padrão da Vercel (a gerar) | | | |
+| Repositório GitHub | `nr-diagnostico-ml` | `https://github.com/nthan-061/nr-diagnostico-ml` | 2026-10-13 | Codex |
+| Projeto Vercel | `nr-diagnostico-ml` | `prj_psW6Ob5p0L2fcyxn7vnRNDQq22ED` | 2026-10-13 | Codex |
+| URL pública | URL padrão da Vercel | `https://nr-diagnostico-ml.vercel.app` | 2026-10-13 | Codex |
 | Formulário de mentoria | Respondi | `https://form.respondi.app/6ZJ4HSZC` | já existente | Nathan |
 | Checkout Kiwify | Máquina de Vendas 2.0 | `https://pay.kiwify.com.br/InK3eLE` | já existente | Nathan |
 | Planilha Google | `NR · Diagnóstico ML · Leads` | `1RDYGQsl3PcRjYiCHwERy2sEcnV5Z-u87zyocUUYG6a0` · `https://docs.google.com/spreadsheets/d/1RDYGQsl3PcRjYiCHwERy2sEcnV5Z-u87zyocUUYG6a0/edit` | 2026-10-13 | Codex |

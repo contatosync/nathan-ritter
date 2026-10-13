@@ -7,6 +7,7 @@ const jakarta = Plus_Jakarta_Sans({ variable: "--font-jakarta", subsets: ["latin
 const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://nr-diagnostico-ml.vercel.app"),
   title: "Diagnóstico Mercado Livre · Máquina de Vendas",
   description: "Descubra em 5 perguntas se você está pronto para vender no Mercado Livre.",
   icons: { icon: [{ url: "/imagens/favicon/favicon.ico" }, { url: "/imagens/favicon/favicon-32.png", sizes: "32x32" }], apple: "/imagens/favicon/apple-touch-icon.png" },

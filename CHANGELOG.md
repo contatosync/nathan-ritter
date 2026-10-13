@@ -18,7 +18,7 @@ Formato de cada entrada:
 **O que mudou:** iniciadas as fases 0, 1 e 2; criada a aplicação Next.js; adicionados o quiz, as rotas curso/mentoria, diagnóstico, oferta, encaminhamento por API Route ao n8n, Pixel+CAPI com deduplicação, captura de UTMs e endpoint inativo da Kiwify; imagens instaladas; criada a planilha com três abas e o workflow protegido `NR · Registro de leads`; `META_CAPI_TOKEN` configurado localmente; áudio e recuperação mantidos desligados.
 **Arquivos:** aplicação Next.js, `ESPECIFICACAO.md`, `RECURSOS.md`, `.env.example`, `.env.local`, imagens públicas.
 **Recursos externos criados/alterados:** planilha `NR · Diagnóstico ML · Leads`; workflow ativo `NR · Registro de leads`; credencial `NR · Registro de leads · Segredo`. Nenhum recurso GMN foi alterado.
-**Pendências:** repositório GitHub, projeto/deploy Vercel, variáveis na Vercel, testes das três rotas, validação no Gerenciador de Eventos com `META_TEST_EVENT_CODE`, Kiwify sem token, Fase 5 adiada.
+**Pendências:** concluir o deploy Next.js após ajustar a autoria do commit à conta da equipe Vercel; autorizar a integração Vercel no novo repositório privado para deploy automático e variáveis Preview; testes das três rotas; validação no Gerenciador de Eventos com `META_TEST_EVENT_CODE`; Kiwify sem token; Fase 5 adiada.
 
 ## 2026-10-13 00:26 · Codex
 **O que mudou:** registrados o formulário da mentoria, o checkout da Kiwify e os preços reais; recalculado o valor diário para R$ 1,01; definida a publicação inicial pela URL padrão da Vercel, sem domínio próprio ou alterações de DNS.
