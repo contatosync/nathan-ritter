@@ -885,3 +885,75 @@ h2 {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Tela 10 · Dois Caminhos */
+.two-paths-intro {
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 1.05rem;
+  margin-top: 24px;
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+
+.two-paths-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.path-card {
+  border-radius: 12px;
+  padding: 16px;
+  background: var(--card);
+  text-align: left;
+}
+
+.path-card-1 {
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.path-card-1 .path-label {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.path-card-2 {
+  border: 1px solid var(--yellow);
+  box-shadow: 0 0 14px rgba(255, 212, 0, 0.22);
+}
+
+.path-card-2 .path-label {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: var(--yellow);
+  margin-bottom: 6px;
+}
+
+.path-text {
+  font-size: 0.95rem;
+  line-height: 1.45;
+  color: #ffffff;
+  margin: 0;
+}
+
+/* Botão do curso em linha única em 375 px */
+.btn-course-single-line {
+  white-space: nowrap !important;
+  font-size: clamp(0.78rem, 3.6vw, 1.05rem) !important;
+  min-height: 44px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+  box-sizing: border-box !important;
+}

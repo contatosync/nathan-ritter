@@ -579,8 +579,8 @@ export function Quiz() {
           <section className="screen">
             <h2>
               {missing.length
-                ? `Seu diagnóstico está pronto, ${name.split(" ")[0]}`
-                : `Você já domina a base, ${name.split(" ")[0]}`}
+                ? `${name.trim().split(" ")[0] || "Você"}, seu diagnóstico está pronto`
+                : `${name.trim().split(" ")[0] || "Você"}, você já domina a base`}
             </h2>
             {missing.length ? (
               <>
@@ -605,11 +605,23 @@ export function Quiz() {
                     ))}
                   </>
                 ) : null}
-                <p className="muted">
-                  Você pode estudar cada um sozinho. Se preferir seguir o
-                  caminho que o Nathan usa desde 2022, ele está organizado no
-                  curso Máquina de Vendas.
+                <p className="two-paths-intro">
+                  Agora você sabe o que precisa aprender. Existem dois caminhos:
                 </p>
+                <div className="two-paths-container">
+                  <div className="path-card path-card-1">
+                    <span className="path-label">CAMINHO 1</span>
+                    <p className="path-text">
+                      Aprender cada ponto sozinho, procurando o conteúdo por conta própria e testando até acertar.
+                    </p>
+                  </div>
+                  <div className="path-card path-card-2">
+                    <span className="path-label">CAMINHO 2</span>
+                    <p className="path-text">
+                      Aprender todos os pontos em uma única plataforma, com o passo a passo de quem vende no Mercado Livre desde 2022.
+                    </p>
+                  </div>
+                </div>
               </>
             ) : (
               <p className="muted">
@@ -618,7 +630,7 @@ export function Quiz() {
               </p>
             )}
             <button
-              className="btn-primary"
+              className="btn-primary btn-course-single-line"
               style={{ marginTop: 32 }}
               onClick={showOffer}
             >
@@ -691,7 +703,7 @@ export function Quiz() {
               </div>
               <div style={{ marginTop: 24 }}>
                 <button
-                  className="btn-primary"
+                  className="btn-primary btn-course-single-line"
                   onClick={() => setScreen("pagamento")}
                 >
                   QUERO O CURSO MÁQUINA DE VENDAS
@@ -744,7 +756,7 @@ export function Quiz() {
             </section>
             <div style={{ marginTop: 32 }}>
               <button
-                className="btn-primary"
+                className="btn-primary btn-course-single-line"
                 onClick={() => setScreen("pagamento")}
               >
                 QUERO O CURSO MÁQUINA DE VENDAS
