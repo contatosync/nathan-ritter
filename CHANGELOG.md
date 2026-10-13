@@ -14,6 +14,12 @@ Formato de cada entrada:
 
 ---
 
+## 2026-10-13 19:38 · Antigravity
+**O que mudou:** contador de vendas da Tela 12 desacoplado de consultas dinâmicas, polling e webhooks; o número passa a ser fixo e alimentado pela variável `VENDAS_BASE` (valor `177`) mapeada em `next.config.ts`, aparecendo instantaneamente já no primeiro carregamento sem animação. Para atualizar o número no futuro, basta alterar `VENDAS_BASE` na Vercel e disparar um redeploy. A rota `/api/social-proof` permanece ativa exclusivamente para o aviso discreto do comprador.
+**Arquivos:** `next.config.ts`, `src/components/quiz.tsx`, `ESPECIFICACAO.md`, `CHANGELOG.md`.
+**Recursos externos criados/alterados:** nenhum.
+**Pendências:** nenhuma.
+
 ## 2026-10-13 19:28 · Antigravity
 **O que mudou:** persistido o controle de disparo do evento `ViuPagamento` no `sessionStorage` do navegador (chaves `nr_viu_pagamento` e `nr_viu_pagamento_${sessionId}`), garantindo que o evento e o registro da etapa 65 disparem estritamente uma única vez por pessoa/sessão, mesmo em cenários de retorno à oferta e reabertura do pagamento ou recarregamento da página.
 **Arquivos:** `src/components/quiz.tsx`, `CHANGELOG.md`, `docs/rodada-antigravity.md`.

@@ -73,10 +73,9 @@ Tudo que ainda não existe fica em variável, para ser trocado sem mexer no cód
 | `NEXT_PUBLIC_PRECO_PARCELAS_QTD` | `12` | |
 | `NEXT_PUBLIC_PRECO_DIA` | `1,01` | Regra: (parcela × 12) ÷ 365, arredondado para centavos |
 | `NEXT_PUBLIC_PRECO_DIA_TEXTO` | `2` | Texto para subtítulo "menos de R$ 2 por dia" |
-| `NEXT_PUBLIC_PRECO_AVISTA` | `297` | |
-| `VENDAS_BASE` | `177` | Base inicial de compradores do curso |
+| `VENDAS_BASE` | `177` | Total fixo de compradores exibido no contador da Tela 12. Para mudar o número no futuro, basta alterar esta variável na Vercel e fazer redeploy (sem consultas dinâmicas ou polling) |
 | `VENDAS_BASE_DATA` | `2026-10-13` | Data de corte das vendas base |
-| `ULTIMO_COMPRADOR_BASE` | `Marcos C.` | Comprador base para prova social |
+| `ULTIMO_COMPRADOR_BASE` | `Marcos C.` | Comprador base para o toast de prova social |
 | `NEXT_PUBLIC_FORM_MENTORIA_URL` | `https://form.respondi.app/6ZJ4HSZC` | Formulário Respondi |
 | `FATURAMENTO_LIMITE_MENTORIA` | `30000` | Mensal |
 | `GOOGLE_SHEETS_ID` | `1RDYGQsl3PcRjYiCHwERy2sEcnV5Z-u87zyocUUYG6a0` | Planilha `NR`; usada pelo workflow do n8n |
@@ -215,7 +214,7 @@ Tela curta e limpa, focada exclusivamente em finalizar a matrícula.
 - **Logo:** logo pequeno no topo (`logo-small`).
 - **Rótulo:** ÚLTIMO PASSO
 - **Título:** Seu acesso ao Máquina de Vendas 2.0 ("Máquina de Vendas 2.0" em amarelo)
-- **Contador de alunos (vendas reais):** "🔥 {TOTAL} pessoas já compraram o Máquina de Vendas", com número em amarelo. Valor base fixo 177 (`VENDAS_BASE`), acrescido de novas compras registradas pós `VENDAS_BASE_DATA`. Exibido diretamente sem animações de incremento.
+- **Contador de alunos (vendas reais):** "🔥 {VENDAS_BASE} pessoas já compraram o Máquina de Vendas", com número em amarelo fixo em 177. Sem atualização em tempo real, sem consulta a API, sem webhook ou polling, sem animação de incremento. Aparece no valor correto já no primeiro carregamento. Para alterar o total no futuro, basta alterar a variável de ambiente `VENDAS_BASE` na Vercel e disparar um redeploy da aplicação.
 - **Frase antes do card:** "Tudo isso fica por menos de R$ {NEXT_PUBLIC_PRECO_DIA_TEXTO} por dia." (centralizada, branca, tamanho de subtítulo; valor 2).
 - **Card de preço:**
   - Logo do curso no topo do card.

@@ -138,12 +138,10 @@ export function Quiz() {
   const [answers, setAnswers] = useState<QuizAnswers>({});
   const [selected, setSelected] = useState<string>();
   const [busy, setBusy] = useState(false);
-  const [socialProof, setSocialProof] = useState<{
-    total: number;
+  const [buyerInfo, setBuyerInfo] = useState<{
     latestBuyer: string;
     timeAgo: string | null;
   }>({
-    total: 177,
     latestBuyer: "Marcos C.",
     timeAgo: null,
   });
@@ -283,8 +281,11 @@ export function Quiz() {
     fetch("/api/social-proof")
       .then((res) => res.json())
       .then((data) => {
-        if (data && typeof data.total === "number") {
-          setSocialProof(data);
+        if (data && typeof data.latestBuyer === "string") {
+          setBuyerInfo({
+            latestBuyer: data.latestBuyer,
+            timeAgo: data.timeAgo || null,
+          });
         }
       })
       .catch(() => {});
@@ -759,7 +760,7 @@ export function Quiz() {
               <span className="yellow">Máquina de Vendas 2.0</span>
             </h2>
             <p className="payment-counter">
-              🔥 <span className="yellow">{socialProof.total}</span> pessoas já
+              🔥 <span className="yellow">{process.env.VENDAS_BASE || "177"}</span> pessoas já
               compraram o Máquina de Vendas
             </p>
             <p className="payment-subtitle">
@@ -793,8 +794,8 @@ export function Quiz() {
               <aside className="buyer-toast" role="status" aria-live="polite">
                 <span className="buyer-toast-dot" aria-hidden="true" />
                 <span>
-                  {socialProof.latestBuyer} entrou no Máquina de Vendas
-                  {socialProof.timeAgo ? ` · há ${socialProof.timeAgo}` : ""}
+                  {buyerInfo.latestBuyer} entrou no Máquina de Vendas
+                  {buyerInfo.timeAgo ? ` · há ${buyerInfo.timeAgo}` : ""}
                 </span>
               </aside>
             ) : null}
