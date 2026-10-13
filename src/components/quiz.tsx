@@ -1,6 +1,12 @@
 "use client";
 import Image from "next/image";
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import {
+  ModuleCarousel,
+  ModuleItem,
+  ProofCarousel,
+  ProofItem,
+} from "./carousel";
 type Answer = "sim" | "mais_ou_menos" | "nao";
 type QuizAnswers = Partial<Record<`p${1 | 2 | 3 | 4 | 5}`, Answer>>;
 type Screen =
@@ -55,6 +61,92 @@ const answerLabels: Array<[Answer, string]> = [
   ["mais_ou_menos", "Mais ou menos"],
   ["nao", "Não sei"],
 ];
+const courseLocations = [
+  "Módulo 05 · Produto Campeão",
+  "Fornecedores com margem alta: onde buscar, como negociar e como validar sem comprar caro",
+  "Controle de margem real: precificação para saber o que sobra em cada venda",
+  "Módulos 06 e 07 · Criando anúncio campeão e Estratégia para ranquear",
+  "Como validar o produto antes de comprar estoque grande, para não travar dinheiro no produto errado",
+] as const;
+const modules: ModuleItem[] = [
+  ["01", "Primeiros Passos", "modulo-01-primeiros-passos.webp"],
+  [
+    "02",
+    "O essencial para começar a vender no Meli",
+    "modulo-02-essencial-para-comecar.webp",
+  ],
+  [
+    "03",
+    "Como destravar sua primeira venda no Meli",
+    "modulo-03-primeira-venda.webp",
+  ],
+  ["04", "Envios & Logística", "modulo-04-envios-e-logistica.webp"],
+  ["05", "Produto Campeão", "modulo-05-produto-campeao.webp"],
+  ["06", "Criando anúncio campeão", "modulo-06-anuncio-campeao.webp"],
+  ["07", "Estratégia para Ranquear", "modulo-07-estrategia-para-ranquear.webp"],
+  ["08", "Dominando ADS", "modulo-08-dominando-ads.webp"],
+  ["09", "Pós Venda", "modulo-09-pos-venda.webp"],
+  ["10", "Cresça rápido", "modulo-10-cresca-rapido.webp"],
+].map(([number, title, file]) => ({
+  number,
+  title,
+  image: `/imagens/modulos/${file}`,
+}));
+const benefits = [
+  "10 módulos, do primeiro passo à escala",
+  "1 ano de acesso para assistir no seu ritmo",
+  "Aulas novas quando o algoritmo e as regras do Mercado Livre mudam",
+  "Suporte para dúvidas sobre o conteúdo",
+  "7 dias de garantia incondicional",
+];
+const proofs: Record<string, ProofItem> = {
+  "01": {
+    number: "01",
+    image: "/imagens/provas/prova-01-5k-para-40k.webp",
+    caption: "Começou em março faturando 5k. Em maio fez 40k.",
+  },
+  "02": {
+    number: "02",
+    image: "/imagens/provas/prova-02-7k-para-121k.webp",
+    caption: "Março: R$ 7.702 → Abril: R$ 37.117 → Maio: R$ 121.698",
+  },
+  "03": {
+    number: "03",
+    image: "/imagens/provas/prova-03-conta-nova-76k-7-dias.webp",
+    caption: "Conta nova faturou R$ 76 mil em 7 dias.",
+  },
+  "04": {
+    number: "04",
+    image: "/imagens/provas/prova-04-mercadolider-platinum.webp",
+    caption: "De 5k em março a MercadoLíder Platinum em agosto.",
+  },
+  "05": {
+    number: "05",
+    image: "/imagens/provas/prova-05-mercadolider-gold.webp",
+    caption: "Bateu Gold. Meta agora é Platinum.",
+  },
+  "06": {
+    number: "06",
+    image: "/imagens/provas/prova-06-recorde-11k-dia.webp",
+    caption: "Recorde diário de R$ 11 mil em vendas.",
+  },
+  "07": {
+    number: "07",
+    image: "/imagens/provas/prova-07-achar-produto-facil.webp",
+    caption: "“Tá fácil achar produto agora.”",
+  },
+  "08": {
+    number: "08",
+    image: "/imagens/provas/prova-08-depoimento-direct.webp",
+    caption: "Depoimento recebido no direct.",
+  },
+};
+const mentoringProofs = ["02", "04", "05", "06", "01", "03", "07", "08"].map(
+  (number) => proofs[number],
+);
+const offerProofs = ["01", "02", "03", "07", "06", "04", "05", "08"].map(
+  (number) => proofs[number],
+);
 declare global {
   interface Window {
     fbq?: (...args: unknown[]) => void;
@@ -77,6 +169,9 @@ export function Quiz() {
   const [answers, setAnswers] = useState<QuizAnswers>({});
   const [selected, setSelected] = useState<string>();
   const [busy, setBusy] = useState(false);
+  const [showSticky, setShowSticky] = useState(false);
+  const offerCardRef = useRef<HTMLDivElement>(null);
+  const guaranteeRef = useRef<HTMLDivElement>(null);
   const utms = useRef<Record<string, string>>({});
   const missing = useMemo(
     () =>
@@ -92,6 +187,19 @@ export function Quiz() {
         .map((q) => q[1]),
     [answers],
   );
+  const offerTopics = useMemo(() => {
+    if (missing.length === 0)
+      return [
+        ["Produto Campeão", "Módulo 05 · Produto Campeão"],
+        ["Estratégia para ranquear", "Módulo 07 · Estratégia para ranquear"],
+        ["Dominando ADS", "Módulo 08 · Dominando ADS"],
+      ];
+    return questions.flatMap((item, index) =>
+      answers[`p${index + 1}` as keyof QuizAnswers] === "sim"
+        ? []
+        : [[item[1], courseLocations[index]]],
+    );
+  }, [answers, missing.length]);
   async function record(
     evento: string,
     etapa: number,
@@ -142,12 +250,38 @@ export function Quiz() {
       "utm_content",
       "utm_term",
       "fbclid",
+      "gclid",
+      "src",
+      "sck",
     ]) {
       const value = p.get(key);
       if (value) utms.current[key] = value;
     }
     void meta("PageView");
   }, []);
+  useEffect(() => {
+    if (screen !== "oferta") return;
+    const offer = offerCardRef.current;
+    const guarantee = guaranteeRef.current;
+    if (!offer || !guarantee) return;
+    let offerVisible = true;
+    let guaranteeVisible = false;
+    const update = () => setShowSticky(!offerVisible && !guaranteeVisible);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.target === offer) offerVisible = entry.isIntersecting;
+          if (entry.target === guarantee)
+            guaranteeVisible = entry.isIntersecting;
+        }
+        update();
+      },
+      { threshold: 0.15 },
+    );
+    observer.observe(offer);
+    observer.observe(guarantee);
+    return () => observer.disconnect();
+  }, [screen]);
   useEffect(() => {
     if (!sessionId) return;
     const onLeave = () =>
@@ -300,9 +434,11 @@ export function Quiz() {
     if (url) location.href = url;
   }
   return (
-    <main className="quiz-shell">
+    <main
+      className={`quiz-shell ${screen === "inicio" ? "is-hero" : ""} ${screen === "oferta" || screen === "mentoria" ? "is-long" : ""}`}
+    >
       <div className="quiz-content">
-        {screen !== "inicio" && screen !== "mentoria" ? (
+        {screen !== "inicio" && screen !== "mentoria" && screen !== "oferta" ? (
           <Image
             className="logo logo-small"
             src="/imagens/logo/logo-maquina-de-vendas-sm.webp"
@@ -313,10 +449,7 @@ export function Quiz() {
           />
         ) : null}
         {screen !== "inicio" ? (
-          <BackButton
-            onClick={goBack}
-            disabled={busy || Boolean(selected)}
-          />
+          <BackButton onClick={goBack} disabled={busy || Boolean(selected)} />
         ) : null}
         {screen === "inicio" ? (
           <section className="screen" style={{ textAlign: "center" }}>
@@ -471,8 +604,33 @@ export function Quiz() {
           </section>
         ) : null}
         {screen === "oferta" ? (
-          <section className="screen">
-            <div className="offer-card">
+          <section className="screen offer-screen">
+            <header className="offer-heading">
+              <span className="eyebrow">SEU PRÓXIMO PASSO</span>
+              <h2>
+                Aprenda os pontos do seu diagnóstico no{" "}
+                <span className="yellow">Máquina de Vendas 2.0</span>
+              </h2>
+            </header>
+            <section className="offer-section">
+              <h3>
+                {missing.length
+                  ? "Onde o curso trata cada ponto do seu diagnóstico"
+                  : "O que o curso aprofunda para você"}
+              </h3>
+              <div className="topic-list">
+                {offerTopics.map(([topic, location]) => (
+                  <div className="topic-card" key={topic}>
+                    <span className="check">✓</span>
+                    <div>
+                      <strong>{topic}</strong>
+                      <p>{location}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+            <div className="offer-card" ref={offerCardRef}>
               <Image
                 className="logo"
                 src="/imagens/logo/logo-maquina-de-vendas-sm.webp"
@@ -493,14 +651,75 @@ export function Quiz() {
               </button>
               <p className="lock">🔒 Acesso imediato após pagamento</p>
             </div>
-            <div className="result-strip">
-              Método prático · Produto · Margem · Anúncio · Estoque
+            <section className="offer-section">
+              <h3>O que você recebe</h3>
+              <div className="benefit-list">
+                {benefits.map((item) => (
+                  <div key={item}>
+                    <span className="check">✓</span>
+                    {item}
+                  </div>
+                ))}
+              </div>
+            </section>
+            <section className="offer-section carousel-section">
+              <h3>
+                Os <span className="yellow">10 módulos</span> do curso
+              </h3>
+              <ModuleCarousel items={modules} />
+            </section>
+            <section className="offer-section carousel-section">
+              <h3>
+                <span className="yellow">Resultados</span> de quem aplica o
+                método do Nathan
+              </h3>
+              <ProofCarousel items={offerProofs} />
+            </section>
+            <section className="teacher-card">
+              <Image
+                src="/imagens/nathan/nathan-foto-fundo-preto.webp"
+                width={700}
+                height={700}
+                alt="Nathan Ritter"
+                loading="lazy"
+              />
+              <div>
+                <span className="eyebrow">QUEM ENSINA</span>
+                <h3>Nathan Ritter</h3>
+                <p>
+                  Comecei no Mercado Livre errando muito: produto errado, margem
+                  zero, estresse máximo. Descobri na prática que a virada não
+                  vem de trabalhar mais, vem de trabalhar no produto certo com a
+                  estrutura certa. Hoje ensino exatamente o que funciona pra
+                  mim, sem firulas e sem papo furado, direto ao ponto.
+                </p>
+              </div>
+            </section>
+            <div className="guarantee-card" ref={guaranteeRef}>
+              <span className="shield">⬡</span>
+              <h3>7 dias de garantia</h3>
+              <p>Se não gostar, devolvemos 100% do valor.</p>
+              <button className="btn-primary" onClick={checkout}>
+                Quero começar agora
+              </button>
             </div>
+            <section className="offer-section">
+              <h3>Perguntas frequentes</h3>
+              <Faq />
+            </section>
+            {showSticky ? (
+              <div className="sticky-checkout">
+                <strong>
+                  12x de R$ {process.env.NEXT_PUBLIC_PRECO_PARCELA}
+                </strong>
+                <button onClick={checkout}>Quero começar agora</button>
+              </div>
+            ) : null}
           </section>
         ) : null}
         {screen === "mentoria" ? (
-          <section className="screen mentor">
-            <div>
+          <section className="screen mentor-flow">
+            <div className="mentor-copy">
               <span className="eyebrow">ACOMPANHAMENTO INDIVIDUAL</span>
               <h2>
                 Pelo seu faturamento, você pode precisar de um acompanhamento
@@ -518,14 +737,26 @@ export function Quiz() {
               </button>
             </div>
             <Image
+              className="mentor-photo"
               src="/imagens/nathan/nathan-recorte.webp"
               width={680}
               height={900}
               alt="Nathan Ritter de braços cruzados"
               priority
             />
+            <section className="mentor-results">
+              <h3>
+                <span className="yellow">Resultados</span> dos mentorados do
+                Nathan
+              </h3>
+              <ProofCarousel items={mentoringProofs} />
+            </section>
+            <button className="btn-primary" onClick={mentoring}>
+              Quero falar sobre a mentoria
+            </button>
           </section>
         ) : null}
+        <LegalNotice />
       </div>
     </main>
   );
@@ -615,5 +846,46 @@ function Result({ good, children }: { good: boolean; children: string }) {
       </span>
       <span>{children}</span>
     </div>
+  );
+}
+function Faq() {
+  const items = [
+    [
+      "Preciso ter experiência com Mercado Livre?",
+      "Não. O curso foi estruturado para funcionar do zero ao avançado. O Módulo 01 começa pelos primeiros passos, configuração de conta e estrutura básica. Quem já vende também aproveita, especialmente nos módulos de Produto Campeão, ADS e Ranqueamento.",
+    ],
+    [
+      "Quanto preciso investir para começar a vender?",
+      "O método foi pensado para quem está começando com pouco capital. Você aprende a validar produtos antes de comprar estoque grande, para não arriscar dinheiro no produto errado. O investimento inicial depende do produto escolhido.",
+    ],
+    [
+      "Como funciona o acesso?",
+      "Após a confirmação do pagamento, você recebe acesso imediato à plataforma. O conteúdo fica disponível para assistir no seu ritmo, durante um ano.",
+    ],
+    [
+      "Tem garantia?",
+      "Sim. Você tem 7 dias de garantia incondicional. Se por qualquer motivo não ficar satisfeito, basta pedir o reembolso e devolvemos 100% do valor.",
+    ],
+  ];
+  return (
+    <div className="faq">
+      {items.map(([question, answer]) => (
+        <details key={question}>
+          <summary>
+            {question}
+            <span>+</span>
+          </summary>
+          <p>{answer}</p>
+        </details>
+      ))}
+    </div>
+  );
+}
+function LegalNotice() {
+  return (
+    <p className="legal-notice">
+      Este produto não garante resultados financeiros. Os depoimentos refletem
+      experiências individuais.
+    </p>
   );
 }
