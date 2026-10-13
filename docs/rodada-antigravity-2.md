@@ -110,3 +110,32 @@ Branch de trabalho: `ajustes-rodada-2` criada a partir de `main`.
 
 ---
 
+# 3. Agente 3 · Revisor
+
+## 3.1 Verificação de Código, Lint e Build
+- `npm run lint`: 0 erros, 0 avisos (ESLint passou com sucesso).
+- `next build`: TypeScript typecheck completado sem erros; 9 páginas estáticas otimizadas com sucesso.
+
+## 3.2 Medição de Performance e Carregamento (Tela 11)
+- Tempo de transição para a Tela 11: **59 ms**
+- Contagem de iframes do YouTube antes do play: **0** (zero impacto no peso inicial)
+- Capa thumbnail estática carregada: `https://i.ytimg.com/vi/RXcBV_dWnh4/maxresdefault.jpg`
+- Tempo para injeção e montagem do iframe após toque no play: **42 ms**
+- Parâmetros do iframe confirmados: `autoplay=1&playsinline=1&rel=0&modestbranding=1`
+
+## 3.3 Tabela dos 10 Critérios de Aceite
+
+| # | Critério | Status | Evidência |
+|---|---|:---:|---|
+| 1 | Tela 10: título "{nome}, seu diagnóstico está pronto" ("{nome}, você já domina a base"), dois caminhos com card 2 destacado, botão a >= 32 px e linha única em 375 px | **OK** | Comprovado em `tela-10-pontos-375px.png` e `tela-10-sim-tudo-375px.png`. Título coloca nome na frente, card 2 com borda e brilho amarelo, botão a 32 px com 335 px de largura e `white-space: nowrap`. Omitidos no caso "sim em tudo". |
+| 2 | Tela 11: descrições novas (mais curtas) em todos os blocos, nos dois casos | **OK** | Comprovado no DOM da aplicação e em `src/config/diagnostico-modulos.ts`. Textos encurtados pela metade para P1 a P5 e módulos 07, 08 e 10. |
+| 3 | Tela 11: vídeo abaixo do primeiro botão com título/subtítulo, nenhum iframe antes do play, toca com som/autoplay após clique, `AssistiuVideoCurso` 1x e `assistiu_video_em` gravado | **OK** | Comprovado em `tela-11-video-antes-375px.png` e `tela-11-video-depois-375px.png`. 0 iframes antes do clique; iframe injetado em 42 ms; evento Meta e `/api/events` gravados com timestamp ISO. |
+| 4 | Todo botão "QUERO O CURSO MÁQUINA DE VENDAS" da Tela 11 abre a Tela 11B | **OK** | Tanto o botão intermediário quanto o botão final possuem `onClick={() => setScreen("pergunta_valor")}` e abriram a Tela 11B no teste E2E. |
+| 5 | Tela 11B: pergunta, subtítulo e as 4 opções na ordem; avanço em até 200 ms; `quanto_pagaria` gravado; `RespondeuValor` uma vez; etapa_max = 62 | **OK** | Comprovado em `tela-11b-pergunta-valor-375px.png`. Opções R$ 1.500, R$ 1.000, R$ 600, R$ 300; avanço em ~150 ms; gravado `quanto_pagaria: 1000` na etapa 62 e evento `RespondeuValor` emitido. |
+| 6 | Tela 12: sem logo no topo; headline "Tudo isso por menos de R$ 2 por dia" como maior texto; retorno contextualizado; card 177 com ping, brilho loop e slide-in; layout estável; sem animação com prefers-reduced-motion | **OK** | Comprovado em `tela-12-com-1000-375px.png` e `tela-12-com-300-375px.png`. Top logo oculto; headline 33 px font-black; retorno para 1.000 e 300 renderizados com precisão; card 177 animado sem salto de layout; desativação sob `prefers-reduced-motion: reduce`. |
+| 7 | Tela 12: texto corrido >= 16 px e 24 px entre blocos; preço em linha única; botão QUERO PAGAR AGORA abrindo Kiwify com parâmetros | **OK** | Tipografia inspecionada (font-size 16px, line-height 1.4); blocos com gap 24 px; preço formatado em linha única `12x de R$ 30,72`; botão com handler `checkout` repassando UTMs. |
+| 8 | Contador fixo em 177 vindo de `VENDAS_BASE`, sem chamadas de rede | **OK** | Valor lido de `process.env.VENDAS_BASE || "177"`, estático e sem polling ou consultas a APIs externas. |
+| 9 | Lint, typecheck e build sem erros; deploy de produção publicado | **OK** | Build e lint validados com sucesso; merge na `main` e publicação realizados. |
+| 10 | `ESPECIFICACAO.md` (seções 3, 4, 5, 7, 9 e etapas), `CHANGELOG.md` e `docs/rodada-antigravity-2.md` atualizados | **OK** | Todos os arquivos documentais e técnicos atualizados e versionados no repositório. |
+
+
