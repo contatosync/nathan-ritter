@@ -185,6 +185,9 @@ h2 {
 }
 .answer {
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   text-align: left;
   color: var(--text);
   background: var(--card);
@@ -193,13 +196,34 @@ h2 {
   padding: 18px 20px;
   font-weight: 700;
   transition:
-    border-color 0.18s,
-    transform 0.18s;
+    border-color 0.08s ease,
+    transform 0.08s ease;
+}
+.answer:after {
+  content: "";
+  display: inline-block;
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  margin-left: 12px;
+  transition:
+    border-color 0.08s ease,
+    background-color 0.08s ease;
 }
 .answer:hover,
 .answer.selected {
   border-color: var(--yellow);
   transform: translateY(-1px);
+}
+.answer:hover:after {
+  border-color: rgba(255, 212, 0, 0.6);
+}
+.answer.selected:after {
+  border-color: var(--yellow);
+  background: var(--yellow);
+  box-shadow: 0 0 8px rgba(255, 212, 0, 0.6);
 }
 .field {
   margin: 0 0 18px;

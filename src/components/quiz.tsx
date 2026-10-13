@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   ModuleCarousel,
   ModuleItem,
@@ -200,47 +200,58 @@ export function Quiz() {
         : [[item[1], courseLocations[index]]],
     );
   }, [answers, missing.length]);
-  async function record(
+  function sendBackground(url: string, payload: unknown, retries = 2) {
+    const body = JSON.stringify(payload);
+    const attempt = (remaining: number) => {
+      fetch(url, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body,
+        keepalive: true,
+      }).catch(() => {
+        if (remaining > 0) {
+          setTimeout(() => attempt(remaining - 1), 1000);
+        }
+      });
+    };
+    attempt(retries);
+  }
+  function record(
     evento: string,
     etapa: number,
     data: Record<string, unknown> = {},
   ) {
     if (!sessionId && etapa > 10) return;
-    await fetch("/api/events", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({
-        session_id: sessionId,
-        evento,
-        etapa,
-        etapa_nome: stageNames[etapa],
-        ...data,
-      }),
+    sendBackground("/api/events", {
+      session_id: sessionId,
+      evento,
+      etapa,
+      etapa_nome: stageNames[etapa],
+      ...data,
     });
   }
-  async function meta(
-    eventName: string,
-    customData: Record<string, unknown> = {},
-    userData: Record<string, unknown> = {},
-  ) {
-    const eventId = crypto.randomUUID();
-    const standard = ["PageView", "Lead"].includes(eventName);
-    window.fbq?.(standard ? "track" : "trackCustom", eventName, customData, {
-      eventID: eventId,
-    });
-    await fetch("/api/meta", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({
+  const meta = useCallback(
+    (
+      eventName: string,
+      customData: Record<string, unknown> = {},
+      userData: Record<string, unknown> = {},
+    ) => {
+      const eventId = crypto.randomUUID();
+      const standard = ["PageView", "Lead"].includes(eventName);
+      window.fbq?.(standard ? "track" : "trackCustom", eventName, customData, {
+        eventID: eventId,
+      });
+      sendBackground("/api/meta", {
         eventName,
         eventId,
         customData,
         userData,
         eventSourceUrl: location.href,
-      }),
-    });
-    return eventId;
-  }
+      });
+      return eventId;
+    },
+    [],
+  );
   useEffect(() => {
     const p = new URLSearchParams(location.search);
     for (const key of [
@@ -257,8 +268,8 @@ export function Quiz() {
       const value = p.get(key);
       if (value) utms.current[key] = value;
     }
-    void meta("PageView");
-  }, []);
+    meta("PageView");
+  }, [meta]);
   useEffect(() => {
     if (screen !== "oferta") return;
     const offer = offerCardRef.current;
@@ -317,7 +328,7 @@ export function Quiz() {
     const id = crypto.randomUUID(),
       normalized = normalizePhone(phone);
     setSessionId(id);
-    const eventId = await meta(
+    const eventId = meta(
       "Lead",
       {},
       { nome: name.trim(), telefone: normalized },
@@ -341,21 +352,22 @@ export function Quiz() {
     setBusy(false);
     setScreen("ja_vende");
   }
-  async function chooseSeller(value: "sim" | "nao") {
+  function chooseSeller(value: "sim" | "nao") {
+    if (selected !== undefined || busy) return;
     setSelected(value);
-    await record("ja_vende", 20, { ja_vende: value });
+    record("ja_vende", 20, { ja_vende: value });
     setTimeout(() => {
       setSelected(undefined);
       if (value === "sim") setScreen("faturamento");
       else startQuestions();
-    }, 500);
+    }, 150);
   }
   function startQuestions() {
     setQuestion(0);
     setScreen("pergunta");
   }
   function goBack() {
-    if (selected || busy) return;
+    if (selected !== undefined || busy) return;
     setError("");
     if (screen === "cadastro") setScreen("inicio");
     else if (screen === "ja_vende") setScreen("cadastro");
@@ -367,42 +379,44 @@ export function Quiz() {
     else if (screen === "oferta") setScreen("diagnostico");
     else if (screen === "mentoria") setScreen("faturamento");
   }
-  async function chooseRevenue(value: string) {
+  function chooseRevenue(value: string) {
+    if (selected !== undefined || busy) return;
     setSelected(value);
     const mentoring = value === "acima_30mil";
-    await record("faturamento", mentoring ? 35 : 30, {
+    record("faturamento", mentoring ? 35 : 30, {
       faixa_faturamento: value,
       rota: mentoring ? "mentoria" : "curso",
       status: mentoring ? "mentoria" : "em_andamento",
     });
-    if (mentoring) await meta("LeadMentoria");
+    if (mentoring) meta("LeadMentoria");
     setTimeout(() => {
       setSelected(undefined);
       if (mentoring) setScreen("mentoria");
       else startQuestions();
-    }, 500);
+    }, 150);
   }
-  async function chooseAnswer(value: Answer) {
+  function chooseAnswer(value: Answer) {
+    if (selected !== undefined || busy) return;
     setSelected(value);
     const key = `p${question + 1}` as keyof QuizAnswers,
       next = { ...answers, [key]: value };
     setAnswers(next);
-    await record(key, 41 + question, { [key]: value });
-    setTimeout(async () => {
+    record(key, 41 + question, { [key]: value });
+    setTimeout(() => {
       setSelected(undefined);
       if (question < 4) setQuestion((q) => q + 1);
       else {
         const points = questions
           .filter((_, i) => next[`p${i + 1}` as keyof QuizAnswers] !== "sim")
           .map((q) => q[1]);
-        await record("diagnostico", 50, {
+        record("diagnostico", 50, {
           pontos_diagnostico: points.join(";"),
           qtd_pontos: points.length,
         });
-        await meta("DiagnosticoConcluido", { qtd_pontos: points.length });
+        meta("DiagnosticoConcluido", { qtd_pontos: points.length });
         setScreen("diagnostico");
       }
-    }, 500);
+    }, 150);
   }
   async function showOffer() {
     await record("oferta", 60, { viu_oferta_em: new Date().toISOString() });
