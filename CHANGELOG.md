@@ -14,7 +14,13 @@ Formato de cada entrada:
 
 ---
 
-## 2026-10-13 20:15 · Codex
+## 2026-10-13 10:40 · Codex
+**O que mudou:** adicionada a opção “Voltar” em todas as etapas após a tela inicial, incluindo cadastro, decisão de venda, faturamento, cinco perguntas, diagnóstico, oferta e mentoria. As respostas preenchidas são preservadas e o botão fica temporariamente desabilitado durante o envio ou a transição de uma resposta.
+**Arquivos:** `src/components/quiz.tsx`, `src/app/globals.css`, `eslint.config.mjs`, `CHANGELOG.md`.
+**Recursos externos criados/alterados:** nenhum recurso GMN foi alterado.
+**Pendências:** publicar e validar o retorno no ambiente de produção.
+
+## 2026-10-13 10:15 · Codex
 **O que mudou:** migrado o repositório oficial para `contatosync/nathan-ritter`, conectado ao projeto Vercel `nr-diagnostico-ml` e configuradas as variáveis também no ambiente Preview, incluindo `META_CAPI_TOKEN` como variável sensível.
 **Arquivos:** `RECURSOS.md`, `CHANGELOG.md`.
 **Recursos externos criados/alterados:** repositório `contatosync/nathan-ritter`; conexão GitHub → Vercel ativa. O repositório anterior não foi apagado e nenhum recurso GMN foi alterado.
