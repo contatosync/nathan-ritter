@@ -199,12 +199,13 @@ Respostas iguais para todas: **Sim, sei fazer** · **Mais ou menos** · **Não s
 
 ### Tela M · Mentoria (faturamento acima de R$ 30 mil)
 - **Título:** Pelo seu faturamento, você pode precisar de um acompanhamento individual
-- **Texto:** Quem já fatura acima de R$ 30 mil por mês costuma ter decisões mais específicas sobre estoque, caixa e escala. Nesses casos, o Nathan acompanha a operação de perto, na mentoria individual. Se tiver interesse, preencha o formulário e a equipe entra em contato.
+- **Texto:** Quem já fatura acima de R$ 30 mil por mês costuma ter decisões mais específicas sobre estoque, caixa e escala. Nesses casos, o Nathan acompanha a operação de perto, na mentoria individual. Se tiver interesse, preencha o formulário. O próprio Nathan entra em contato com você.
 - **Botão:** QUERO FALAR SOBRE A MENTORIA
+- **Chamada após o primeiro botão:** Veja abaixo os resultados de alguns mentorados do Nathan.
 - **Visual:** sem o logo do curso. Foto do Nathan de braços cruzados ao lado do texto.
 
 #### Estrutura aprovada da Tela M
-Ordem: rótulo → título → texto → botão → foto do Nathan → `CarrosselProvas` → botão repetido → aviso legal. O carrossel usa o título “Resultados dos mentorados do Nathan” e a ordem 02, 04, 05, 06, 01, 03, 07, 08. Os dois botões disparam `AplicacaoMentoria` e abrem o formulário aprovado.
+Ordem: rótulo → título → texto → botão → chamada para os resultados → foto do Nathan → `CarrosselProvas` → botão repetido. O carrossel usa o título “Resultados dos mentorados do Nathan” e a ordem 02, 04, 05, 06, 01, 03, 07, 08. Os dois botões disparam `AplicacaoMentoria` e abrem o formulário aprovado. A Tela M não exibe aviso legal abaixo do botão final.
 
 #### Estrutura aprovada da Tela 11
 Ordem: introdução “SEU PRÓXIMO PASSO”; relação entre os pontos do diagnóstico e o conteúdo do curso; card de preço; lista “O que você recebe”; carrossel dos 10 módulos; carrossel de resultados; apresentação de Nathan Ritter; garantia de 7 dias com CTA; quatro perguntas frequentes; aviso legal. Quando todas as respostas forem “Sim”, destacar Produto Campeão, Estratégia para ranquear e Dominando ADS. No celular, exibir CTA fixo somente quando o card de preço e o CTA da garantia estiverem fora da tela.
@@ -223,7 +224,7 @@ Todos os CTAs de compra disparam `CliqueCheckout` pelo Pixel e CAPI com o mesmo 
 - Tela inicial usa `fundo/hero.webp` e `hero-mobile.webp` com opacidade de 40%, `mix-blend-screen`, brilhos radiais amarelo/laranja e degradê escuro.
 - Card de oferta usa borda amarela a 60% e fundo radial amarelo sobre degradê azul-marinho.
 - Carrosséis usam scroll-snap, gesto horizontal no celular, setas somente no desktop e indicadores com o ativo amarelo. Imagens de provas abrem em lightbox.
-- Todas as telas mostram o aviso: “Este produto não garante resultados financeiros. Os depoimentos refletem experiências individuais.”
+- As telas do curso mostram o aviso: “Este produto não garante resultados financeiros. Os depoimentos refletem experiências individuais.” A Tela M de mentoria não mostra esse aviso abaixo do botão final.
 
 Base: página de vendas `maquina-de-vendas-nathan.lovable.app`. Os valores de cor abaixo foram estimados por captura de tela. Se houver acesso ao projeto Lovable, usar os valores exatos do CSS/Tailwind de lá e registrar no CHANGELOG.
 

@@ -14,6 +14,12 @@ Formato de cada entrada:
 
 ---
 
+## 2026-10-13 17:44 · Codex
+**O que mudou:** ajustada a Tela M para informar que o próprio Nathan entra em contato; adicionada uma chamada para os resultados dos mentorados logo após o primeiro botão; removido o aviso legal abaixo do botão final da mentoria.
+**Arquivos:** `src/components/quiz.tsx`, `src/app/globals.css`, `ESPECIFICACAO.md`, `CHANGELOG.md`.
+**Recursos externos criados/alterados:** nenhum. Nenhum recurso GMN foi alterado.
+**Pendências:** `META_TEST_EVENT_CODE` continua ausente para a validação no Gerenciador de Eventos.
+
 ## 2026-10-13 16:10 · Codex
 **O que mudou:** aplicada a identidade visual exata da página de vendas; fonte alterada para Sora/Poppins; hero passou a usar os fundos oficiais; criada a oferta longa com conteúdo personalizado do diagnóstico, card de preço, benefícios, dez módulos, dois carrosséis de provas sociais, apresentação do Nathan, garantia, FAQ, lightbox e CTA fixo móvel; mentoria reorganizada com carrossel e CTA repetido; parâmetros `src`, `sck` e `gclid` adicionados ao checkout; aviso legal incluído em todas as telas.
 **Arquivos:** `src/app/layout.tsx`, `src/app/globals.css`, `src/components/quiz.tsx`, `src/components/carousel.tsx`, `public/imagens/fundo/*`, `public/imagens/modulos/*`, `public/imagens/provas/*`, `ESPECIFICACAO.md`, `CHANGELOG.md`.

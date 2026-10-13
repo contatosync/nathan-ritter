@@ -683,6 +683,13 @@ h2 {
 .mentor-copy .btn-primary {
   margin-top: 32px;
 }
+.mentor-results-callout {
+  margin: 18px 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.55;
+  text-align: center;
+}
 .mentor-photo {
   width: min(70vw, 330px);
   height: auto;

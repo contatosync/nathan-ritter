@@ -729,12 +729,15 @@ export function Quiz() {
                 Quem já fatura acima de R$ 30 mil por mês costuma ter decisões
                 mais específicas sobre estoque, caixa e escala. Nesses casos, o
                 Nathan acompanha a operação de perto, na mentoria individual. Se
-                tiver interesse, preencha o formulário e a equipe entra em
-                contato.
+                tiver interesse, preencha o formulário. O próprio Nathan entra
+                em contato com você.
               </p>
               <button className="btn-primary" onClick={mentoring}>
                 Quero falar sobre a mentoria
               </button>
+              <p className="mentor-results-callout">
+                Veja abaixo os resultados de alguns mentorados do Nathan.
+              </p>
             </div>
             <Image
               className="mentor-photo"
@@ -756,7 +759,7 @@ export function Quiz() {
             </button>
           </section>
         ) : null}
-        <LegalNotice />
+        {screen !== "mentoria" ? <LegalNotice /> : null}
       </div>
     </main>
   );
