@@ -353,14 +353,7 @@ h2 {
 .mentor-copy .btn-primary {
   animation: pulse-cta 2.5s ease-in-out infinite;
 }
-.legal-notice {
-  margin: 30px auto 0;
-  max-width: 620px;
-  color: color-mix(in srgb, var(--muted) 70%, transparent);
-  font-size: 0.68rem;
-  line-height: 1.5;
-  text-align: center;
-}
+
 .is-long {
   overflow: visible;
 }

@@ -759,7 +759,6 @@ export function Quiz() {
             </button>
           </section>
         ) : null}
-        {screen !== "mentoria" ? <LegalNotice /> : null}
       </div>
     </main>
   );
@@ -884,11 +883,4 @@ function Faq() {
     </div>
   );
 }
-function LegalNotice() {
-  return (
-    <p className="legal-notice">
-      Este produto não garante resultados financeiros. Os depoimentos refletem
-      experiências individuais.
-    </p>
-  );
-}
+
