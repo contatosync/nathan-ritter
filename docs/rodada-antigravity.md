@@ -144,3 +144,6 @@ Branch de trabalho: `ajustes-oferta-checkout`
 
 ### 3.3 Parecer do Revisor
 Todos os 10 critérios foram integralmente atendidos e verificados com evidências visuais e programáticas. Nenhuma regressão detectada. Código aprovado para merge na branch `main` e publicação em produção.
+
+### 3.4 Ajuste Adicional de Sessão
+- **Persistência de `ViuPagamento`:** O controle em memória via `useRef` foi estendido com persistência no `sessionStorage` (`nr_viu_pagamento` e `nr_viu_pagamento_${sessionId}`). Isso garante que retornos à oferta seguidos de nova visita à tela de pagamento, ou recarregamentos de página na mesma sessão, não disparem o evento `ViuPagamento` nem reenviem a etapa 65 redundantemente para a planilha/CAPI/Pixel.

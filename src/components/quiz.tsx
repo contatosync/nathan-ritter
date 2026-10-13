@@ -245,12 +245,38 @@ export function Quiz() {
   }, [meta]);
 
   useEffect(() => {
-    if (screen === "pagamento" && !hasTrackedPayment.current) {
-      hasTrackedPayment.current = true;
-      record("pagamento", 65, { viu_pagamento_em: new Date().toISOString() });
-      meta("ViuPagamento");
+    if (screen === "pagamento") {
+      const storageKey = sessionId ? `nr_viu_pagamento_${sessionId}` : "nr_viu_pagamento";
+      let alreadyTracked = hasTrackedPayment.current;
+
+      if (!alreadyTracked && typeof window !== "undefined") {
+        try {
+          if (
+            sessionStorage.getItem("nr_viu_pagamento") === "1" ||
+            sessionStorage.getItem(storageKey) === "1"
+          ) {
+            alreadyTracked = true;
+          }
+        } catch {
+          // fallback silencioso para restrições de navegação privada
+        }
+      }
+
+      if (!alreadyTracked) {
+        hasTrackedPayment.current = true;
+        if (typeof window !== "undefined") {
+          try {
+            sessionStorage.setItem("nr_viu_pagamento", "1");
+            sessionStorage.setItem(storageKey, "1");
+          } catch {
+            // fallback silencioso
+          }
+        }
+        record("pagamento", 65, { viu_pagamento_em: new Date().toISOString() });
+        meta("ViuPagamento");
+      }
     }
-  }, [screen, meta, record]);
+  }, [screen, sessionId, meta, record]);
 
   useEffect(() => {
     if (screen !== "pagamento") return;

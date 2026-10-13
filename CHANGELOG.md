@@ -14,6 +14,12 @@ Formato de cada entrada:
 
 ---
 
+## 2026-10-13 19:28 · Antigravity
+**O que mudou:** persistido o controle de disparo do evento `ViuPagamento` no `sessionStorage` do navegador (chaves `nr_viu_pagamento` e `nr_viu_pagamento_${sessionId}`), garantindo que o evento e o registro da etapa 65 disparem estritamente uma única vez por pessoa/sessão, mesmo em cenários de retorno à oferta e reabertura do pagamento ou recarregamento da página.
+**Arquivos:** `src/components/quiz.tsx`, `CHANGELOG.md`, `docs/rodada-antigravity.md`.
+**Recursos externos criados/alterados:** nenhum.
+**Pendências:** nenhuma.
+
 ## 2026-10-13 18:40 · Antigravity
 **O que mudou:** removido o aviso de rodapé de todas as telas; acelerado o avanço entre perguntas para ~150 ms com feedback visual imediato (borda e ícone amarelos) e envio não bloqueante de eventos em segundo plano com keepalive; ajustado o espaçamento da Tela 10 (>= 32 px) e texto do botão unificado para "QUERO O CURSO MÁQUINA DE VENDAS"; reformulada a Tela 11 como apresentação do curso sem preço, com blocos dinâmicos por ponto do diagnóstico com miniaturas das capas Kiwify 48x72 px, novo carrossel com 10 capas originais 2:3 sem sobreposição e remoção de preço/garantia/FAQ; criada a Tela 12 (Pagamento) com etapa 65 (pagamento), evento ViuPagamento, preço em linha única em 375 px ("12x de R$ 30,72"), prova social real estrita com contador de 177 alunos e aviso do comprador Marcos C. aos 3s, rota API /api/social-proof com cache de 60 s e botão "QUERO PAGAR AGORA" repassando parâmetros de rastreamento ao checkout Kiwify InK3eLE.
 **Arquivos:** `src/components/quiz.tsx`, `src/components/carousel.tsx`, `src/config/diagnostico-modulos.ts`, `src/app/globals.css`, `src/app/api/social-proof/route.ts`, `.env.example`, `.env.local`, `.gitignore`, `public/imagens/modulos-kiwify/*`, `ESPECIFICACAO.md`, `AGENTS.md`, `CHANGELOG.md`, `docs/rodada-antigravity.md`.
