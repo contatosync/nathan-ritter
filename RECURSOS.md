@@ -6,7 +6,7 @@ Inventário de tudo que existe fora do código. Atualizar no mesmo momento em qu
 
 | Recurso | Nome | ID / URL | Criado em | Por |
 |---|---|---|---|---|
-| Repositório GitHub | `SyncAssessoriaMedica/nathan-ritter` | `https://github.com/SyncAssessoriaMedica/nathan-ritter` | 2026-10-13 | Nathan / Codex |
+| Repositório GitHub | `contatosync/nathan-ritter` | `https://github.com/contatosync/nathan-ritter` | 2026-10-13 | Nathan / Codex |
 | Projeto Vercel | `nr-diagnostico-ml` | `prj_psW6Ob5p0L2fcyxn7vnRNDQq22ED` | 2026-10-13 | Codex |
 | URL pública | URL padrão da Vercel | `https://nr-diagnostico-ml.vercel.app` | 2026-10-13 | Codex |
 | Deploy Vercel | Primeiro deploy de produção | `dpl_ECABgEwvDkiffJekeiDsmseURyrs` · READY | 2026-10-13 | Codex |
@@ -23,7 +23,7 @@ Inventário de tudo que existe fora do código. Atualizar no mesmo momento em qu
 | Webhook Kiwify | | | | |
 | Pixel Meta | Nathan Ritter | `2015455052410421` | já existente | |
 
-Observação: o código foi enviado ao repositório oficial acima. A conexão automática GitHub → Vercel ainda depende de conceder ao aplicativo GitHub da Vercel acesso de escrita ao repositório da organização `SyncAssessoriaMedica`; o deploy manual de produção está ativo.
+Observação: o repositório oficial está conectado ao projeto Vercel `nr-diagnostico-ml`; pushes na branch `main` disparam deploy de produção automaticamente.
 
 ## Recursos do funil GMN (somente leitura)
 

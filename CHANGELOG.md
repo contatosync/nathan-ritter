@@ -14,6 +14,12 @@ Formato de cada entrada:
 
 ---
 
+## 2026-10-13 20:15 · Codex
+**O que mudou:** migrado o repositório oficial para `contatosync/nathan-ritter`, conectado ao projeto Vercel `nr-diagnostico-ml` e configuradas as variáveis também no ambiente Preview, incluindo `META_CAPI_TOKEN` como variável sensível.
+**Arquivos:** `RECURSOS.md`, `CHANGELOG.md`.
+**Recursos externos criados/alterados:** repositório `contatosync/nathan-ritter`; conexão GitHub → Vercel ativa. O repositório anterior não foi apagado e nenhum recurso GMN foi alterado.
+**Pendências:** validar o primeiro deploy automático; `META_TEST_EVENT_CODE`; token Kiwify; áudio comercial; Evolution/recuperação e Fase 5.
+
 ## 2026-10-13 09:45 · Codex
 **O que mudou:** publicado o primeiro deploy de produção; migrado o código para o repositório oficial `SyncAssessoriaMedica/nathan-ritter`; testados em produção os caminhos curso, mentoria e “sim em tudo”; confirmados os três cadastros e seus eventos na planilha; confirmada a recepção de um evento pela Meta CAPI; confirmado que o webhook Kiwify responde como inativo sem token. `META_CAPI_TOKEN` configurado.
 **Arquivos:** `RECURSOS.md`, `CHANGELOG.md`, `.gitignore`.
