@@ -22,6 +22,7 @@ type Screen =
   | "pergunta"
   | "diagnostico"
   | "oferta"
+  | "pergunta_valor"
   | "pagamento"
   | "mentoria";
 const questions = [
@@ -60,6 +61,7 @@ const stageNames: Record<number, string> = {
   45: "p5",
   50: "diagnostico",
   60: "oferta",
+  62: "pergunta_valor",
   65: "pagamento",
   70: "clique_checkout",
 };
@@ -149,6 +151,8 @@ export function Quiz() {
   const [videoPlayed, setVideoPlayed] = useState(false);
   const hasTrackedPayment = useRef(false);
   const hasTrackedVideo = useRef(false);
+  const hasTrackedValor = useRef(false);
+  const [valorResposta, setValorResposta] = useState<number | null>(null);
   const utms = useRef<Record<string, string>>({});
   const missing = useMemo(
     () =>
@@ -385,8 +389,47 @@ export function Quiz() {
       else setScreen("ja_vende");
     } else if (screen === "diagnostico") setScreen("pergunta");
     else if (screen === "oferta") setScreen("diagnostico");
-    else if (screen === "pagamento") setScreen("oferta");
+    else if (screen === "pergunta_valor") setScreen("oferta");
+    else if (screen === "pagamento") setScreen("pergunta_valor");
     else if (screen === "mentoria") setScreen("faturamento");
+  }
+  function chooseValor(valor: number) {
+    if (selected !== undefined || busy) return;
+    setSelected(String(valor));
+    setValorResposta(valor);
+    let alreadyTracked = hasTrackedValor.current;
+    if (!alreadyTracked && typeof window !== "undefined") {
+      try {
+        if (
+          sessionStorage.getItem("nr_respondeu_valor") === "1" ||
+          (sessionId &&
+            sessionStorage.getItem(`nr_respondeu_valor_${sessionId}`) === "1")
+        ) {
+          alreadyTracked = true;
+        }
+      } catch {
+        // fallback silencioso
+      }
+    }
+    if (!alreadyTracked) {
+      hasTrackedValor.current = true;
+      if (typeof window !== "undefined") {
+        try {
+          sessionStorage.setItem("nr_respondeu_valor", "1");
+          if (sessionId) {
+            sessionStorage.setItem(`nr_respondeu_valor_${sessionId}`, "1");
+          }
+        } catch {
+          // fallback silencioso
+        }
+      }
+      record("pergunta_valor", 62, { quanto_pagaria: valor });
+      meta("RespondeuValor", { valor, value: valor, currency: "BRL" });
+    }
+    setTimeout(() => {
+      setSelected(undefined);
+      setScreen("pagamento");
+    }, 150);
   }
   function chooseRevenue(value: string) {
     if (selected !== undefined || busy) return;
@@ -740,7 +783,7 @@ export function Quiz() {
               <div style={{ marginTop: 24 }}>
                 <button
                   className="btn-primary btn-course-single-line"
-                  onClick={() => setScreen("pagamento")}
+                  onClick={() => setScreen("pergunta_valor")}
                 >
                   QUERO O CURSO MÁQUINA DE VENDAS
                 </button>
@@ -840,10 +883,35 @@ export function Quiz() {
             <div style={{ marginTop: 32 }}>
               <button
                 className="btn-primary btn-course-single-line"
-                onClick={() => setScreen("pagamento")}
+                onClick={() => setScreen("pergunta_valor")}
               >
                 QUERO O CURSO MÁQUINA DE VENDAS
               </button>
+            </div>
+          </section>
+        ) : null}
+        {screen === "pergunta_valor" ? (
+          <section className="screen">
+            <h2>Quanto você pagaria pelo Máquina de Vendas?</h2>
+            <p className="muted" style={{ marginBottom: 20 }}>
+              Considerando os 10 módulos, 1 ano de acesso e o passo a passo do
+              Nathan.
+            </p>
+            <div className="answers">
+              {[
+                [1500, "R$ 1.500"],
+                [1000, "R$ 1.000"],
+                [600, "R$ 600"],
+                [300, "R$ 300"],
+              ].map(([val, label]) => (
+                <button
+                  key={val}
+                  className={`answer ${selected === String(val) ? "selected" : ""}`}
+                  onClick={() => chooseValor(val as number)}
+                >
+                  {label}
+                </button>
+              ))}
             </div>
           </section>
         ) : null}
@@ -955,8 +1023,10 @@ function currentStage(screen: Screen, question: number) {
             ? 50
             : screen === "oferta"
               ? 60
-              : screen === "pagamento"
-                ? 65
+              : screen === "pergunta_valor"
+                ? 62
+                : screen === "pagamento"
+                  ? 65
                 : screen === "mentoria"
                   ? 35
                   : 0;
