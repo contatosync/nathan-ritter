@@ -536,7 +536,10 @@ export function Quiz() {
       className={`quiz-shell ${screen === "inicio" ? "is-hero" : ""} ${screen === "oferta" || screen === "mentoria" ? "is-long" : ""}`}
     >
       <div className="quiz-content">
-        {screen !== "inicio" && screen !== "mentoria" && screen !== "oferta" ? (
+        {screen !== "inicio" &&
+        screen !== "mentoria" &&
+        screen !== "oferta" &&
+        screen !== "pagamento" ? (
           <Image
             className="logo logo-small"
             src="/imagens/logo/logo-maquina-de-vendas-sm.webp"
@@ -918,18 +921,29 @@ export function Quiz() {
         {screen === "pagamento" ? (
           <section className="screen payment-screen">
             <span className="eyebrow">ÚLTIMO PASSO</span>
-            <h2>
-              Seu acesso ao{" "}
-              <span className="yellow">Máquina de Vendas 2.0</span>
-            </h2>
-            <p className="payment-counter">
-              🔥 <span className="yellow">{process.env.VENDAS_BASE || "177"}</span> pessoas já
-              compraram o Máquina de Vendas
-            </p>
-            <p className="payment-subtitle">
-              Tudo isso fica por menos de R${" "}
-              {process.env.NEXT_PUBLIC_PRECO_DIA_TEXTO || "2"} por dia.
-            </p>
+            <h1 className="payment-headline">
+              Tudo isso por menos de <span className="yellow">R$ 2 por dia</span>
+            </h1>
+            {valorResposta !== null ? (
+              <p className="payment-return-line">
+                {valorResposta === 300
+                  ? "Você chegou perto: hoje o acesso completo sai por R$ 297."
+                  : `Você disse que pagaria R$ ${valorResposta.toLocaleString("pt-BR")}. Hoje o acesso completo sai por R$ 297.`}
+              </p>
+            ) : null}
+            <div className="payment-notification-card">
+              <div className="notification-ping-container" aria-hidden="true">
+                <span className="notification-ping-ring" />
+                <span className="notification-ping-dot" />
+              </div>
+              <div className="notification-number">
+                {process.env.VENDAS_BASE || "177"}
+              </div>
+              <div className="notification-text">
+                <span>pessoas já compraram</span>
+                <span>o Máquina de Vendas</span>
+              </div>
+            </div>
             <div className="offer-card payment-card">
               <Image
                 className="logo"
