@@ -759,6 +759,91 @@ h2 {
   font-weight: 900;
   text-transform: uppercase;
 }
+.payment-screen {
+  text-align: center;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 10px 0 32px;
+}
+.payment-counter {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin: 8px 0 18px;
+  color: var(--text);
+}
+.payment-subtitle {
+  color: #ffffff;
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0 0 22px;
+  text-align: center;
+}
+.price-single-line {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 8px;
+  white-space: nowrap;
+  margin: 16px 0 6px;
+}
+.price-installment-label {
+  font-size: clamp(0.95rem, 3.8vw, 1.25rem);
+  font-weight: 700;
+  color: #ffffff;
+}
+.price-installment-value {
+  font-size: clamp(1.9rem, 7.2vw, 3rem);
+  font-weight: 900;
+  color: var(--yellow);
+  background: linear-gradient(90deg, #ffe100, #f5b700);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.price-cash {
+  color: var(--muted);
+  font-size: 0.88rem;
+  margin: 0 0 20px;
+}
+.payment-card {
+  margin-top: 0;
+}
+.buyer-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 18px;
+  background: rgba(17, 24, 43, 0.95);
+  border: 1px solid rgba(255, 212, 0, 0.5);
+  border-radius: 999px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(10px);
+  color: #ffffff;
+  font-size: 0.82rem;
+  font-weight: 700;
+  animation: fadeInToast 0.25s ease;
+}
+.buyer-toast-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--yellow);
+  box-shadow: 0 0 8px var(--yellow);
+}
+@keyframes fadeInToast {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 8px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
 @media (max-width: 759px) {
   .quiz-shell.is-hero:before {
     background-image:
@@ -767,6 +852,11 @@ h2 {
   }
 }
 @media (min-width: 760px) {
+  .buyer-toast {
+    left: auto;
+    right: 28px;
+    transform: none;
+  }
   .module-card {
     flex-basis: calc(33.333% - 11px);
   }

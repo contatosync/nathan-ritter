@@ -138,6 +138,17 @@ export function Quiz() {
   const [answers, setAnswers] = useState<QuizAnswers>({});
   const [selected, setSelected] = useState<string>();
   const [busy, setBusy] = useState(false);
+  const [socialProof, setSocialProof] = useState<{
+    total: number;
+    latestBuyer: string;
+    timeAgo: string | null;
+  }>({
+    total: 177,
+    latestBuyer: "Marcos C.",
+    timeAgo: null,
+  });
+  const [showBuyerToast, setShowBuyerToast] = useState(false);
+  const hasTrackedPayment = useRef(false);
   const utms = useRef<Record<string, string>>({});
   const missing = useMemo(
     () =>
@@ -175,20 +186,23 @@ export function Quiz() {
     };
     attempt(retries);
   }
-  function record(
-    evento: string,
-    etapa: number,
-    data: Record<string, unknown> = {},
-  ) {
-    if (!sessionId && etapa > 10) return;
-    sendBackground("/api/events", {
-      session_id: sessionId,
-      evento,
-      etapa,
-      etapa_nome: stageNames[etapa],
-      ...data,
-    });
-  }
+  const record = useCallback(
+    (
+      evento: string,
+      etapa: number,
+      data: Record<string, unknown> = {},
+    ) => {
+      if (!sessionId && etapa > 10) return;
+      sendBackground("/api/events", {
+        session_id: sessionId,
+        evento,
+        etapa,
+        etapa_nome: stageNames[etapa],
+        ...data,
+      });
+    },
+    [sessionId],
+  );
   const meta = useCallback(
     (
       eventName: string,
@@ -229,6 +243,34 @@ export function Quiz() {
     }
     meta("PageView");
   }, [meta]);
+
+  useEffect(() => {
+    if (screen === "pagamento" && !hasTrackedPayment.current) {
+      hasTrackedPayment.current = true;
+      record("pagamento", 65, { viu_pagamento_em: new Date().toISOString() });
+      meta("ViuPagamento");
+    }
+  }, [screen, meta, record]);
+
+  useEffect(() => {
+    if (screen !== "pagamento") return;
+    fetch("/api/social-proof")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && typeof data.total === "number") {
+          setSocialProof(data);
+        }
+      })
+      .catch(() => {});
+
+    const timerShow = setTimeout(() => setShowBuyerToast(true), 3000);
+    const timerHide = setTimeout(() => setShowBuyerToast(false), 9000);
+    return () => {
+      clearTimeout(timerShow);
+      clearTimeout(timerHide);
+      setShowBuyerToast(false);
+    };
+  }, [screen]);
 
   useEffect(() => {
     if (!sessionId) return;
@@ -314,6 +356,7 @@ export function Quiz() {
       else setScreen("ja_vende");
     } else if (screen === "diagnostico") setScreen("pergunta");
     else if (screen === "oferta") setScreen("diagnostico");
+    else if (screen === "pagamento") setScreen("oferta");
     else if (screen === "mentoria") setScreen("faturamento");
   }
   function chooseRevenue(value: string) {
@@ -355,25 +398,23 @@ export function Quiz() {
       }
     }, 150);
   }
-  async function showOffer() {
-    await record("oferta", 60, { viu_oferta_em: new Date().toISOString() });
+  function showOffer() {
+    record("oferta", 60, { viu_oferta_em: new Date().toISOString() });
     setScreen("oferta");
   }
-  async function checkout() {
-    const eventId = await meta("CliqueCheckout");
-    await record("clique_checkout", 70, {
+  function checkout() {
+    const eventId = meta("CliqueCheckout");
+    record("clique_checkout", 70, {
       clicou_checkout_em: new Date().toISOString(),
       event_id_meta: eventId,
     });
-    const url = process.env.NEXT_PUBLIC_CHECKOUT_URL;
-    if (!url) {
-      alert("Link de pagamento em configuração");
-      return;
-    }
+    const url =
+      process.env.NEXT_PUBLIC_CHECKOUT_URL ||
+      "https://pay.kiwify.com.br/InK3eLE";
     const target = new URL(url);
-    Object.entries(utms.current).forEach(([k, v]) =>
-      target.searchParams.set(k, v),
-    );
+    Object.entries(utms.current).forEach(([k, v]) => {
+      if (v) target.searchParams.set(k, v);
+    });
     location.href = target.toString();
   }
   async function mentoring() {
@@ -684,6 +725,55 @@ export function Quiz() {
             </div>
           </section>
         ) : null}
+        {screen === "pagamento" ? (
+          <section className="screen payment-screen">
+            <span className="eyebrow">ÚLTIMO PASSO</span>
+            <h2>
+              Seu acesso ao{" "}
+              <span className="yellow">Máquina de Vendas 2.0</span>
+            </h2>
+            <p className="payment-counter">
+              🔥 <span className="yellow">{socialProof.total}</span> pessoas já
+              compraram o Máquina de Vendas
+            </p>
+            <p className="payment-subtitle">
+              Tudo isso fica por menos de R${" "}
+              {process.env.NEXT_PUBLIC_PRECO_DIA_TEXTO || "2"} por dia.
+            </p>
+            <div className="offer-card payment-card">
+              <Image
+                className="logo"
+                src="/imagens/logo/logo-maquina-de-vendas-sm.webp"
+                width={190}
+                height={122}
+                alt="Máquina de Vendas 2.0"
+              />
+              <h2>Máquina de Vendas 2.0</h2>
+              <div className="price-single-line">
+                <span className="price-installment-label">12x de</span>
+                <span className="price-installment-value">
+                  R$ {process.env.NEXT_PUBLIC_PRECO_PARCELA || "30,72"}
+                </span>
+              </div>
+              <p className="price-cash">
+                ou R$ {process.env.NEXT_PUBLIC_PRECO_AVISTA || "297"} à vista
+              </p>
+              <button className="btn-primary" onClick={checkout}>
+                QUERO PAGAR AGORA
+              </button>
+              <p className="lock">🔒 Acesso imediato após pagamento</p>
+            </div>
+            {showBuyerToast ? (
+              <aside className="buyer-toast" role="status" aria-live="polite">
+                <span className="buyer-toast-dot" aria-hidden="true" />
+                <span>
+                  {socialProof.latestBuyer} entrou no Máquina de Vendas
+                  {socialProof.timeAgo ? ` · há ${socialProof.timeAgo}` : ""}
+                </span>
+              </aside>
+            ) : null}
+          </section>
+        ) : null}
         {screen === "mentoria" ? (
           <section className="screen mentor-flow">
             <div className="mentor-copy">
@@ -743,9 +833,11 @@ function currentStage(screen: Screen, question: number) {
             ? 50
             : screen === "oferta"
               ? 60
-              : screen === "mentoria"
-                ? 35
-                : 0;
+              : screen === "pagamento"
+                ? 65
+                : screen === "mentoria"
+                  ? 35
+                  : 0;
 }
 function BackButton({
   onClick,
