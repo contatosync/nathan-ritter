@@ -14,6 +14,17 @@ Formato de cada entrada:
 
 ---
 
+## 2026-10-13 20:25 · Antigravity
+**O que mudou:** Execução completa da Rodada 2 de ajustes:
+- **Tela 10 (Diagnóstico):** título com o nome antes da frase ("{nome}, seu diagnóstico está pronto" e "{nome}, você já domina a base"); introdução dos dois caminhos (CAMINHO 1 cinza / CAMINHO 2 amarelo com brilho) omitidos no caso "sim em tudo"; botão "QUERO O CURSO MÁQUINA DE VENDAS" com espaçamento >= 32 px e texto em linha única em 375 px via clamp e nowrap.
+- **Tela 11 (Curso):** descrições dos módulos reduzidas pela metade (P1 a P5 e módulos 07, 08, 10); inserção de player de vídeo explicativo do Nathan sob demanda logo abaixo do primeiro botão, com thumbnail YouTube maxresdefault e botão de play amarelo centralizado, injeção do iframe apenas após o clique com som e autoplay, sem lentidão de carregamento; rastreio de `AssistiuVideoCurso` (Pixel + CAPI, deduplicado por sessão) e registro de `assistiu_video_em`.
+- **Tela 11B (Pergunta de Valor):** nova tela intermediária aberta por todos os botões da Tela 11 ("Quanto você pagaria pelo Máquina de Vendas?"), com opções R$ 1.500, R$ 1.000, R$ 600 e R$ 300, transição em ~150 ms, registro na etapa 62 (`pergunta_valor`), disparo de `RespondeuValor` e persistência de `quanto_pagaria`.
+- **Tela 12 (Pagamento):** remoção do logo do topo; headline dominante "Tudo isso por menos de R$ 2 por dia" com destaque em amarelo; linha de retorno contextualizada com base na resposta da Tela 11B (ou oculta sem resposta); card do contador em formato de notificação com número fixo 177 à esquerda em amarelo (40 px) sem chamadas de rede, textos à direita, ponto de notificação com efeito ping de 1,5 s, brilho contínuo em loop de 2 s sem salto de layout, animação de entrada com slide-in de 300 ms e desativação sob prefers-reduced-motion; tipografia >= 16 px, line-height 1.4 e 24 px entre blocos.
+- **Documentação e infra:** atualização de `ESPECIFICACAO.md` (seções 3, 4, 5, 7, 9 e tabela de etapas), `next.config.ts` (remotePatterns para `i.ytimg.com`), relatório `docs/rodada-antigravity-2.md` e changelog.
+**Arquivos:** `next.config.ts`, `src/components/quiz.tsx`, `src/config/diagnostico-modulos.ts`, `src/app/globals.css`, `ESPECIFICACAO.md`, `CHANGELOG.md`, `docs/rodada-antigravity-2.md`.
+**Recursos externos criados/alterados:** nenhum recurso GMN alterado. Todos os recursos usam prefixo `NR`.
+**Pendências:** nenhuma.
+
 ## 2026-10-13 19:38 · Antigravity
 **O que mudou:** contador de vendas da Tela 12 desacoplado de consultas dinâmicas, polling e webhooks; o número passa a ser fixo e alimentado pela variável `VENDAS_BASE` (valor `177`) mapeada em `next.config.ts`, aparecendo instantaneamente já no primeiro carregamento sem animação. Para atualizar o número no futuro, basta alterar `VENDAS_BASE` na Vercel e disparar um redeploy. A rota `/api/social-proof` permanece ativa exclusivamente para o aviso discreto do comprador.
 **Arquivos:** `next.config.ts`, `src/components/quiz.tsx`, `ESPECIFICACAO.md`, `CHANGELOG.md`.

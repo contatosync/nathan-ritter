@@ -108,8 +108,9 @@ Anúncio Meta
   ┌─────────────────────────────────────────────────┘
   → Telas 5 a 9: as 5 perguntas
   → Tela 10: Diagnóstico
-  → Tela 11: Apresentação do Máquina de Vendas (sem preço)
-  → Tela 12: Pagamento e Prova Social
+  → Tela 11: Apresentação do Máquina de Vendas (sem preço e com vídeo sob demanda)
+  → Tela 11B: Pergunta de valor
+  → Tela 12: Pagamento e Prova Social (redesenho)
   → Checkout Kiwify
 ```
 
@@ -126,6 +127,7 @@ Valores numéricos para permitir comparação. A etapa só avança, nunca volta.
 | 41 a 45 | `p1` a `p5` |
 | 50 | `diagnostico` |
 | 60 | `oferta` |
+| 62 | `pergunta_valor` |
 | 65 | `pagamento` |
 | 70 | `clique_checkout` |
 | 80 | `comprou` |
@@ -176,19 +178,23 @@ Respostas iguais para todas: **Sim, sei fazer** · **Mais ou menos** · **Não s
 **Lógica:** todo item com resposta "Mais ou menos" ou "Não sei" entra na lista de pontos a estudar (card com X vermelho). Itens com "Sim, sei fazer" entram na lista do que a pessoa já domina (card com check amarelo).
 
 **Caso padrão (1 ou mais pontos a estudar):**
-- **Título:** Seu diagnóstico está pronto, {nome}
+- **Título:** {nome}, seu diagnóstico está pronto
 - **Texto:** Para vender com margem no Mercado Livre, você ainda precisa aprender estes pontos:
 - [lista dinâmica]
 - **Bloco "o que você já domina":** exibido só se houver ao menos um item
-- **Fechamento:** Você pode estudar cada um sozinho. Se preferir seguir o caminho que o Nathan usa desde 2022, ele está organizado no curso Máquina de Vendas.
-- **Espaçamento:** mínimo de 32 px entre o último parágrafo e o botão.
-- **Botão:** QUERO O CURSO MÁQUINA DE VENDAS
+- **Dois caminhos:**
+  - **Abertura:** Agora você sabe o que precisa aprender. Existem dois caminhos:
+  - **Card 1 (CAMINHO 1):** Aprender cada ponto sozinho, procurando o conteúdo por conta própria e testando até acertar. (borda cinza)
+  - **Card 2 (CAMINHO 2):** Aprender todos os pontos em uma única plataforma, com o passo a passo de quem vende no Mercado Livre desde 2022. (borda amarela com brilho leve)
+- **Espaçamento:** mínimo de 32 px entre o card 2 e o botão.
+- **Botão:** QUERO O CURSO MÁQUINA DE VENDAS (em uma única linha em 375 px, clamp, altura mínima 44 px).
 
 **Caso "Sim" em todas:**
-- **Título:** Você já domina a base, {nome}
+- **Título:** {nome}, você já domina a base
 - **Texto:** O curso aprofunda os pontos em que a maioria trava depois das primeiras vendas: escolha de produto e controle de margem.
+- Não exibe o bloco dos dois caminhos.
 - **Espaçamento:** mínimo de 32 px entre o último parágrafo e o botão.
-- **Botão:** QUERO O CURSO MÁQUINA DE VENDAS
+- **Botão:** QUERO O CURSO MÁQUINA DE VENDAS (em uma linha só em 375 px).
 
 ### Tela 11 · Apresentação do curso (sem preço)
 Apresentação focada exclusivamente nos conteúdos do curso direcionados ao diagnóstico do lead, sem qualquer informação de preço ou checkout.
@@ -196,34 +202,68 @@ Apresentação focada exclusivamente nos conteúdos do curso direcionados ao dia
 **Estrutura da tela:**
 1. **Rótulo:** SEU PRÓXIMO PASSO
    **Título:** Em quais módulos você vai focar para melhorar os pontos do seu diagnóstico (destaque amarelo em "pontos do seu diagnóstico")
-2. **Blocos por ponto do diagnóstico:**
-   - Exibe apenas os pontos marcados com "Mais ou menos" ou "Não sei" na ordem das perguntas P1 a P5.
-   - Cada card contém: miniatura 48×72 px da capa do módulo Kiwify à esquerda, selo amarelo com o nome do módulo, ponto do diagnóstico em branco negrito e explicação de como aprender em `--muted`.
-   - Caso "Sim" em todas: título "Os módulos que vão aprofundar o que você já sabe" com cards dos Módulos 07, 08 e 10.
-3. **Botão intermediário:** QUERO O CURSO MÁQUINA DE VENDAS (posicionado logo após os blocos de pontos, navega para a Tela 12).
-4. **O que você recebe:** 4 itens com check amarelo (10 módulos, 1 ano de acesso, aulas novas com mudanças do algoritmo, suporte a dúvidas).
-5. **Carrossel dos 10 módulos:** capas originais da Kiwify na proporção 2:3 com cantos arredondados, sem sobreposição de selos, títulos ou degradês, com `alt` acessível; ocupa ~62% da largura no mobile e 3 cards no desktop.
-6. **Carrossel de provas:** resultados de alunos do curso (inalterado).
-7. **Quem ensina:** apresentação do Nathan Ritter (inalterado).
-8. **Botão final:** QUERO O CURSO MÁQUINA DE VENDAS (navega para a Tela 12).
+2. **Blocos por ponto do diagnóstico (descrições curtas):**
+   - P1: Como ler a busca do Mercado Livre para achar produtos que vendem e têm poucos concorrentes bons.
+   - P2: Onde o Nathan encontra fornecedores no Brasil e como testar com pouca quantidade antes de comprar mais.
+   - P3: Como montar a conta com custo, tarifa, frete e imposto para saber quanto sobra em cada venda.
+   - P4: Título, fotos e ficha técnica que aparecem na busca, e o que faz o anúncio subir de posição.
+   - P5: Como começar com estoque pequeno, validar o giro e só depois repor em maior quantidade.
+   - Caso "Sim" em todas: módulos 07 ("O que faz um anúncio que já vende ganhar posição na busca."), 08 ("Como usar os anúncios pagos do Mercado Livre sem queimar caixa.") e 10 ("Como aumentar o volume de vendas sem perder o controle do caixa.").
+3. **Botão intermediário:** QUERO O CURSO MÁQUINA DE VENDAS (posicionado logo após os blocos de pontos, navega para a Tela 11B).
+4. **Vídeo do Nathan sobre o curso (on-demand):**
+   - Posicionado logo abaixo do primeiro botão.
+   - Cabeçalho: título "Ainda tem dúvidas sobre o curso?" e subtítulo "No vídeo abaixo, o Nathan explica cada parte do Máquina de Vendas. E logo depois tem o que você recebe, os 10 módulos e resultados de alunos."
+   - Player sob demanda: capa estática do YouTube em alta resolução (`maxresdefault.jpg`) com botão de play amarelo centralizado (16:9, cantos arredondados, borda e brilho amarelos).
+   - O iframe do YouTube só é carregado quando o usuário toca no play (com `autoplay=1`, `playsinline=1`, `rel=0`, `modestbranding=1`), garantindo velocidade de carregamento da página.
+   - Dispara evento `AssistiuVideoCurso` (Pixel + CAPI, uma vez por sessão) e salva `assistiu_video_em` na planilha.
+5. **O que você recebe:** 4 itens com check amarelo (10 módulos, 1 ano de acesso, aulas novas com mudanças do algoritmo, suporte a dúvidas).
+6. **Carrossel dos 10 módulos:** capas originais da Kiwify na proporção 2:3 com cantos arredondados, sem sobreposição de selos, títulos ou degradês, com `alt` acessível; ocupa ~62% da largura no mobile e 3 cards no desktop.
+7. **Carrossel de provas:** resultados de alunos do curso (inalterado).
+8. **Quem ensina:** apresentação do Nathan Ritter (inalterado).
+9. **Botão final:** QUERO O CURSO MÁQUINA DE VENDAS (navega para a Tela 11B).
 
 **Itens removidos da Tela 11:** card de preço, valores por dia, preço à vista, cadeado, CTA fixo móvel, garantia de 7 dias, perguntas frequentes (FAQ) e aviso legal de rodapé.
 
-### Tela 12 · Pagamento e Prova Social
+### Tela 11B · Pergunta de valor (entre Tela 11 e Tela 12)
+Tela intermediária disparada por todos os botões "QUERO O CURSO MÁQUINA DE VENDAS" da Tela 11.
+- **Layout:** idêntico às perguntas do quiz (logo pequeno no topo, cards de resposta, sem barra de progresso, avanço em ~150 ms).
+- **Pergunta:** Quanto você pagaria pelo Máquina de Vendas?
+- **Subtítulo:** Considerando os 10 módulos, 1 ano de acesso e o passo a passo do Nathan.
+- **Opções de resposta:**
+  - R$ 1.500
+  - R$ 1.000
+  - R$ 600
+  - R$ 300
+- **Avanço:** transição rápida (~150 ms) para a Tela 12.
+- **Rastreio e persistência:** dispara o evento personalizado `RespondeuValor` com o valor selecionado, grava na coluna `quanto_pagaria` da planilha (1500, 1000, 600 ou 300) e registra a etapa 62 (`pergunta_valor`).
+
+### Tela 12 · Pagamento e Prova Social (redesenho)
 Tela curta e limpa, focada exclusivamente em finalizar a matrícula.
-- **Logo:** logo pequeno no topo (`logo-small`).
+- **Logo:** logo pequeno no topo removido (o logo dentro do card de oferta é mantido).
 - **Rótulo:** ÚLTIMO PASSO
-- **Título:** Seu acesso ao Máquina de Vendas 2.0 ("Máquina de Vendas 2.0" em amarelo)
-- **Contador de alunos (vendas reais):** "🔥 {VENDAS_BASE} pessoas já compraram o Máquina de Vendas", com número em amarelo fixo em 177. Sem atualização em tempo real, sem consulta a API, sem webhook ou polling, sem animação de incremento. Aparece no valor correto já no primeiro carregamento. Para alterar o total no futuro, basta alterar a variável de ambiente `VENDAS_BASE` na Vercel e disparar um redeploy da aplicação.
-- **Frase antes do card:** "Tudo isso fica por menos de R$ {NEXT_PUBLIC_PRECO_DIA_TEXTO} por dia." (centralizada, branca, tamanho de subtítulo; valor 2).
+- **Headline dominante:** "Tudo isso por menos de R$ 2 por dia" ("R$ 2 por dia" em amarelo, font-black ~34 px em 375 px).
+- **Linha de retorno da pergunta de valor:**
+  - Para 1.500, 1.000 ou 600: "Você disse que pagaria R$ {valor}. Hoje o acesso completo sai por R$ 297." (em branco, 17 px).
+  - Para 300: "Você chegou perto: hoje o acesso completo sai por R$ 297."
+  - Se acessada sem resposta prévia: linha oculta.
+- **Bloco do contador de alunos (notificação animada):**
+  - Card baixo em `--card`, borda amarela fina e cantos arredondados (20 px), sem emojis.
+  - À esquerda: número "177" grande (40 px, amarelo, font-black) vindo fixo de `VENDAS_BASE` sem chamadas de rede.
+  - À direita: duas linhas em branco (15 px): "pessoas já compraram" / "o Máquina de Vendas".
+  - Canto superior esquerdo: ponto amarelo com anel pulsando em loop (efeito ping, 1,5 s).
+  - Loop de brilho: pulso sutil de borda e sombra amarela (2 s, ease-in-out) sem alterar dimensões para eliminar layout shifts.
+  - Entrada: animação de descida com fade (slide-in 300 ms).
+  - Acessibilidade: sem animações sob `prefers-reduced-motion: reduce`.
+  - Configuração futura: para alterar o total no futuro, basta alterar a variável de ambiente `VENDAS_BASE` na Vercel e disparar um redeploy da aplicação.
 - **Card de preço:**
   - Logo do curso no topo do card.
   - Preço em linha única em 375 px sem quebra: "12x de" em branco menor e "R$ 30,72" grande em amarelo gradiente (`white-space: nowrap`, `clamp()`).
-  - Linha abaixo: "ou R$ 297 à vista" em cinza muted.
+  - Linha abaixo: "ou R$ 297 à vista" em cinza muted (16 px, line-height 1.4).
   - Botão principal: **QUERO PAGAR AGORA** (dispara `CliqueCheckout` com o mesmo `event_id` no Pixel e CAPI, registra `clicou_checkout_em` e etapa 70, e redireciona para `https://pay.kiwify.com.br/InK3eLE` preservando `utm_*`, `src`, `sck`, `fbclid` e `gclid`).
-  - Abaixo do botão: 🔒 Acesso imediato após pagamento.
-- **Prova social do último aluno:** aviso discreto no canto inferior exibindo "{Primeiro nome} {inicial do sobrenome}. entrou no Máquina de Vendas" (hoje: "Marcos C. entrou no Máquina de Vendas"). Aparece 3 s após carregar a tela e some após 6 s. Sem dados artificiais ou tempos simulados.
-- **Rastreio:** ao entrar na Tela 12, dispara o evento personalizado `ViuPagamento` (Pixel + CAPI) e grava `viu_pagamento_em` com etapa 65 (`pagamento`).
+  - Abaixo do botão: 🔒 Acesso imediato após pagamento (16 px, line-height 1.4).
+- **Espaçamento e tipografia:** texto corrido >= 16 px, line-height 1.4, espaçamento vertical de 24 px entre os blocos.
+- **Prova social do último aluno:** aviso discreto no canto inferior exibindo "Marcos C. entrou no Máquina de Vendas". Aparece 3 s após carregar a tela e some após 6 s. Sem dados artificiais ou tempos simulados.
+- **Rastreio:** ao entrar na Tela 12, dispara o evento personalizado `ViuPagamento` (Pixel + CAPI, deduplicado por sessão) e grava `viu_pagamento_em` com etapa 65 (`pagamento`).
 - Sem garantia, sem FAQ e sem aviso legal de rodapé.
 
 ### Tela M · Mentoria (faturamento acima de R$ 30 mil)
@@ -300,7 +340,9 @@ Pixel `2015455052410421`. Todos os eventos disparados pela página vão pelo Pix
 | Enviou nome e WhatsApp | `Lead` | Página (Pixel + CAPI) |
 | Faturamento acima de R$ 30 mil | `LeadMentoria` (personalizado) | Página |
 | Viu o diagnóstico | `DiagnosticoConcluido` (personalizado) | Página |
-| Abriu a Tela 12 (pagamento) | `ViuPagamento` (personalizado) | Página (Pixel + CAPI) |
+| Tocou no play do vídeo da oferta | `AssistiuVideoCurso` (personalizado) | Página (Pixel + CAPI, 1x por sessão) |
+| Respondeu à pergunta de valor (Tela 11B) | `RespondeuValor` (personalizado) | Página (Pixel + CAPI, com valor) |
+| Abriu a Tela 12 (pagamento) | `ViuPagamento` (personalizado) | Página (Pixel + CAPI, 1x por sessão) |
 | Clicou no botão de pagamento | `CliqueCheckout` (personalizado) | Página (Pixel + CAPI) |
 | Abriu o checkout | `InitiateCheckout` | Kiwify |
 | Comprou | `Purchase` | Kiwify |
@@ -346,6 +388,8 @@ Criar do zero. Não copiar a planilha do funil GMN.
 | `pontos_diagnostico` | Lista separada por `;` |
 | `qtd_pontos` | Número de pontos a estudar |
 | `viu_oferta_em` | Data e hora em que viu a oferta |
+| `assistiu_video_em` | Data e hora em que tocou no play do vídeo explicativo (Tela 11) |
+| `quanto_pagaria` | Resposta selecionada na Tela 11B (1500, 1000, 600 ou 300) |
 | `viu_pagamento_em` | Data e hora em que viu a tela de pagamento (etapa 65) |
 | `clicou_checkout_em` | |
 | `comprou_em` | Pelo webhook da Kiwify |
