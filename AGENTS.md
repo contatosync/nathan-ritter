@@ -19,3 +19,8 @@ Antes de qualquer tarefa, leia `ESPECIFICACAO.md`, `CHANGELOG.md` e `RECURSOS.md
 - Nunca commitar `.env`, `.env.local`, tokens ou outros segredos. Variáveis novas entram em `.env.example` sem valor.
 - `RECUPERACAO_ATIVA` permanece `false`; não criar ou conectar instância Evolution até nova autorização.
 - A lógica de áudio comercial permanece desligada e `AUDIO_COMERCIAL_URL` vazio até nova autorização.
+
+## Agentes do projeto
+- Claude (planejamento inicial)
+- Codex (desenvolvimento das fases 0 a 4)
+- Antigravity (ajustes de oferta, velocidade, prova social e checkout)
