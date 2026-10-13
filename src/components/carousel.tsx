@@ -87,15 +87,10 @@ export function ModuleCarousel({ items }: { items: ModuleItem[] }) {
           <Image
             src={item.image}
             alt={`Módulo ${item.number}: ${item.title}`}
-            width={720}
-            height={720}
+            width={600}
+            height={900}
             loading={index === 0 ? "eager" : "lazy"}
           />
-          <span className="module-badge">MÓDULO {item.number}</span>
-          <div className="module-caption">
-            <span />
-            {item.title}
-          </div>
         </article>
       ))}
     </Carousel>

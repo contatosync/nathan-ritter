@@ -475,9 +475,9 @@ h2 {
 }
 .module-card {
   position: relative;
-  flex: 0 0 78%;
+  flex: 0 0 62%;
   overflow: hidden;
-  aspect-ratio: 1/1;
+  aspect-ratio: 2 / 3;
   border: 1px solid var(--border);
   border-radius: 20px;
   scroll-snap-align: start;
@@ -487,41 +487,52 @@ h2 {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
 }
-.module-card:after {
-  content: "";
-  position: absolute;
-  inset: 35% 0 0;
-  background: linear-gradient(transparent, rgba(10, 15, 28, 0.95));
+.diagnostic-topic-card {
+  display: flex;
+  gap: 16px;
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--card);
+  align-items: flex-start;
 }
-.module-badge {
-  position: absolute;
-  z-index: 2;
-  top: 14px;
-  left: 14px;
-  padding: 7px 10px;
-  border-radius: 999px;
+.diagnostic-topic-thumb {
+  flex: 0 0 48px;
+  width: 48px;
+  height: 72px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.diagnostic-topic-content {
+  flex: 1;
+  min-width: 0;
+}
+.diagnostic-topic-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 6px;
   background: var(--yellow);
   color: #0a0f1c;
   font-size: 0.7rem;
   font-weight: 900;
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
 }
-.module-caption {
-  position: absolute;
-  z-index: 2;
-  left: 18px;
-  right: 18px;
-  bottom: 18px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-weight: 800;
+.diagnostic-topic-title {
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1.35;
+  margin: 0 0 8px;
 }
-.module-caption span {
-  width: 4px;
-  height: 30px;
-  border-radius: 4px;
-  background: var(--yellow);
+.diagnostic-topic-text {
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.55;
+  margin: 0;
 }
 .proof-card {
   flex: 0 0 78%;

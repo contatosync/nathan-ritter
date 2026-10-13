@@ -2,8 +2,13 @@
 import Image from "next/image";
 import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
+  COURSE_BENEFITS,
+  COURSE_MODULES,
+  DIAGNOSTIC_TOPICS,
+  MASTERY_TOPICS,
+} from "@/config/diagnostico-modulos";
+import {
   ModuleCarousel,
-  ModuleItem,
   ProofCarousel,
   ProofItem,
 } from "./carousel";
@@ -17,6 +22,7 @@ type Screen =
   | "pergunta"
   | "diagnostico"
   | "oferta"
+  | "pagamento"
   | "mentoria";
 const questions = [
   [
@@ -54,50 +60,13 @@ const stageNames: Record<number, string> = {
   45: "p5",
   50: "diagnostico",
   60: "oferta",
+  65: "pagamento",
   70: "clique_checkout",
 };
 const answerLabels: Array<[Answer, string]> = [
   ["sim", "Sim, sei fazer"],
   ["mais_ou_menos", "Mais ou menos"],
   ["nao", "Não sei"],
-];
-const courseLocations = [
-  "Módulo 05 · Produto Campeão",
-  "Fornecedores com margem alta: onde buscar, como negociar e como validar sem comprar caro",
-  "Controle de margem real: precificação para saber o que sobra em cada venda",
-  "Módulos 06 e 07 · Criando anúncio campeão e Estratégia para ranquear",
-  "Como validar o produto antes de comprar estoque grande, para não travar dinheiro no produto errado",
-] as const;
-const modules: ModuleItem[] = [
-  ["01", "Primeiros Passos", "modulo-01-primeiros-passos.webp"],
-  [
-    "02",
-    "O essencial para começar a vender no Meli",
-    "modulo-02-essencial-para-comecar.webp",
-  ],
-  [
-    "03",
-    "Como destravar sua primeira venda no Meli",
-    "modulo-03-primeira-venda.webp",
-  ],
-  ["04", "Envios & Logística", "modulo-04-envios-e-logistica.webp"],
-  ["05", "Produto Campeão", "modulo-05-produto-campeao.webp"],
-  ["06", "Criando anúncio campeão", "modulo-06-anuncio-campeao.webp"],
-  ["07", "Estratégia para Ranquear", "modulo-07-estrategia-para-ranquear.webp"],
-  ["08", "Dominando ADS", "modulo-08-dominando-ads.webp"],
-  ["09", "Pós Venda", "modulo-09-pos-venda.webp"],
-  ["10", "Cresça rápido", "modulo-10-cresca-rapido.webp"],
-].map(([number, title, file]) => ({
-  number,
-  title,
-  image: `/imagens/modulos/${file}`,
-}));
-const benefits = [
-  "10 módulos, do primeiro passo à escala",
-  "1 ano de acesso para assistir no seu ritmo",
-  "Aulas novas quando o algoritmo e as regras do Mercado Livre mudam",
-  "Suporte para dúvidas sobre o conteúdo",
-  "7 dias de garantia incondicional",
 ];
 const proofs: Record<string, ProofItem> = {
   "01": {
@@ -169,9 +138,6 @@ export function Quiz() {
   const [answers, setAnswers] = useState<QuizAnswers>({});
   const [selected, setSelected] = useState<string>();
   const [busy, setBusy] = useState(false);
-  const [showSticky, setShowSticky] = useState(false);
-  const offerCardRef = useRef<HTMLDivElement>(null);
-  const guaranteeRef = useRef<HTMLDivElement>(null);
   const utms = useRef<Record<string, string>>({});
   const missing = useMemo(
     () =>
@@ -187,19 +153,12 @@ export function Quiz() {
         .map((q) => q[1]),
     [answers],
   );
-  const offerTopics = useMemo(() => {
-    if (missing.length === 0)
-      return [
-        ["Produto Campeão", "Módulo 05 · Produto Campeão"],
-        ["Estratégia para ranquear", "Módulo 07 · Estratégia para ranquear"],
-        ["Dominando ADS", "Módulo 08 · Dominando ADS"],
-      ];
-    return questions.flatMap((item, index) =>
-      answers[`p${index + 1}` as keyof QuizAnswers] === "sim"
-        ? []
-        : [[item[1], courseLocations[index]]],
-    );
-  }, [answers, missing.length]);
+  const relevantTopics = useMemo(() => {
+    return DIAGNOSTIC_TOPICS.filter((topic) => {
+      const answer = answers[`p${topic.questionIndex + 1}` as keyof QuizAnswers];
+      return answer === "mais_ou_menos" || answer === "nao";
+    });
+  }, [answers]);
   function sendBackground(url: string, payload: unknown, retries = 2) {
     const body = JSON.stringify(payload);
     const attempt = (remaining: number) => {
@@ -270,29 +229,7 @@ export function Quiz() {
     }
     meta("PageView");
   }, [meta]);
-  useEffect(() => {
-    if (screen !== "oferta") return;
-    const offer = offerCardRef.current;
-    const guarantee = guaranteeRef.current;
-    if (!offer || !guarantee) return;
-    let offerVisible = true;
-    let guaranteeVisible = false;
-    const update = () => setShowSticky(!offerVisible && !guaranteeVisible);
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.target === offer) offerVisible = entry.isIntersecting;
-          if (entry.target === guarantee)
-            guaranteeVisible = entry.isIntersecting;
-        }
-        update();
-      },
-      { threshold: 0.15 },
-    );
-    observer.observe(offer);
-    observer.observe(guarantee);
-    return () => observer.disconnect();
-  }, [screen]);
+
   useEffect(() => {
     if (!sessionId) return;
     const onLeave = () =>
@@ -626,56 +563,80 @@ export function Quiz() {
             <header className="offer-heading">
               <span className="eyebrow">SEU PRÓXIMO PASSO</span>
               <h2>
-                Aprenda os pontos do seu diagnóstico no{" "}
-                <span className="yellow">Máquina de Vendas 2.0</span>
+                {missing.length > 0 ? (
+                  <>
+                    Em quais módulos você vai focar para melhorar os{" "}
+                    <span className="yellow">pontos do seu diagnóstico</span>
+                  </>
+                ) : (
+                  "Os módulos que vão aprofundar o que você já sabe"
+                )}
               </h2>
             </header>
             <section className="offer-section">
-              <h3>
-                {missing.length
-                  ? "Onde o curso trata cada ponto do seu diagnóstico"
-                  : "O que o curso aprofunda para você"}
-              </h3>
               <div className="topic-list">
-                {offerTopics.map(([topic, location]) => (
-                  <div className="topic-card" key={topic}>
-                    <span className="check">✓</span>
-                    <div>
-                      <strong>{topic}</strong>
-                      <p>{location}</p>
-                    </div>
-                  </div>
-                ))}
+                {missing.length > 0
+                  ? relevantTopics.map((topic) => (
+                      <div className="diagnostic-topic-card" key={topic.point}>
+                        <Image
+                          className="diagnostic-topic-thumb"
+                          src={topic.coverImage}
+                          width={48}
+                          height={72}
+                          alt={topic.badge}
+                        />
+                        <div className="diagnostic-topic-content">
+                          <span className="diagnostic-topic-badge">
+                            {topic.badge}
+                          </span>
+                          <h4 className="diagnostic-topic-title">
+                            {topic.point}
+                          </h4>
+                          <p className="diagnostic-topic-text">
+                            {topic.howToLearn}
+                          </p>
+                        </div>
+                      </div>
+                    ))
+                  : MASTERY_TOPICS.map((topic) => (
+                      <div className="diagnostic-topic-card" key={topic.badge}>
+                        <Image
+                          className="diagnostic-topic-thumb"
+                          src={topic.coverImage}
+                          width={48}
+                          height={72}
+                          alt={topic.badge}
+                        />
+                        <div className="diagnostic-topic-content">
+                          <span className="diagnostic-topic-badge">
+                            {topic.badge}
+                          </span>
+                          <p
+                            className="diagnostic-topic-text"
+                            style={{ marginTop: 4 }}
+                          >
+                            {topic.text}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+              </div>
+              <div style={{ marginTop: 24 }}>
+                <button
+                  className="btn-primary"
+                  onClick={() => setScreen("pagamento")}
+                >
+                  QUERO O CURSO MÁQUINA DE VENDAS
+                </button>
               </div>
             </section>
-            <div className="offer-card" ref={offerCardRef}>
-              <Image
-                className="logo"
-                src="/imagens/logo/logo-maquina-de-vendas-sm.webp"
-                width={190}
-                height={122}
-                alt="Máquina de Vendas 2.0"
-              />
-              <h2>Máquina de Vendas 2.0</h2>
-              <div className="price">
-                12x de R$ {process.env.NEXT_PUBLIC_PRECO_PARCELA}
-              </div>
-              <p>Menos de R$ {process.env.NEXT_PUBLIC_PRECO_DIA} por dia</p>
-              <p className="muted">
-                ou R$ {process.env.NEXT_PUBLIC_PRECO_AVISTA} à vista
-              </p>
-              <button className="btn-primary" onClick={checkout}>
-                Quero começar agora
-              </button>
-              <p className="lock">🔒 Acesso imediato após pagamento</p>
-            </div>
             <section className="offer-section">
               <h3>O que você recebe</h3>
               <div className="benefit-list">
-                {benefits.map((item) => (
+                {COURSE_BENEFITS.map((item) => (
                   <div key={item}>
                     <span className="check">✓</span>
-                    {item}
+                    <span>{item}</span>
                   </div>
                 ))}
               </div>
@@ -684,7 +645,7 @@ export function Quiz() {
               <h3>
                 Os <span className="yellow">10 módulos</span> do curso
               </h3>
-              <ModuleCarousel items={modules} />
+              <ModuleCarousel items={COURSE_MODULES} />
             </section>
             <section className="offer-section carousel-section">
               <h3>
@@ -713,26 +674,14 @@ export function Quiz() {
                 </p>
               </div>
             </section>
-            <div className="guarantee-card" ref={guaranteeRef}>
-              <span className="shield">⬡</span>
-              <h3>7 dias de garantia</h3>
-              <p>Se não gostar, devolvemos 100% do valor.</p>
-              <button className="btn-primary" onClick={checkout}>
-                Quero começar agora
+            <div style={{ marginTop: 32 }}>
+              <button
+                className="btn-primary"
+                onClick={() => setScreen("pagamento")}
+              >
+                QUERO O CURSO MÁQUINA DE VENDAS
               </button>
             </div>
-            <section className="offer-section">
-              <h3>Perguntas frequentes</h3>
-              <Faq />
-            </section>
-            {showSticky ? (
-              <div className="sticky-checkout">
-                <strong>
-                  12x de R$ {process.env.NEXT_PUBLIC_PRECO_PARCELA}
-                </strong>
-                <button onClick={checkout}>Quero começar agora</button>
-              </div>
-            ) : null}
           </section>
         ) : null}
         {screen === "mentoria" ? (
@@ -868,37 +817,5 @@ function Result({ good, children }: { good: boolean; children: string }) {
     </div>
   );
 }
-function Faq() {
-  const items = [
-    [
-      "Preciso ter experiência com Mercado Livre?",
-      "Não. O curso foi estruturado para funcionar do zero ao avançado. O Módulo 01 começa pelos primeiros passos, configuração de conta e estrutura básica. Quem já vende também aproveita, especialmente nos módulos de Produto Campeão, ADS e Ranqueamento.",
-    ],
-    [
-      "Quanto preciso investir para começar a vender?",
-      "O método foi pensado para quem está começando com pouco capital. Você aprende a validar produtos antes de comprar estoque grande, para não arriscar dinheiro no produto errado. O investimento inicial depende do produto escolhido.",
-    ],
-    [
-      "Como funciona o acesso?",
-      "Após a confirmação do pagamento, você recebe acesso imediato à plataforma. O conteúdo fica disponível para assistir no seu ritmo, durante um ano.",
-    ],
-    [
-      "Tem garantia?",
-      "Sim. Você tem 7 dias de garantia incondicional. Se por qualquer motivo não ficar satisfeito, basta pedir o reembolso e devolvemos 100% do valor.",
-    ],
-  ];
-  return (
-    <div className="faq">
-      {items.map(([question, answer]) => (
-        <details key={question}>
-          <summary>
-            {question}
-            <span>+</span>
-          </summary>
-          <p>{answer}</p>
-        </details>
-      ))}
-    </div>
-  );
-}
+
 
