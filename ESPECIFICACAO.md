@@ -248,8 +248,8 @@ Tela curta e limpa, focada exclusivamente em finalizar a matrícula com alta con
 - **Logo:** logo pequeno no topo removido (o logo dentro do card de oferta é mantido).
 - **Rótulo "ÚLTIMO PASSO":** removido.
 - **Headline dominante:**
-  - Com resposta da Tela 11B: "Você disse que pagaria R$ {valor}, mas isso sai por menos de R$ 2 por dia" (destaque em amarelo em "menos de R$ 2 por dia"). Válido para as 4 opções (1.500, 1.000, 600, 300).
-  - Sem resposta: "Tudo isso por menos de R$ 2 por dia" (destaque em amarelo no mesmo trecho).
+  - Com resposta da Tela 11B: "Você disse que pagaria R$&nbsp;{valor}, mas o curso sai por menos de R$&nbsp;2 por dia" (destaque em amarelo em "menos de R$&nbsp;2 por dia"). Válido para as 4 opções (1.500, 1.000, 600, 300) com espaço não separável (`&nbsp;`) para evitar quebra de linha entre "R$" e os números.
+  - Sem resposta: "O curso completo sai por menos de R$&nbsp;2 por dia" (mesmo destaque em amarelo e espaço não separável).
   - A linha antiga de retorno ("Você disse que pagaria... Hoje o acesso completo sai por R$ 297") foi totalmente removida; o valor cheio (R$ 297) não aparece fora do card de preço.
 - **Notificação flutuante no estilo iPhone (contador de vendas):**
   - Banner flutuante fixado no topo da tela, sobre o conteúdo (`position: fixed`), largura ~92%, cantos arredondados (18 px), fundo translúcido escuro com desfoque (`backdrop-filter: blur(20px)`), sombra suave.

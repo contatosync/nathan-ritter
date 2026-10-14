@@ -1313,13 +1313,13 @@ export function Quiz() {
             <h1 className="payment-headline">
               {valorResposta !== null ? (
                 <>
-                  Você disse que pagaria R${" "}
-                  {valorResposta.toLocaleString("pt-BR")}, mas isso sai por{" "}
-                  <span className="yellow">menos de R$ 2 por dia</span>
+                  Você disse que pagaria R$&nbsp;{valorResposta.toLocaleString("pt-BR")}, mas o curso sai por{" "}
+                  <span className="yellow">menos de R$&nbsp;2 por dia</span>
                 </>
               ) : (
                 <>
-                  Tudo isso por <span className="yellow">menos de R$ 2 por dia</span>
+                  O curso completo sai por{" "}
+                  <span className="yellow">menos de R$&nbsp;2 por dia</span>
                 </>
               )}
             </h1>

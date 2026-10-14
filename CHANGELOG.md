@@ -14,6 +14,16 @@ Formato de cada entrada:
 
 ---
 
+## 2026-10-13 22:48 · Antigravity
+**O que mudou:** ajuste na headline da Tela 12 (Pagamento):
+- Nova redação com resposta da pergunta de valor: "Você disse que pagaria R$&nbsp;{valor}, mas o curso sai por menos de R$&nbsp;2 por dia" ("menos de R$&nbsp;2 por dia" em amarelo), válida para as 4 opções (R$ 1.500, R$ 1.000, R$ 600, R$ 300).
+- Nova redação sem resposta: "O curso completo sai por menos de R$&nbsp;2 por dia" (mesmo destaque).
+- Inserção de espaço não separável (`&nbsp;`) entre "R$" e o valor monetário e dentro de "R$&nbsp;2", impedindo a quebra de linha órfã do cifrão em telas estreitas (375 px).
+- Atualização da seção 5 de `ESPECIFICACAO.md` e changelog.
+**Arquivos:** `src/components/quiz.tsx`, `ESPECIFICACAO.md`, `CHANGELOG.md`.
+**Recursos externos criados/alterados:** nenhum. Todos os recursos usam prefixo `NR`.
+**Pendências:** nenhuma.
+
 ## 2026-10-13 22:38 · Antigravity
 **O que mudou:** adicionado botão "QUERO O CURSO MÁQUINA DE VENDAS" logo abaixo do player de vídeo na Tela 11:
 - Botão no estilo padrão (amarelo gradiente, largura total, em uma linha em 375 px via clamp e nowrap, altura mínima de 44 px).
