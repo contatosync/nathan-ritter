@@ -50,6 +50,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="pt-BR"
       className={`${sora.variable} ${poppins.variable} antialiased`}
     >
+      <head>
+        <link rel="preconnect" href="https://connect.facebook.net" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://connect.facebook.net" />
+      </head>
       <body>{children}</body>
       {pixelId ? (
         <Script

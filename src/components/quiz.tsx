@@ -491,7 +491,7 @@ export function Quiz() {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    if (screen === "inicio" || screen === "cadastro" || screen === "ja_vende") {
+    if (screen === "cadastro" || screen === "ja_vende") {
       const img = new window.Image();
       img.src = questionPrints[0].src;
     }
@@ -669,7 +669,7 @@ export function Quiz() {
   }, [screen]);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window === "undefined" || screen !== "oferta") return;
     if (!window.YT) {
       const existing = document.querySelector(
         'script[src*="youtube.com/iframe_api"]',
@@ -681,7 +681,7 @@ export function Quiz() {
         first?.parentNode?.insertBefore(tag, first);
       }
     }
-  }, []);
+  }, [screen]);
 
   useEffect(() => {
     if (!videoPlayed) {
