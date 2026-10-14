@@ -214,6 +214,18 @@ function normalizePhone(value: string) {
 function validPhone(value: string) {
   return /^55\d{10,11}$/.test(normalizePhone(value));
 }
+function formatWhatsApp(raw: string) {
+  let digits = raw.replace(/\D/g, "");
+  if (digits.startsWith("55") && digits.length > 11) {
+    digits = digits.slice(2);
+  }
+  digits = digits.slice(0, 11);
+
+  if (digits.length === 0) return "";
+  if (digits.length <= 2) return `(${digits}`;
+  if (digits.length <= 7) return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
+  return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
+}
 function renderPrintLegend(item: QuizPrintItem, isCapa = false) {
   return (
     <div className={`print-legend ${isCapa ? "print-legend-capa" : ""}`}>
@@ -236,7 +248,8 @@ export function Quiz() {
   const [screen, setScreen] = useState<Screen>("inicio");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-  const [error, setError] = useState("");
+  const [nameError, setNameError] = useState("");
+  const [phoneError, setPhoneError] = useState("");
   const [sessionId, setSessionId] = useState("");
   const [question, setQuestion] = useState(0);
   const [answers, setAnswers] = useState<QuizAnswers>({});
@@ -655,15 +668,18 @@ export function Quiz() {
   }, [sessionId, screen, question]);
   async function submitLead(e: FormEvent) {
     e.preventDefault();
-    setError("");
+    setNameError("");
+    setPhoneError("");
+    let hasErr = false;
     if (name.trim().length < 2) {
-      setError("Digite seu nome.");
-      return;
+      setNameError("Digite seu nome.");
+      hasErr = true;
     }
     if (!validPhone(phone)) {
-      setError("Digite um WhatsApp brasileiro válido com DDD.");
-      return;
+      setPhoneError("Digite um WhatsApp brasileiro válido com DDD.");
+      hasErr = true;
     }
+    if (hasErr) return;
     setBusy(true);
     const id = crypto.randomUUID(),
       normalized = normalizePhone(phone);
@@ -708,7 +724,8 @@ export function Quiz() {
   }
   function goBack() {
     if (selected !== undefined || busy) return;
-    setError("");
+    setNameError("");
+    setPhoneError("");
     if (screen === "cadastro") setScreen("inicio");
     else if (screen === "ja_vende") setScreen("cadastro");
     else if (screen === "faturamento") setScreen("ja_vende");
@@ -964,23 +981,51 @@ export function Quiz() {
               <label htmlFor="name">Seu nome</label>
               <input
                 id="name"
+                type="text"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
-                autoComplete="name"
+                onChange={(e) => {
+                  setName(e.target.value);
+                  setNameError("");
+                }}
+                autoComplete="given-name"
+                autoCapitalize="words"
+                enterKeyHint="next"
+                onFocus={(e) =>
+                  e.target.scrollIntoView({
+                    block: "center",
+                    behavior: "smooth",
+                  })
+                }
               />
+              {nameError ? (
+                <p className="error field-error">{nameError}</p>
+              ) : null}
             </div>
             <div className="field">
               <label htmlFor="phone">Seu WhatsApp com DDD</label>
               <input
                 id="phone"
+                type="tel"
+                inputMode="numeric"
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                inputMode="tel"
-                autoComplete="tel"
-                placeholder="(11) 99999-9999"
+                onChange={(e) => {
+                  setPhone(formatWhatsApp(e.target.value));
+                  setPhoneError("");
+                }}
+                autoComplete="tel-national"
+                enterKeyHint="done"
+                placeholder="(DD) 9XXXX-XXXX"
+                onFocus={(e) =>
+                  e.target.scrollIntoView({
+                    block: "center",
+                    behavior: "smooth",
+                  })
+                }
               />
+              {phoneError ? (
+                <p className="error field-error">{phoneError}</p>
+              ) : null}
             </div>
-            {error ? <p className="error">{error}</p> : null}
             <button className="btn-primary" disabled={busy}>
               {busy ? "Salvando..." : "Continuar"}
             </button>

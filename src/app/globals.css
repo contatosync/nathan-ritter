@@ -292,6 +292,12 @@ p {
   font-size: 0.85rem;
   margin: 0 0 14px;
 }
+.field-error {
+  margin: 6px 0 0 !important;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #ff8084;
+}
 .privacy {
   color: var(--muted);
   font-size: 0.75rem;
