@@ -14,6 +14,19 @@ Formato de cada entrada:
 
 ---
 
+## 2026-10-14 11:25 · Antigravity
+**O que mudou:** rodada final de otimização mobile para anúncios e navegadores in-app (Instagram, Facebook e WhatsApp WebViews, Android e iOS):
+- **Capa (Tela 1):** nova estrutura compacta sem rolagem em 375×667 — rótulo "DIAGNÓSTICO GRATUITO" encostado no topo, headline 30 px (`clamp(26px, 8vw, 34px)` font-black), subtítulo 16 px, print do painel com `max-height: 30dvh` e legenda externa; barra fixa no rodapé com fundo `#0A0F1C`, degradê suave, botão FAZER O DIAGNÓSTICO de 56 px de altura, texto "Leva menos de 1 minuto" (12 px) e safe-area insets.
+- **Barras Fixas:** barra fixa permanente no rodapé no Diagnóstico e Tela M; barra fixa inteligente com `IntersectionObserver` nas Telas 11 e 12 que aparece apenas quando o botão do conteúdo sai da viewport e se esconde quando outro botão igual entra na tela.
+- **Cadastro (Tela 2):** campos com fonte 16 px (previne zoom indesejado no iOS Safari); máscara em tempo real para WhatsApp `(11) 9XXXX-XXXX`; mensagens de validação inline exibidas abaixo de cada campo; botão posicionado no fluxo com `scrollIntoView` para visibilidade contínua com teclado aberto.
+- **Navegação e Histórico:** integração com `history.pushState` e `popstate` para suporte completo ao botão voltar do Android e gesto de voltar do iPhone, retornando à etapa anterior sem recarregar nem sair do quiz; persistência e recuperação de sessão no `sessionStorage` (`nr_quiz_state`).
+- **WebViews e In-App Browsers:** detecção de navegadores in-app de redes sociais com redirecionamento de checkout Kiwify na mesma aba (`window.location.href`), contornando bloqueios de nova aba e preservando parâmetros UTM/fbclid; envio de eventos via `navigator.sendBeacon` com fallback para `fetch` com `keepalive`; `playsinline=1` no vídeo; tratamento resiliente de Web Audio API contra restrições de autoplay.
+- **Alvos de Toque e Tipografia:** todos os alvos de toque ajustados para $\ge$ 48 px (cards, "Voltar", setas, pontos de carrossel); texto corrido $\ge$ 16 px e rótulos/legendas $\ge$ 12 px; contraste de `--muted` (`#B8C0D9`) ajustado para WCAG AA (4,8:1); eliminação de qualquer rolagem horizontal em 360 px, 375 px, 390 px e 430 px.
+- **Auditoria e Aceite:** 10 critérios da seção 5 integralmente aprovados e documentados em `docs/rodada-mobile.md` e `ESPECIFICACAO.md` (seção 6).
+**Arquivos:** `src/components/quiz.tsx`, `src/app/globals.css`, `src/app/layout.tsx`, `docs/rodada-mobile.md`, `ESPECIFICACAO.md`, `CHANGELOG.md`.
+**Recursos externos criados/alterados:** nenhum. Todos os recursos usam prefixo `NR`.
+**Pendências:** nenhuma.
+
 ## 2026-10-13 23:45 · Antigravity
 **O que mudou:** ajustes nos prints reais do quiz (Capa e Perguntas P1 a P5):
 - **Tela 1 (Capa):** remoção do logo do curso da capa; inserção do novo print reto `capa-painel-30-dias.webp` (900×494, sem rotação/transform) no lugar do logo; nova ordem de elementos: rótulo DIAGNÓSTICO GRATUITO → print → headline → subtítulo → botão FAZER O DIAGNÓSTICO; remoção do chip sobre a imagem e adição de legenda externa logo abaixo do card (12 px, `--muted`, ponto amarelo antes e "R$ 104 mil" em amarelo); remoção do arquivo `capa-480k-faturamento-30-dias.webp`.

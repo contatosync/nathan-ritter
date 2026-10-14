@@ -345,9 +345,21 @@ O degradê amarelo (`#FFE100` → `#F5B700`) fica restrito ao logo e ao preço e
 - Demais telas (exceto M e Pagamento): logo pequeno no topo (cerca de 65-90 px de largura no celular).
 - Tela M: sem logo do curso.
 
-### Layout
-- Pensado primeiro para celular. Uma pergunta por tela, botão fixo na parte de baixo.
-- No desktop, conteúdo centralizado com largura máxima de 560 px.
+### Layout e Otimizações Mobile
+- **Foco Mobile First:** pensado especificamente para tráfego vindo de anúncios no Instagram, Facebook e WhatsApp WebViews (Android e iOS).
+- **Dimensões e Viewport:** uso estrito de `100dvh` para adaptação dinâmica à barra de navegação; `viewport-fit=cover` e respeito às áreas seguras (`env(safe-area-inset-top)` e `env(safe-area-inset-bottom)`). Margens laterais fixas de 20 px em todas as telas.
+- **Prevenção de Rolagem Horizontal:** `overflow-x: hidden` no container base; largura total de componentes e carrosséis sem transbordar viewports a partir de 360 px.
+- **Alvos de Toque e Interatividade:** alvos de toque com no mínimo 48 px de altura (cards de resposta, botão "Voltar", setas de carrossel e pontos indicadores com área ampliada via padding). `touch-action: manipulation` para remover atraso de toque de 300 ms no iOS/Android.
+- **Tipografia:** texto corrido com no mínimo 16 px (`--text-body`), rótulos e legendas secundárias com no mínimo 12 px (`--text-caption`). Contraste de `--muted` (`#B8C0D9`) atendendo WCAG AA (>= 4,5:1).
+- **Capa (Tela 1):** rótulo no topo (24 px abaixo da safe-area), headline `clamp(26px, 8vw, 34px)` font-black line-height 1.1, subtítulo 16 px, print do painel com `max-height: 30dvh` e legenda externa. Barra fixa no rodapé (`#0A0F1C`) com degradê suave, botão FAZER O DIAGNÓSTICO de 56 px de altura e legenda "Leva menos de 1 minuto". Em 375×667, rótulo, headline, subtítulo, print e botão aparecem juntos sem rolagem.
+- **Barras Fixas de Avanço:**
+  - Diagnóstico e Tela M: barra fixa no rodapé com botão principal.
+  - Telas 11 e 12: barra fixa inteligente via `IntersectionObserver` que surge quando o botão no conteúdo sai da viewport e se oculta quando outro botão idêntico está visível.
+- **Cadastro (Tela 2):** inputs com fonte de 16 px (impede o zoom automático indesejado no iOS Safari); máscara de WhatsApp em tempo real `(DD) 9XXXX-XXXX`; mensagens de erro inline abaixo de cada campo; botão mantido no fluxo com `scrollIntoView` para visibilidade total quando o teclado virtual abre.
+- **Navegação no Histórico:** integração com `history.pushState` e evento `popstate`, permitindo que o botão voltar do Android e o gesto de deslizar do iOS voltem para a etapa anterior do quiz sem sair da página nem reiniciar o fluxo. Persistência de estado de respostas em `sessionStorage` (`nr_quiz_state`).
+- **WebViews e In-App Browsers:** no Instagram, Facebook e WhatsApp, o redirecionamento de checkout da Kiwify é feito na mesma aba (`window.location.href`), contornando bloqueios de popup e preservando parâmetros UTM e fbclid. Eventos de saída e cliques são garantidos via `navigator.sendBeacon` (ou `fetch` com `keepalive: true`).
+- **Vídeo e Áudio:** player de vídeo com `playsinline=1`. `AudioContext` de notificações com fallback silencioso para restrições de autoplay de navegadores móveis.
+- **No Desktop:** conteúdo centralizado com largura máxima de 560 px.
 
 ---
 
