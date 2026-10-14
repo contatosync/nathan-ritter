@@ -18,10 +18,12 @@ html {
 }
 body {
   margin: 0;
-  min-height: 100vh;
+  min-height: 100dvh;
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-sora), var(--font-poppins), system-ui, sans-serif;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 button,
 input {
@@ -29,11 +31,23 @@ input {
 }
 button {
   cursor: pointer;
+  touch-action: manipulation;
+}
+button:active,
+.btn-primary:active,
+.answer:active,
+.btn-back:active,
+.btn-checkout:active,
+.carousel-arrow:active,
+.carousel-dots button:active {
+  transform: scale(0.98);
+  filter: brightness(0.92);
+  transition: transform 0.08s ease, filter 0.08s ease;
 }
 .quiz-shell {
-  min-height: 100svh;
+  min-height: 100dvh;
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden;
   background: linear-gradient(180deg, var(--bg), var(--bg-alt));
 }
 .quiz-shell:before {
@@ -69,12 +83,19 @@ button {
   mix-blend-mode: screen;
   opacity: 0.4;
 }
+@media (max-width: 767px) {
+  .quiz-shell.is-hero:before {
+    background-image:
+      linear-gradient(180deg, rgba(10, 15, 28, 0.6), rgba(10, 15, 28, 0.96)),
+      url("/imagens/fundo/hero-mobile.webp");
+  }
+}
 .quiz-content {
   position: relative;
   width: min(100%, 560px);
-  min-height: 100svh;
+  min-height: 100dvh;
   margin: 0 auto;
-  padding: 28px 20px 32px;
+  padding: max(20px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(24px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
   display: flex;
   flex-direction: column;
 }
@@ -89,6 +110,9 @@ button {
   font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.18em;
+}
+h1, h2, h3, h4 {
+  text-wrap: balance;
 }
 h1 {
   font-size: clamp(2rem, 8vw, 3.5rem);
@@ -109,7 +133,12 @@ h2 {
 }
 .muted {
   color: var(--muted);
-  line-height: 1.65;
+  font-size: 1rem;
+  line-height: 1.55;
+}
+p {
+  font-size: 1rem;
+  line-height: 1.55;
 }
 .logo {
   object-fit: contain;
@@ -118,7 +147,7 @@ h2 {
 }
 .logo-small {
   width: 90px;
-  margin-bottom: 28px;
+  margin-bottom: 24px;
 }
 .logo-hero {
   width: min(86vw, 430px);
@@ -126,7 +155,7 @@ h2 {
 }
 .btn-primary {
   width: 100%;
-  min-height: 58px;
+  min-height: 56px;
   border: 0;
   border-radius: 999px;
   padding: 16px 22px;
@@ -140,9 +169,10 @@ h2 {
   transition:
     transform 0.18s,
     filter 0.18s;
+  touch-action: manipulation;
 }
 .btn-primary:hover {
-  transform: scale(1.04);
+  transform: scale(1.02);
   filter: brightness(1.04);
 }
 .btn-primary:disabled {
@@ -155,12 +185,16 @@ h2 {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  margin: 0 0 18px;
-  padding: 8px 2px;
+  margin: 0 0 14px;
+  padding: 12px 8px;
+  min-height: 48px;
+  min-width: 48px;
   border: 0;
   background: transparent;
   color: var(--muted);
   font-weight: 700;
+  font-size: 1rem;
+  touch-action: manipulation;
 }
 .btn-back span {
   font-size: 1.25rem;
@@ -181,10 +215,11 @@ h2 {
 .answers {
   display: grid;
   gap: 12px;
-  margin: 26px 0;
+  margin: 22px 0;
 }
 .answer {
   width: 100%;
+  min-height: 52px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -193,11 +228,14 @@ h2 {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 18px;
-  padding: 18px 20px;
+  padding: 14px 18px;
+  font-size: 1rem;
   font-weight: 700;
+  line-height: 1.35;
   transition:
     border-color 0.08s ease,
     transform 0.08s ease;
+  touch-action: manipulation;
 }
 .answer:after {
   content: "";
@@ -232,16 +270,18 @@ h2 {
   display: block;
   margin-bottom: 8px;
   color: var(--muted);
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   font-weight: 700;
 }
 .field input {
   width: 100%;
+  min-height: 48px;
   border: 1px solid var(--border);
   border-radius: 16px;
   background: var(--card);
   color: var(--text);
-  padding: 17px 18px;
+  padding: 14px 18px;
+  font-size: 16px !important;
   outline: none;
 }
 .field input:focus {
@@ -572,7 +612,7 @@ h2 {
 }
 .lightbox img {
   width: auto;
-  height: min(78vh, 760px);
+  height: min(78dvh, 760px);
   max-width: 94vw;
   object-fit: contain;
   border-radius: 14px;
@@ -581,34 +621,44 @@ h2 {
   max-width: 600px;
   margin: 14px auto 0;
   color: var(--muted);
-  font-size: 0.82rem;
+  font-size: 0.95rem;
   text-align: center;
 }
 .lightbox-close {
   position: absolute;
   top: 14px;
   right: 16px;
-  width: 42px;
-  height: 42px;
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 50%;
   background: var(--card);
   color: white;
   font-size: 1.8rem;
   line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  touch-action: manipulation;
 }
 .carousel-arrow {
   display: none;
   position: absolute;
   z-index: 4;
   top: 46%;
-  width: 42px;
-  height: 42px;
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
   border: 1px solid var(--border);
   border-radius: 50%;
   background: var(--card);
   color: white;
   font-size: 1.2rem;
+  touch-action: manipulation;
 }
 .carousel-arrow.previous {
   left: -18px;
@@ -622,19 +672,31 @@ h2 {
 .carousel-dots {
   display: flex;
   justify-content: center;
-  gap: 6px;
-  margin-top: 14px;
+  gap: 2px;
+  margin-top: 10px;
 }
 .carousel-dots button {
-  width: 7px;
-  height: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
   padding: 0;
   border: 0;
+  background: transparent;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.carousel-dots button::after {
+  content: "";
+  display: block;
+  width: 8px;
+  height: 8px;
   border-radius: 99px;
   background: rgba(255, 255, 255, 0.25);
-  transition: 0.2s;
+  transition: all 0.2s ease;
 }
-.carousel-dots button.active {
+.carousel-dots button.active::after {
   width: 24px;
   background: var(--yellow);
 }
@@ -1210,8 +1272,10 @@ h2 {
   bottom: 12px;
   right: 12px;
   z-index: 20;
-  width: 38px;
-  height: 38px;
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
   border-radius: 50%;
   background: rgba(10, 15, 28, 0.85);
   border: 1px solid rgba(255, 212, 0, 0.6);
@@ -1223,6 +1287,7 @@ h2 {
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   transition: transform 0.15s ease, background 0.15s ease;
+  touch-action: manipulation;
 }
 
 .video-sound-btn:hover {
@@ -1361,65 +1426,179 @@ h2 {
   }
 }
 
+/* ========================================================
+   RODADA MOBILE: CAPA (TELA 1)
+   ======================================================== */
+.screen-inicio {
+  justify-content: flex-start !important;
+  text-align: center;
+  padding-top: calc(24px + env(safe-area-inset-top));
+  padding-bottom: calc(115px + env(safe-area-inset-bottom));
+}
+
+.eyebrow-capa {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  color: var(--yellow);
+  margin-bottom: 8px;
+}
+
+.headline-capa {
+  font-size: clamp(26px, 8vw, 34px) !important;
+  font-weight: 900 !important;
+  line-height: 1.1 !important;
+  letter-spacing: -0.03em !important;
+  text-wrap: balance !important;
+  margin: 0 !important;
+}
+
+.subtitle-capa {
+  font-size: 16px !important;
+  line-height: 1.45 !important;
+  color: var(--muted) !important;
+  margin: 12px 0 0 !important;
+}
+
+.print-container-capa {
+  margin: 20px 0 0 !important;
+  width: 100% !important;
+}
+
+.print-card-capa {
+  border-radius: 16px;
+  border: 1px solid rgba(255, 212, 0, 0.45);
+  box-shadow: 0 8px 30px rgba(255, 212, 0, 0.15);
+  transform: none !important;
+  max-height: 30dvh !important;
+  overflow: hidden;
+  background: #0a0f1c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.print-card-capa .print-img {
+  width: 100%;
+  height: auto;
+  max-height: 30dvh;
+  object-fit: contain;
+  display: block;
+}
+
+.print-legend-capa {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--muted);
+  justify-content: center;
+  text-align: center;
+}
+
+/* ========================================================
+   RODADA MOBILE: BARRAS FIXAS NO RODAPÉ
+   ======================================================== */
+.fixed-cta-bar,
+.sticky-cta-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background: linear-gradient(180deg, rgba(10, 15, 28, 0) 0%, rgba(10, 15, 28, 0.96) 24%, #0a0f1c 100%);
+  padding: 12px 16px;
+  padding-bottom: calc(16px + env(safe-area-inset-bottom));
+  pointer-events: auto;
+}
+
+.fixed-cta-inner {
+  width: min(100%, 560px);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.btn-capa-fixed,
+.btn-fixed-bar {
+  height: 56px !important;
+  min-height: 56px !important;
+  font-size: clamp(0.85rem, 4vw, 1.05rem) !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.03em !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  padding: 0 16px !important;
+}
+
+.fixed-cta-subline {
+  font-size: 12px !important;
+  color: var(--muted) !important;
+  text-align: center;
+  margin: 6px 0 0 !important;
+  line-height: 1.2 !important;
+}
+
+/* Barra inteligente (aparece quando o primeiro botão sai da tela e some quando um botão igual entra) */
+.sticky-cta-bar {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(100%);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+}
+
+.sticky-cta-bar.is-active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+/* Padding de compensação para telas com barra fixa */
+.screen-diagnostico-wrap {
+  padding-bottom: calc(90px + env(safe-area-inset-bottom));
+}
+.offer-screen {
+  padding-bottom: calc(90px + env(safe-area-inset-bottom));
+}
+.payment-screen {
+  padding-bottom: calc(90px + env(safe-area-inset-bottom));
+}
+.mentor-flow {
+  padding-bottom: calc(90px + env(safe-area-inset-bottom));
+}
+
 /* Otimização para viewports compactos (ex: iPhone SE / 375x667) */
 @media (max-height: 720px) and (max-width: 600px) {
-  .quiz-content {
-    padding-top: 10px;
-    padding-bottom: 12px;
-  }
-  .screen-inicio .eyebrow {
-    font-size: 0.72rem;
-    letter-spacing: 0.14em;
-    margin-bottom: 2px;
-  }
-  .screen-inicio h1 {
-    font-size: clamp(1.1rem, 4.5vw, 1.35rem);
-    line-height: 1.15;
-    margin: 8px 0 6px;
-  }
-  .screen-inicio p.muted {
-    font-size: 0.8rem;
-    line-height: 1.32;
+  .logo-small {
+    width: 64px;
     margin-bottom: 8px;
   }
-  .print-container-capa {
-    margin: 10px 0 12px;
-  }
-  .screen-inicio .btn-primary {
-    min-height: 48px;
-    padding: 12px 20px;
-    font-size: 0.95rem;
-  }
-  .screen-inicio div[style*="marginTop"] {
-    margin-top: 10px !important;
-  }
-
-  .logo-small {
-    width: 60px;
-    margin-bottom: 6px;
-  }
   .btn-back {
-    margin: 0 0 4px;
-    padding: 2px;
+    margin: 0 0 6px;
+    padding: 8px 4px;
+    min-height: 48px;
   }
   .screen-pergunta {
     justify-content: flex-start;
   }
   .screen-pergunta h2 {
-    font-size: clamp(1rem, 3.8vw, 1.2rem);
+    font-size: clamp(1.05rem, 4vw, 1.25rem);
     line-height: 1.2;
-    margin: 6px 0;
+    margin: 6px 0 8px;
   }
   .question-print-container {
-    margin: 6px 0 8px;
+    margin: 4px 0 6px;
   }
   .answers {
     gap: 8px;
     margin: 8px 0;
   }
   .answer {
-    padding: 11px 16px;
-    font-size: 0.92rem;
+    min-height: 48px;
+    padding: 12px 16px;
+    font-size: 1rem;
     border-radius: 14px;
   }
 }
@@ -1430,6 +1609,9 @@ h2 {
     animation: none !important;
     transform: none !important;
     transition: none !important;
+  }
+  .sticky-cta-bar {
+    transition: opacity 0.2s ease !important;
   }
 }
 

@@ -1,15 +1,28 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Poppins, Sora } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 
-const sora = Sora({ variable: "--font-sora", subsets: ["latin"] });
+const sora = Sora({
+  variable: "--font-sora",
+  subsets: ["latin"],
+  weight: ["400", "700", "900"],
+  display: "swap",
+  preload: true,
+});
 const poppins = Poppins({
   variable: "--font-poppins",
   subsets: ["latin"],
   weight: ["400", "600", "800"],
+  display: "swap",
 });
 const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://nr-diagnostico-ml.vercel.app"),
