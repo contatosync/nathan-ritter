@@ -953,7 +953,7 @@ export function Quiz() {
                   alt={questionPrints[question].alt}
                   width={questionPrints[question].width}
                   height={questionPrints[question].height}
-                  loading="lazy"
+                  priority
                   className="print-img"
                 />
               </div>
