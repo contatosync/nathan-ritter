@@ -1290,6 +1290,7 @@ export function Quiz() {
                   alt={questionPrints[question].alt}
                   width={questionPrints[question].width}
                   height={questionPrints[question].height}
+                  sizes="(max-width: 600px) 100vw, 560px"
                   priority
                   className="print-img"
                 />
@@ -1612,6 +1613,7 @@ export function Quiz() {
                 width={700}
                 height={700}
                 alt="Nathan Ritter"
+                sizes="(max-width: 600px) 92vw, 480px"
                 loading="lazy"
               />
               <div>
@@ -1830,7 +1832,8 @@ export function Quiz() {
                 width={680}
                 height={900}
                 alt="Nathan Ritter de braços cruzados"
-                priority
+                sizes="(max-width: 600px) 92vw, 450px"
+                loading="lazy"
               />
               <section className="mentor-results">
                 <h3>

@@ -67,7 +67,7 @@ export function Carousel({
             key={index}
             type="button"
             aria-label={`Ir para item ${index + 1}`}
-            className={index === active ? "active" : ""}
+            className={`carousel-dot ${index === active ? "active" : ""}`}
             onClick={() => scrollTo(index)}
           />
         ))}
@@ -89,6 +89,7 @@ export function ModuleCarousel({ items }: { items: ModuleItem[] }) {
             alt={`Módulo ${item.number}: ${item.title}`}
             width={600}
             height={900}
+            sizes="(max-width: 600px) 70vw, 360px"
             loading={index === 0 ? "eager" : "lazy"}
           />
         </article>
@@ -129,6 +130,7 @@ export function ProofCarousel({ items }: { items: ProofItem[] }) {
                 alt={item.caption}
                 width={600}
                 height={1065}
+                sizes="(max-width: 600px) 80vw, 450px"
                 loading={index === 0 ? "eager" : "lazy"}
               />
             </button>
