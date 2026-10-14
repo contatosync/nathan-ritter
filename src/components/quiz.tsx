@@ -762,6 +762,15 @@ export function Quiz() {
       }
     } catch {}
   }
+  function goToValueQuestion() {
+    if (ytPlayerRef.current) {
+      try {
+        ytPlayerRef.current.pauseVideo?.();
+        setIsVideoPlaying(false);
+      } catch {}
+    }
+    setScreen("pergunta_valor");
+  }
   function checkout() {
     const eventId = meta("CliqueCheckout");
     record("clique_checkout", 70, {
@@ -1040,7 +1049,7 @@ export function Quiz() {
               <div style={{ marginTop: 24 }}>
                 <button
                   className="btn-primary btn-course-single-line"
-                  onClick={() => setScreen("pergunta_valor")}
+                  onClick={goToValueQuestion}
                 >
                   QUERO O CURSO MÁQUINA DE VENDAS
                 </button>
@@ -1168,8 +1177,16 @@ export function Quiz() {
                   </button>
                 )}
               </div>
+              <div className="video-btn-wrap">
+                <button
+                  className="btn-primary btn-course-single-line"
+                  onClick={goToValueQuestion}
+                >
+                  QUERO O CURSO MÁQUINA DE VENDAS
+                </button>
+              </div>
             </section>
-            <section className="offer-section">
+            <section className="offer-section receives-section">
               <h3>O que você recebe</h3>
               <div className="benefit-list">
                 {COURSE_BENEFITS.map((item) => (
@@ -1216,7 +1233,7 @@ export function Quiz() {
             <div style={{ marginTop: 32 }}>
               <button
                 className="btn-primary btn-course-single-line"
-                onClick={() => setScreen("pergunta_valor")}
+                onClick={goToValueQuestion}
               >
                 QUERO O CURSO MÁQUINA DE VENDAS
               </button>

@@ -14,6 +14,16 @@ Formato de cada entrada:
 
 ---
 
+## 2026-10-13 22:38 · Antigravity
+**O que mudou:** adicionado botão "QUERO O CURSO MÁQUINA DE VENDAS" logo abaixo do player de vídeo na Tela 11:
+- Botão no estilo padrão (amarelo gradiente, largura total, em uma linha em 375 px via clamp e nowrap, altura mínima de 44 px).
+- Espaçamento exato: 24 px abaixo do player (`.video-btn-wrap`) e 40 px de respiro até o bloco "O que você recebe" (`.receives-section`).
+- Comportamento de pausa: ao tocar no botão (ou nos demais botões da Tela 11) com o vídeo em reprodução, o vídeo do YouTube é pausado via `ytPlayerRef.current.pauseVideo()` antes da transição para a Tela 11B (`pergunta_valor`).
+- Atualização da seção 5 de `ESPECIFICACAO.md` e changelog.
+**Arquivos:** `src/components/quiz.tsx`, `src/app/globals.css`, `ESPECIFICACAO.md`, `CHANGELOG.md`.
+**Recursos externos criados/alterados:** nenhum. Todos os recursos usam prefixo `NR`.
+**Pendências:** nenhuma.
+
 ## 2026-10-13 21:55 · Antigravity
 **O que mudou:** Execução completa dos ajustes rápidos no funil:
 - **Tela 11B (Pergunta de valor):** novo subtítulo em `--muted` (16 px) contextualizando módulos do primeiro passo à escala e o diagnóstico; card de aviso com borda amarela fina e ícone de cadeado em amarelo (15 px, branco) esclarecendo que o preço real é menor que qualquer opção.

@@ -220,11 +220,12 @@ Apresentação focada exclusivamente nos conteúdos do curso direcionados ao dia
    - Container com `overflow: hidden` e iframe centralizado (~115% de altura), cortando o título superior e marcas d'água sem cortar o rosto do Nathan.
    - Ao terminar a reprodução (`ended`), retorna automaticamente à capa inicial com o botão de play.
    - Dispara evento `AssistiuVideoCurso` (Pixel + CAPI, deduplicado por sessão) e salva `assistiu_video_em` na planilha.
-5. **O que você recebe:** 4 itens com check amarelo (10 módulos, 1 ano de acesso, aulas novas com mudanças do algoritmo, suporte a dúvidas).
-6. **Carrossel dos 10 módulos:** capas originais da Kiwify na proporção 2:3 com cantos arredondados, sem sobreposição de selos, títulos ou degradês, com `alt` acessível; ocupa ~62% da largura no mobile e 3 cards no desktop.
-7. **Carrossel de provas:** resultados de alunos do curso (ordem 01, 02, 03, 07, 06, 04, 05, 08).
-8. **Quem ensina:** apresentação do Nathan Ritter.
-9. **Botão final:** QUERO O CURSO MÁQUINA DE VENDAS (navega para a Tela 11B).
+5. **Botão abaixo do vídeo:** QUERO O CURSO MÁQUINA DE VENDAS (posicionado logo abaixo do player com 24 px de espaçamento, no mesmo estilo dos outros: amarelo, largura total do conteúdo, linha única em 375 px, altura mínima de 44 px; abre a Tela 11B; se o vídeo estiver tocando, pausa o vídeo antes de trocar de tela; 40 px de espaçamento até "O que você recebe").
+6. **O que você recebe:** 4 itens com check amarelo (10 módulos, 1 ano de acesso, aulas novas com mudanças do algoritmo, suporte a dúvidas).
+7. **Carrossel dos 10 módulos:** capas originais da Kiwify na proporção 2:3 com cantos arredondados, sem sobreposição de selos, títulos ou degradês, com `alt` acessível; ocupa ~62% da largura no mobile e 3 cards no desktop.
+8. **Carrossel de provas:** resultados de alunos do curso (ordem 01, 02, 03, 07, 06, 04, 05, 08).
+9. **Quem ensina:** apresentação do Nathan Ritter.
+10. **Botão final:** QUERO O CURSO MÁQUINA DE VENDAS (navega para a Tela 11B).
 
 **Itens removidos da Tela 11:** card de preço, valores por dia, preço à vista, cadeado, CTA fixo móvel, garantia de 7 dias, perguntas frequentes (FAQ) e aviso legal de rodapé.
 
