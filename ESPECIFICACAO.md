@@ -210,16 +210,20 @@ Apresentação focada exclusivamente nos conteúdos do curso direcionados ao dia
    - P5: Como começar com estoque pequeno, validar o giro e só depois repor em maior quantidade.
    - Caso "Sim" em todas: módulos 07 ("O que faz um anúncio que já vende ganhar posição na busca."), 08 ("Como usar os anúncios pagos do Mercado Livre sem queimar caixa.") e 10 ("Como aumentar o volume de vendas sem perder o controle do caixa.").
 3. **Botão intermediário:** QUERO O CURSO MÁQUINA DE VENDAS (posicionado logo após os blocos de pontos, navega para a Tela 11B).
-4. **Vídeo do Nathan sobre o curso (on-demand):**
+4. **Vídeo do Nathan sobre o curso (on-demand com controles próprios e sem legendas):**
    - Posicionado logo abaixo do primeiro botão.
    - Cabeçalho: título "Ainda tem dúvidas sobre o curso?" e subtítulo "No vídeo abaixo, o Nathan explica cada parte do Máquina de Vendas. E logo depois tem o que você recebe, os 10 módulos e resultados de alunos."
    - Player sob demanda: capa estática do YouTube em alta resolução (`maxresdefault.jpg`) com botão de play amarelo centralizado (16:9, cantos arredondados, borda e brilho amarelos).
-   - O iframe do YouTube só é carregado quando o usuário toca no play (com `autoplay=1`, `playsinline=1`, `rel=0`, `modestbranding=1`), garantindo velocidade de carregamento da página.
-   - Dispara evento `AssistiuVideoCurso` (Pixel + CAPI, uma vez por sessão) e salva `assistiu_video_em` na planilha.
+   - O iframe é carregado sob demanda apenas após o clique do usuário via domínio `youtube-nocookie.com`, com os parâmetros: `autoplay=1&controls=0&cc_load_policy=0&iv_load_policy=3&rel=0&modestbranding=1&playsinline=1&disablekb=1&fs=0&enablejsapi=1&hl=pt-BR`.
+   - Remoção rigorosa de legendas do YouTube: chamada de `player.unloadModule("captions")` e `player.unloadModule("cc")` no `onReady` e repetida no `onStateChange` ao entrar em estado `PLAYING`.
+   - Controles customizados: camada transparente sobre o iframe para clique alternar play/pause sem exibir interface do YouTube; botão de áudio no canto inferior direito para ativar/desativar som; barra de progresso amarela fina na base, apenas informativa.
+   - Container com `overflow: hidden` e iframe centralizado (~115% de altura), cortando o título superior e marcas d'água sem cortar o rosto do Nathan.
+   - Ao terminar a reprodução (`ended`), retorna automaticamente à capa inicial com o botão de play.
+   - Dispara evento `AssistiuVideoCurso` (Pixel + CAPI, deduplicado por sessão) e salva `assistiu_video_em` na planilha.
 5. **O que você recebe:** 4 itens com check amarelo (10 módulos, 1 ano de acesso, aulas novas com mudanças do algoritmo, suporte a dúvidas).
 6. **Carrossel dos 10 módulos:** capas originais da Kiwify na proporção 2:3 com cantos arredondados, sem sobreposição de selos, títulos ou degradês, com `alt` acessível; ocupa ~62% da largura no mobile e 3 cards no desktop.
-7. **Carrossel de provas:** resultados de alunos do curso (inalterado).
-8. **Quem ensina:** apresentação do Nathan Ritter (inalterado).
+7. **Carrossel de provas:** resultados de alunos do curso (ordem 01, 02, 03, 07, 06, 04, 05, 08).
+8. **Quem ensina:** apresentação do Nathan Ritter.
 9. **Botão final:** QUERO O CURSO MÁQUINA DE VENDAS (navega para a Tela 11B).
 
 **Itens removidos da Tela 11:** card de preço, valores por dia, preço à vista, cadeado, CTA fixo móvel, garantia de 7 dias, perguntas frequentes (FAQ) e aviso legal de rodapé.
@@ -228,7 +232,8 @@ Apresentação focada exclusivamente nos conteúdos do curso direcionados ao dia
 Tela intermediária disparada por todos os botões "QUERO O CURSO MÁQUINA DE VENDAS" da Tela 11.
 - **Layout:** idêntico às perguntas do quiz (logo pequeno no topo, cards de resposta, sem barra de progresso, avanço em ~150 ms).
 - **Pergunta:** Quanto você pagaria pelo Máquina de Vendas?
-- **Subtítulo:** Considerando os 10 módulos, 1 ano de acesso e o passo a passo do Nathan.
+- **Subtítulo (--muted, 16 px):** Um curso com módulos que vão do primeiro passo à escala no Mercado Livre, incluindo cada ponto que apareceu no seu diagnóstico.
+- **Card de aviso:** card baixo com borda amarela fina, ícone de cadeado em amarelo e texto em branco (15 px): "Esse não é o valor que você vai pagar. Queremos saber quanto o curso vale para você, e o preço real é menor do que qualquer uma das opções."
 - **Opções de resposta:**
   - R$ 1.500
   - R$ 1.000
@@ -237,32 +242,35 @@ Tela intermediária disparada por todos os botões "QUERO O CURSO MÁQUINA DE VE
 - **Avanço:** transição rápida (~150 ms) para a Tela 12.
 - **Rastreio e persistência:** dispara o evento personalizado `RespondeuValor` com o valor selecionado, grava na coluna `quanto_pagaria` da planilha (1500, 1000, 600 ou 300) e registra a etapa 62 (`pergunta_valor`).
 
-### Tela 12 · Pagamento e Prova Social (redesenho)
-Tela curta e limpa, focada exclusivamente em finalizar a matrícula.
+### Tela 12 · Pagamento e Prova Social (redesenho completo)
+Tela curta e limpa, focada exclusivamente em finalizar a matrícula com alta conversão e prova social.
 - **Logo:** logo pequeno no topo removido (o logo dentro do card de oferta é mantido).
-- **Rótulo:** ÚLTIMO PASSO
-- **Headline dominante:** "Tudo isso por menos de R$ 2 por dia" ("R$ 2 por dia" em amarelo, font-black ~34 px em 375 px).
-- **Linha de retorno da pergunta de valor:**
-  - Para 1.500, 1.000 ou 600: "Você disse que pagaria R$ {valor}. Hoje o acesso completo sai por R$ 297." (em branco, 17 px).
-  - Para 300: "Você chegou perto: hoje o acesso completo sai por R$ 297."
-  - Se acessada sem resposta prévia: linha oculta.
-- **Bloco do contador de alunos (notificação animada):**
-  - Card baixo em `--card`, borda amarela fina e cantos arredondados (20 px), sem emojis.
-  - À esquerda: número "177" grande (40 px, amarelo, font-black) vindo fixo de `VENDAS_BASE` sem chamadas de rede.
-  - À direita: duas linhas em branco (15 px): "pessoas já compraram" / "o Máquina de Vendas".
-  - Canto superior esquerdo: ponto amarelo com anel pulsando em loop (efeito ping, 1,5 s).
-  - Loop de brilho: pulso sutil de borda e sombra amarela (2 s, ease-in-out) sem alterar dimensões para eliminar layout shifts.
-  - Entrada: animação de descida com fade (slide-in 300 ms).
-  - Acessibilidade: sem animações sob `prefers-reduced-motion: reduce`.
-  - Configuração futura: para alterar o total no futuro, basta alterar a variável de ambiente `VENDAS_BASE` na Vercel e disparar um redeploy da aplicação.
+- **Rótulo "ÚLTIMO PASSO":** removido.
+- **Headline dominante:**
+  - Com resposta da Tela 11B: "Você disse que pagaria R$ {valor}, mas isso sai por menos de R$ 2 por dia" (destaque em amarelo em "menos de R$ 2 por dia"). Válido para as 4 opções (1.500, 1.000, 600, 300).
+  - Sem resposta: "Tudo isso por menos de R$ 2 por dia" (destaque em amarelo no mesmo trecho).
+  - A linha antiga de retorno ("Você disse que pagaria... Hoje o acesso completo sai por R$ 297") foi totalmente removida; o valor cheio (R$ 297) não aparece fora do card de preço.
+- **Notificação flutuante no estilo iPhone (contador de vendas):**
+  - Banner flutuante fixado no topo da tela, sobre o conteúdo (`position: fixed`), largura ~92%, cantos arredondados (18 px), fundo translúcido escuro com desfoque (`backdrop-filter: blur(20px)`), sombra suave.
+  - À esquerda: ícone quadrado arredondado de 38 px com a caixa amarela do logo (`public/imagens/logo/icone-caixa.png`).
+  - Ao lado, em duas linhas: "MÁQUINA DE VENDAS" (11 px, `--muted`, caixa alta) e "177 pessoas já compraram o curso" (15 px, branco, "177" em negrito).
+  - Comportamento: surge 1 s após a abertura da tela descendo do topo com efeito mola (~350 ms), permanece visível por 2,5 s e sobe sumindo (~300 ms). Aparece uma única vez por visita à tela.
+  - Som de notificação curto: "ding" de dois tons gerado nativamente via Web Audio API (1.320 Hz seguido de 1.760 Hz, ~120 ms cada tom, volume baixo com decay exponencial). Sem dependência de arquivos de áudio externos; falha silenciosamente se o navegador bloquear autoplay de áudio.
+  - Acessibilidade: sob `prefers-reduced-motion: reduce`, a notificação surge e some com fade simples, sem efeito de mola e sem emissão de som.
+  - Total fixo: valor fixado em 177 vindo de `VENDAS_BASE`, sem "agora" ou "há X min". Para atualizar o número no futuro, basta alterar `VENDAS_BASE` na Vercel e fazer redeploy.
 - **Card de preço:**
   - Logo do curso no topo do card.
   - Preço em linha única em 375 px sem quebra: "12x de" em branco menor e "R$ 30,72" grande em amarelo gradiente (`white-space: nowrap`, `clamp()`).
   - Linha abaixo: "ou R$ 297 à vista" em cinza muted (16 px, line-height 1.4).
   - Botão principal: **QUERO PAGAR AGORA** (dispara `CliqueCheckout` com o mesmo `event_id` no Pixel e CAPI, registra `clicou_checkout_em` e etapa 70, e redireciona para `https://pay.kiwify.com.br/InK3eLE` preservando `utm_*`, `src`, `sck`, `fbclid` e `gclid`).
   - Abaixo do botão: 🔒 Acesso imediato após pagamento (16 px, line-height 1.4).
-- **Espaçamento e tipografia:** texto corrido >= 16 px, line-height 1.4, espaçamento vertical de 24 px entre os blocos.
-- **Prova social do último aluno:** aviso discreto no canto inferior exibindo "Marcos C. entrou no Máquina de Vendas". Aparece 3 s após carregar a tela e some após 6 s. Sem dados artificiais ou tempos simulados.
+- **Carrossel de provas sociais (abaixo do card de preço):**
+  - Mesmo componente `ProofCarousel` da Tela 11, com suporte a visualização ampliada via lightbox.
+  - Título: "Resultados de quem aplica o método do Nathan" ("Resultados" em amarelo).
+  - Ordem das provas: 01, 02, 03, 07, 06, 04, 05, 08.
+- **Botão CTA secundário (repetido abaixo do carrossel):**
+  - Botão "QUERO PAGAR AGORA" repetido, com mesmo evento e link de checkout, acompanhado da trava "🔒 Acesso imediato após pagamento".
+- **Aviso do comprador discreto:** aviso discreto no canto inferior exibindo "Marcos C. entrou no Máquina de Vendas". Aparece 3 s após carregar a tela e some após 6 s.
 - **Rastreio:** ao entrar na Tela 12, dispara o evento personalizado `ViuPagamento` (Pixel + CAPI, deduplicado por sessão) e grava `viu_pagamento_em` com etapa 65 (`pagamento`).
 - Sem garantia, sem FAQ e sem aviso legal de rodapé.
 

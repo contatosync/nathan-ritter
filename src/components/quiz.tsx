@@ -118,9 +118,88 @@ const mentoringProofs = ["02", "04", "05", "06", "01", "03", "07", "08"].map(
 const offerProofs = ["01", "02", "03", "07", "06", "04", "05", "08"].map(
   (number) => proofs[number],
 );
+interface YTPlayerInstance {
+  playVideo?: () => void;
+  pauseVideo?: () => void;
+  mute?: () => void;
+  unMute?: () => void;
+  isMuted?: () => boolean;
+  getPlayerState?: () => number;
+  getCurrentTime?: () => number;
+  getDuration?: () => number;
+  unloadModule?: (module: string) => void;
+  destroy?: () => void;
+}
+
+interface YTEvent {
+  target: YTPlayerInstance;
+  data?: number;
+}
+
 declare global {
   interface Window {
     fbq?: (...args: unknown[]) => void;
+    YT?: {
+      Player: new (
+        elementId: string,
+        options: {
+          events?: {
+            onReady?: (event: YTEvent) => void;
+            onStateChange?: (event: YTEvent) => void;
+          };
+        },
+      ) => YTPlayerInstance;
+    };
+    onYouTubeIframeAPIReady?: () => void;
+    webkitAudioContext?: typeof AudioContext;
+  }
+}
+function playNotificationSound() {
+  try {
+    if (typeof window === "undefined") return;
+    if (
+      window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      return;
+    }
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContextClass) return;
+    const ctx = new AudioContextClass();
+    if (ctx.state === "suspended") {
+      ctx.resume().catch(() => {});
+    }
+    const now = ctx.currentTime;
+
+    const osc1 = ctx.createOscillator();
+    const gain1 = ctx.createGain();
+    osc1.type = "sine";
+    osc1.frequency.setValueAtTime(1320, now);
+    gain1.gain.setValueAtTime(0.06, now);
+    gain1.gain.exponentialRampToValueAtTime(0.0001, now + 0.12);
+    osc1.connect(gain1);
+    gain1.connect(ctx.destination);
+    osc1.start(now);
+    osc1.stop(now + 0.12);
+
+    const osc2 = ctx.createOscillator();
+    const gain2 = ctx.createGain();
+    osc2.type = "sine";
+    osc2.frequency.setValueAtTime(1760, now + 0.11);
+    gain2.gain.setValueAtTime(0.07, now + 0.11);
+    gain2.gain.exponentialRampToValueAtTime(0.0001, now + 0.23);
+    osc2.connect(gain2);
+    gain2.connect(ctx.destination);
+    osc2.start(now + 0.11);
+    osc2.stop(now + 0.23);
+
+    setTimeout(() => {
+      try {
+        ctx.close().catch(() => {});
+      } catch {}
+    }, 450);
+  } catch {
+    // Falha silenciosa se áudio bloqueado
   }
 }
 function normalizePhone(value: string) {
@@ -149,6 +228,15 @@ export function Quiz() {
   });
   const [showBuyerToast, setShowBuyerToast] = useState(false);
   const [videoPlayed, setVideoPlayed] = useState(false);
+  const ytPlayerRef = useRef<YTPlayerInstance | null>(null);
+  const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const [isVideoMuted, setIsVideoMuted] = useState(false);
+  const [videoProgress, setVideoProgress] = useState(0);
+  const [iphoneToastState, setIphoneToastState] = useState<
+    "hidden" | "showing" | "hiding"
+  >("hidden");
+  const hasShownToastThisVisit = useRef(false);
   const hasTrackedPayment = useRef(false);
   const hasTrackedVideo = useRef(false);
   const hasTrackedValor = useRef(false);
@@ -304,6 +392,147 @@ export function Quiz() {
       setShowBuyerToast(false);
     };
   }, [screen]);
+
+  useEffect(() => {
+    if (screen !== "pagamento") {
+      hasShownToastThisVisit.current = false;
+      return;
+    }
+    if (hasShownToastThisVisit.current) return;
+    hasShownToastThisVisit.current = true;
+
+    const tShow = setTimeout(() => {
+      setIphoneToastState("showing");
+      playNotificationSound();
+    }, 1000);
+
+    const tHide = setTimeout(() => {
+      setIphoneToastState("hiding");
+    }, 3500);
+
+    const tDone = setTimeout(() => {
+      setIphoneToastState("hidden");
+    }, 3850);
+
+    return () => {
+      clearTimeout(tShow);
+      clearTimeout(tHide);
+      clearTimeout(tDone);
+      setIphoneToastState("hidden");
+    };
+  }, [screen]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (!window.YT) {
+      const existing = document.querySelector(
+        'script[src*="youtube.com/iframe_api"]',
+      );
+      if (!existing) {
+        const tag = document.createElement("script");
+        tag.src = "https://www.youtube.com/iframe_api";
+        const first = document.getElementsByTagName("script")[0];
+        first?.parentNode?.insertBefore(tag, first);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!videoPlayed) {
+      if (ytPlayerRef.current) {
+        try {
+          ytPlayerRef.current.destroy?.();
+        } catch {}
+        ytPlayerRef.current = null;
+      }
+      if (progressIntervalRef.current) {
+        clearInterval(progressIntervalRef.current);
+        progressIntervalRef.current = null;
+      }
+      return;
+    }
+
+    let isMounted = true;
+    let pollTimer: NodeJS.Timeout | null = null;
+    let initTimer: NodeJS.Timeout | null = null;
+
+    const attachPlayer = () => {
+      if (!window.YT || !window.YT.Player) return false;
+      const el = document.getElementById("course-yt-player");
+      if (!el) return false;
+
+      try {
+        ytPlayerRef.current = new window.YT.Player("course-yt-player", {
+          events: {
+            onReady: (event: YTEvent) => {
+              if (!isMounted) return;
+              try {
+                event.target.unloadModule?.("captions");
+                event.target.unloadModule?.("cc");
+              } catch {}
+              setIsVideoPlaying(true);
+              try {
+                setIsVideoMuted(Boolean(event.target.isMuted?.()));
+              } catch {}
+            },
+            onStateChange: (event: YTEvent) => {
+              if (!isMounted) return;
+              if (event.data === 1) {
+                // PLAYING
+                try {
+                  event.target.unloadModule?.("captions");
+                  event.target.unloadModule?.("cc");
+                } catch {}
+                setIsVideoPlaying(true);
+              } else if (event.data === 2) {
+                // PAUSED
+                setIsVideoPlaying(false);
+              } else if (event.data === 0) {
+                // ENDED - voltar para a capa com o botão de play
+                setVideoPlayed(false);
+                setIsVideoPlaying(false);
+                setVideoProgress(0);
+              }
+            },
+          },
+        });
+        return true;
+      } catch {
+        return false;
+      }
+    };
+
+    if (!attachPlayer()) {
+      initTimer = setInterval(() => {
+        if (attachPlayer()) {
+          if (initTimer) clearInterval(initTimer);
+        }
+      }, 150);
+    }
+
+    pollTimer = setInterval(() => {
+      if (ytPlayerRef.current && isMounted) {
+        try {
+          const cur = ytPlayerRef.current.getCurrentTime?.() || 0;
+          const dur = ytPlayerRef.current.getDuration?.() || 0;
+          if (dur > 0) {
+            setVideoProgress(Math.min(100, Math.max(0, (cur / dur) * 100)));
+          }
+        } catch {}
+      }
+    }, 250);
+    progressIntervalRef.current = pollTimer;
+
+    return () => {
+      isMounted = false;
+      if (initTimer) clearInterval(initTimer);
+      if (pollTimer) clearInterval(pollTimer);
+      if (progressIntervalRef.current) {
+        clearInterval(progressIntervalRef.current);
+        progressIntervalRef.current = null;
+      }
+    };
+  }, [videoPlayed]);
 
   useEffect(() => {
     if (!sessionId) return;
@@ -508,6 +737,31 @@ export function Quiz() {
       meta("AssistiuVideoCurso");
     }
   }
+  function toggleVideoPlayPause() {
+    if (!ytPlayerRef.current) return;
+    try {
+      const state = ytPlayerRef.current.getPlayerState?.();
+      if (state === 1) {
+        ytPlayerRef.current.pauseVideo?.();
+        setIsVideoPlaying(false);
+      } else {
+        ytPlayerRef.current.playVideo?.();
+        setIsVideoPlaying(true);
+      }
+    } catch {}
+  }
+  function toggleVideoSound() {
+    if (!ytPlayerRef.current) return;
+    try {
+      if (ytPlayerRef.current.isMuted?.()) {
+        ytPlayerRef.current.unMute?.();
+        setIsVideoMuted(false);
+      } else {
+        ytPlayerRef.current.mute?.();
+        setIsVideoMuted(true);
+      }
+    } catch {}
+  }
   function checkout() {
     const eventId = meta("CliqueCheckout");
     record("clique_checkout", 70, {
@@ -533,7 +787,7 @@ export function Quiz() {
   }
   return (
     <main
-      className={`quiz-shell ${screen === "inicio" ? "is-hero" : ""} ${screen === "oferta" || screen === "mentoria" ? "is-long" : ""}`}
+      className={`quiz-shell ${screen === "inicio" ? "is-hero" : ""} ${screen === "oferta" || screen === "mentoria" || screen === "pagamento" ? "is-long" : ""}`}
     >
       <div className="quiz-content">
         {screen !== "inicio" &&
@@ -803,13 +1057,89 @@ export function Quiz() {
               </div>
               <div className="video-wrapper">
                 {videoPlayed ? (
-                  <iframe
-                    className="video-iframe"
-                    src="https://www.youtube.com/embed/RXcBV_dWnh4?autoplay=1&playsinline=1&rel=0&modestbranding=1"
-                    title="Vídeo de Apresentação Máquina de Vendas"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  />
+                  <>
+                    <iframe
+                      id="course-yt-player"
+                      className="video-iframe"
+                      src="https://www.youtube-nocookie.com/embed/RXcBV_dWnh4?autoplay=1&controls=0&cc_load_policy=0&iv_load_policy=3&rel=0&modestbranding=1&playsinline=1&disablekb=1&fs=0&enablejsapi=1&hl=pt-BR"
+                      title="Vídeo de Apresentação Máquina de Vendas"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    />
+                    <div
+                      className="video-click-overlay"
+                      onClick={toggleVideoPlayPause}
+                      role="button"
+                      tabIndex={0}
+                      aria-label={
+                        isVideoPlaying ? "Pausar vídeo" : "Reproduzir vídeo"
+                      }
+                    >
+                      {!isVideoPlaying ? (
+                        <div className="video-paused-pill" aria-hidden="true">
+                          <svg
+                            viewBox="0 0 24 24"
+                            width="28"
+                            height="28"
+                            fill="#0A0F1C"
+                          >
+                            <path d="M8 5v14l11-7z" />
+                          </svg>
+                        </div>
+                      ) : null}
+                    </div>
+                    <button
+                      type="button"
+                      className="video-sound-btn"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleVideoSound();
+                      }}
+                      aria-label={isVideoMuted ? "Ativar som" : "Desativar som"}
+                    >
+                      {isVideoMuted ? (
+                        <svg
+                          viewBox="0 0 24 24"
+                          width="20"
+                          height="20"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path
+                            d="M11 5L6 9H2v6h4l5 4V5z"
+                            fill="currentColor"
+                          />
+                          <line x1="23" y1="9" x2="17" y2="15" />
+                          <line x1="17" y1="9" x2="23" y2="15" />
+                        </svg>
+                      ) : (
+                        <svg
+                          viewBox="0 0 24 24"
+                          width="20"
+                          height="20"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path
+                            d="M11 5L6 9H2v6h4l5 4V5z"
+                            fill="currentColor"
+                          />
+                          <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" />
+                        </svg>
+                      )}
+                    </button>
+                    <div className="video-progress-track" aria-hidden="true">
+                      <div
+                        className="video-progress-fill"
+                        style={{ width: `${videoProgress}%` }}
+                      />
+                    </div>
+                  </>
                 ) : (
                   <button
                     type="button"
@@ -896,10 +1226,29 @@ export function Quiz() {
         {screen === "pergunta_valor" ? (
           <section className="screen">
             <h2>Quanto você pagaria pelo Máquina de Vendas?</h2>
-            <p className="muted" style={{ marginBottom: 20 }}>
-              Considerando os 10 módulos, 1 ano de acesso e o passo a passo do
-              Nathan.
+            <p className="value-subtitle">
+              Um curso com módulos que vão do primeiro passo à escala no Mercado Livre,
+              incluindo cada ponto que apareceu no seu diagnóstico.
             </p>
+            <div className="value-warning-card">
+              <svg
+                className="value-warning-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+              </svg>
+              <p className="value-warning-text">
+                Esse não é o valor que você vai pagar. Queremos saber quanto o curso vale
+                para você, e o preço real é menor do que qualquer uma das opções.
+              </p>
+            </div>
             <div className="answers">
               {[
                 [1500, "R$ 1.500"],
@@ -920,30 +1269,44 @@ export function Quiz() {
         ) : null}
         {screen === "pagamento" ? (
           <section className="screen payment-screen">
-            <span className="eyebrow">ÚLTIMO PASSO</span>
-            <h1 className="payment-headline">
-              Tudo isso por menos de <span className="yellow">R$ 2 por dia</span>
-            </h1>
-            {valorResposta !== null ? (
-              <p className="payment-return-line">
-                {valorResposta === 300
-                  ? "Você chegou perto: hoje o acesso completo sai por R$ 297."
-                  : `Você disse que pagaria R$ ${valorResposta.toLocaleString("pt-BR")}. Hoje o acesso completo sai por R$ 297.`}
-              </p>
+            {iphoneToastState !== "hidden" ? (
+              <div
+                className={`iphone-banner ${iphoneToastState === "showing" ? "is-showing" : "is-hiding"}`}
+                role="status"
+                aria-live="polite"
+              >
+                <div className="iphone-banner-icon">
+                  <Image
+                    src="/imagens/logo/icone-caixa.png"
+                    width={38}
+                    height={38}
+                    alt="Máquina de Vendas"
+                    priority
+                  />
+                </div>
+                <div className="iphone-banner-content">
+                  <span className="iphone-banner-app">MÁQUINA DE VENDAS</span>
+                  <span className="iphone-banner-text">
+                    <strong>{process.env.VENDAS_BASE || "177"}</strong> pessoas já compraram o curso
+                  </span>
+                </div>
+              </div>
             ) : null}
-            <div className="payment-notification-card">
-              <div className="notification-ping-container" aria-hidden="true">
-                <span className="notification-ping-ring" />
-                <span className="notification-ping-dot" />
-              </div>
-              <div className="notification-number">
-                {process.env.VENDAS_BASE || "177"}
-              </div>
-              <div className="notification-text">
-                <span>pessoas já compraram</span>
-                <span>o Máquina de Vendas</span>
-              </div>
-            </div>
+
+            <h1 className="payment-headline">
+              {valorResposta !== null ? (
+                <>
+                  Você disse que pagaria R${" "}
+                  {valorResposta.toLocaleString("pt-BR")}, mas isso sai por{" "}
+                  <span className="yellow">menos de R$ 2 por dia</span>
+                </>
+              ) : (
+                <>
+                  Tudo isso por <span className="yellow">menos de R$ 2 por dia</span>
+                </>
+              )}
+            </h1>
+
             <div className="offer-card payment-card">
               <Image
                 className="logo"
@@ -967,6 +1330,21 @@ export function Quiz() {
               </button>
               <p className="lock">🔒 Acesso imediato após pagamento</p>
             </div>
+
+            <section className="payment-proofs-section">
+              <h3>
+                <span className="yellow">Resultados</span> de quem aplica o método do Nathan
+              </h3>
+              <ProofCarousel items={offerProofs} />
+            </section>
+
+            <div className="payment-secondary-cta">
+              <button className="btn-primary" onClick={checkout}>
+                QUERO PAGAR AGORA
+              </button>
+              <p className="lock">🔒 Acesso imediato após pagamento</p>
+            </div>
+
             {showBuyerToast ? (
               <aside className="buyer-toast" role="status" aria-live="polite">
                 <span className="buyer-toast-dot" aria-hidden="true" />

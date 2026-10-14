@@ -14,6 +14,16 @@ Formato de cada entrada:
 
 ---
 
+## 2026-10-13 21:55 · Antigravity
+**O que mudou:** Execução completa dos ajustes rápidos no funil:
+- **Tela 11B (Pergunta de valor):** novo subtítulo em `--muted` (16 px) contextualizando módulos do primeiro passo à escala e o diagnóstico; card de aviso com borda amarela fina e ícone de cadeado em amarelo (15 px, branco) esclarecendo que o preço real é menor que qualquer opção.
+- **Tela 11 (Vídeo do curso):** domínio `youtube-nocookie.com`, iframe carregado sob demanda apenas após o clique com `autoplay=1`, `controls=0`, `cc_load_policy=0`, `iv_load_policy=3`, `rel=0`, `modestbranding=1`, `playsinline=1`, `disablekb=1`, `fs=0`, `enablejsapi=1` e `hl=pt-BR`; remoção rigorosa de legendas chamando `unloadModule("captions")` e `unloadModule("cc")` no `onReady` e `onStateChange` (`PLAYING`); controles próprios com camada de clique transparente sobre o iframe para play/pause, botão de som dedicado no canto inferior direito e barra amarela fina de progresso na base; container com `overflow: hidden` e iframe centralizado em ~115% de escala recortando o cabeçalho do YouTube sem cortar o rosto do Nathan; retorno automático à capa com botão de play ao terminar o vídeo.
+- **Tela 12 (Pagamento):** rótulo "ÚLTIMO PASSO" removido; headline contextualizada para "Você disse que pagaria R$ {valor}, mas isso sai por menos de R$ 2 por dia" (ou versão neutra sem resposta), com destaque amarelo em "menos de R$ 2 por dia" e valor cheio (R$ 297) restrito ao card de preço; substituição do antigo card pulsante por notificação flutuante no topo estilo iPhone (largura ~92%, cantos 18 px, blur translúcido, ícone de 38 px com a caixa amarela do logo `icone-caixa.png`, textos "MÁQUINA DE VENDAS" e "**177** pessoas já compraram o curso", surgimento em 1 s com efeito mola de ~350 ms, exibição por 2,5 s e saída de ~300 ms, uma única vez por visita, e som "ding" de dois tons gerado nativamente via Web Audio API em 1.320 Hz e 1.760 Hz com fallback silencioso e fade sob `prefers-reduced-motion`); inserção do carrossel de provas sociais da Tela 11 abaixo do card de preço com lightbox (ordem 01, 02, 03, 07, 06, 04, 05, 08 e título com "Resultados" em amarelo); repetição do botão "QUERO PAGAR AGORA" abaixo do carrossel.
+- **Validação e documentação:** testes automatizados executados em 375 px simulando Chrome e Safari do iPhone validando layout, áudio e interações; atualização da seção 5 de `ESPECIFICACAO.md` e changelog.
+**Arquivos:** `src/components/quiz.tsx`, `src/app/globals.css`, `ESPECIFICACAO.md`, `CHANGELOG.md`.
+**Recursos externos criados/alterados:** nenhum recurso GMN alterado. Todos os recursos usam prefixo `NR`.
+**Pendências:** nenhuma.
+
 ## 2026-10-13 20:25 · Antigravity
 **O que mudou:** Execução completa da Rodada 2 de ajustes:
 - **Tela 10 (Diagnóstico):** título com o nome antes da frase ("{nome}, seu diagnóstico está pronto" e "{nome}, você já domina a base"); introdução dos dois caminhos (CAMINHO 1 cinza / CAMINHO 2 amarelo com brilho) omitidos no caso "sim em tudo"; botão "QUERO O CURSO MÁQUINA DE VENDAS" com espaçamento >= 32 px e texto em linha única em 375 px via clamp e nowrap.
