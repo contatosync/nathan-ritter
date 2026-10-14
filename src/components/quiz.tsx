@@ -264,6 +264,8 @@ export function Quiz() {
   const hasTrackedVideo = useRef(false);
   const hasTrackedValor = useRef(false);
   const [valorResposta, setValorResposta] = useState<number | null>(null);
+  const [isOfferStickyVisible, setIsOfferStickyVisible] = useState(false);
+  const [isPaymentStickyVisible, setIsPaymentStickyVisible] = useState(false);
   const utms = useRef<Record<string, string>>({});
   const missing = useMemo(
     () =>
@@ -454,6 +456,68 @@ export function Quiz() {
       clearTimeout(tHide);
       clearTimeout(tDone);
       setIphoneToastState("hidden");
+    };
+  }, [screen]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (screen !== "oferta" && screen !== "pagamento") {
+      setIsOfferStickyVisible(false);
+      setIsPaymentStickyVisible(false);
+      return;
+    }
+
+    const isOffer = screen === "oferta";
+    const btnClass = isOffer ? ".offer-content-btn" : ".payment-content-btn";
+    const setSticky = isOffer ? setIsOfferStickyVisible : setIsPaymentStickyVisible;
+
+    let cleanup: (() => void) | undefined;
+    const timer = setTimeout(() => {
+      const buttons = Array.from(
+        document.querySelectorAll<HTMLElement>(btnClass),
+      );
+      if (!buttons.length) return;
+
+      const firstBtn = buttons[0];
+      const visibilityMap = new Map<HTMLElement, boolean>();
+      buttons.forEach((b) => visibilityMap.set(b, false));
+
+      const updateSticky = () => {
+        const anyVisible = Array.from(visibilityMap.values()).some(Boolean);
+        const firstRect = firstBtn.getBoundingClientRect();
+        const hasPassedFirst = firstRect.bottom < 0;
+        setSticky(!anyVisible && hasPassedFirst);
+      };
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            visibilityMap.set(
+              entry.target as HTMLElement,
+              entry.isIntersecting,
+            );
+          });
+          updateSticky();
+        },
+        { threshold: 0.1 },
+      );
+
+      buttons.forEach((b) => observer.observe(b));
+
+      const onScroll = () => {
+        updateSticky();
+      };
+      window.addEventListener("scroll", onScroll, { passive: true });
+
+      cleanup = () => {
+        observer.disconnect();
+        window.removeEventListener("scroll", onScroll);
+      };
+    }, 100);
+
+    return () => {
+      clearTimeout(timer);
+      if (cleanup) cleanup();
     };
   }, [screen]);
 
@@ -980,70 +1044,76 @@ export function Quiz() {
           </section>
         ) : null}
         {screen === "diagnostico" ? (
-          <section className="screen">
-            <h2>
-              {missing.length
-                ? `${name.trim().split(" ")[0] || "Você"}, seu diagnóstico está pronto`
-                : `${name.trim().split(" ")[0] || "Você"}, você já domina a base`}
-            </h2>
-            {missing.length ? (
-              <>
+          <>
+            <section className="screen screen-diagnostico-wrap">
+              <h2>
+                {missing.length
+                  ? `${name.trim().split(" ")[0] || "Você"}, seu diagnóstico está pronto`
+                  : `${name.trim().split(" ")[0] || "Você"}, você já domina a base`}
+              </h2>
+              {missing.length ? (
+                <>
+                  <p className="muted">
+                    Para vender com margem no Mercado Livre, você ainda precisa
+                    aprender estes pontos:
+                  </p>
+                  {missing.map((x) => (
+                    <Result key={x} good={false}>
+                      {x}
+                    </Result>
+                  ))}
+                  {mastered.length ? (
+                    <>
+                      <p className="eyebrow" style={{ marginTop: 24 }}>
+                        O QUE VOCÊ JÁ DOMINA
+                      </p>
+                      {mastered.map((x) => (
+                        <Result key={x} good>
+                          {x}
+                        </Result>
+                      ))}
+                    </>
+                  ) : null}
+                  <p className="two-paths-intro">
+                    Agora você sabe o que precisa aprender. Existem dois caminhos:
+                  </p>
+                  <div className="two-paths-container">
+                    <div className="path-card path-card-1">
+                      <span className="path-label">CAMINHO 1</span>
+                      <p className="path-text">
+                        Aprender cada ponto sozinho, procurando o conteúdo por conta própria e testando até acertar.
+                      </p>
+                    </div>
+                    <div className="path-card path-card-2">
+                      <span className="path-label">CAMINHO 2</span>
+                      <p className="path-text">
+                        Aprender todos os pontos em uma única plataforma, com o passo a passo de quem vende no Mercado Livre desde 2022.
+                      </p>
+                    </div>
+                  </div>
+                </>
+              ) : (
                 <p className="muted">
-                  Para vender com margem no Mercado Livre, você ainda precisa
-                  aprender estes pontos:
+                  O curso aprofunda os pontos em que a maioria trava depois das
+                  primeiras vendas: escolha de produto e controle de margem.
                 </p>
-                {missing.map((x) => (
-                  <Result key={x} good={false}>
-                    {x}
-                  </Result>
-                ))}
-                {mastered.length ? (
-                  <>
-                    <p className="eyebrow" style={{ marginTop: 24 }}>
-                      O QUE VOCÊ JÁ DOMINA
-                    </p>
-                    {mastered.map((x) => (
-                      <Result key={x} good>
-                        {x}
-                      </Result>
-                    ))}
-                  </>
-                ) : null}
-                <p className="two-paths-intro">
-                  Agora você sabe o que precisa aprender. Existem dois caminhos:
-                </p>
-                <div className="two-paths-container">
-                  <div className="path-card path-card-1">
-                    <span className="path-label">CAMINHO 1</span>
-                    <p className="path-text">
-                      Aprender cada ponto sozinho, procurando o conteúdo por conta própria e testando até acertar.
-                    </p>
-                  </div>
-                  <div className="path-card path-card-2">
-                    <span className="path-label">CAMINHO 2</span>
-                    <p className="path-text">
-                      Aprender todos os pontos em uma única plataforma, com o passo a passo de quem vende no Mercado Livre desde 2022.
-                    </p>
-                  </div>
-                </div>
-              </>
-            ) : (
-              <p className="muted">
-                O curso aprofunda os pontos em que a maioria trava depois das
-                primeiras vendas: escolha de produto e controle de margem.
-              </p>
-            )}
-            <button
-              className="btn-primary btn-course-single-line"
-              style={{ marginTop: 32 }}
-              onClick={showOffer}
-            >
-              QUERO O CURSO MÁQUINA DE VENDAS
-            </button>
-          </section>
+              )}
+            </section>
+            <aside className="fixed-cta-bar" aria-label="Avançar para a oferta">
+              <div className="fixed-cta-inner">
+                <button
+                  className="btn-primary btn-fixed-bar btn-course-single-line"
+                  onClick={showOffer}
+                >
+                  QUERO O CURSO MÁQUINA DE VENDAS
+                </button>
+              </div>
+            </aside>
+          </>
         ) : null}
         {screen === "oferta" ? (
-          <section className="screen offer-screen">
+          <>
+            <section className="screen offer-screen">
             <header className="offer-heading">
               <span className="eyebrow">SEU PRÓXIMO PASSO</span>
               <h2>
@@ -1107,7 +1177,7 @@ export function Quiz() {
               </div>
               <div style={{ marginTop: 24 }}>
                 <button
-                  className="btn-primary btn-course-single-line"
+                  className="btn-primary btn-course-single-line offer-content-btn content-action-btn"
                   onClick={goToValueQuestion}
                 >
                   QUERO O CURSO MÁQUINA DE VENDAS
@@ -1238,7 +1308,7 @@ export function Quiz() {
               </div>
               <div className="video-btn-wrap">
                 <button
-                  className="btn-primary btn-course-single-line"
+                  className="btn-primary btn-course-single-line offer-content-btn content-action-btn"
                   onClick={goToValueQuestion}
                 >
                   QUERO O CURSO MÁQUINA DE VENDAS
@@ -1291,13 +1361,27 @@ export function Quiz() {
             </section>
             <div style={{ marginTop: 32 }}>
               <button
-                className="btn-primary btn-course-single-line"
+                className="btn-primary btn-course-single-line offer-content-btn content-action-btn"
                 onClick={goToValueQuestion}
               >
                 QUERO O CURSO MÁQUINA DE VENDAS
               </button>
             </div>
           </section>
+          <aside
+            className={`sticky-cta-bar ${isOfferStickyVisible ? "is-active" : ""}`}
+            aria-label="Ação da oferta"
+          >
+            <div className="fixed-cta-inner">
+              <button
+                className="btn-primary btn-fixed-bar btn-course-single-line"
+                onClick={goToValueQuestion}
+              >
+                QUERO O CURSO MÁQUINA DE VENDAS
+              </button>
+            </div>
+          </aside>
+          </>
         ) : null}
         {screen === "pergunta_valor" ? (
           <section className="screen">
@@ -1344,135 +1428,162 @@ export function Quiz() {
           </section>
         ) : null}
         {screen === "pagamento" ? (
-          <section className="screen payment-screen">
-            {iphoneToastState !== "hidden" ? (
-              <div
-                className={`iphone-banner ${iphoneToastState === "showing" ? "is-showing" : "is-hiding"}`}
-                role="status"
-                aria-live="polite"
-              >
-                <div className="iphone-banner-icon">
-                  <Image
-                    src="/imagens/logo/icone-caixa.png"
-                    width={38}
-                    height={38}
-                    alt="Máquina de Vendas"
-                    priority
-                  />
+          <>
+            <section className="screen payment-screen">
+              {iphoneToastState !== "hidden" ? (
+                <div
+                  className={`iphone-banner ${iphoneToastState === "showing" ? "is-showing" : "is-hiding"}`}
+                  role="status"
+                  aria-live="polite"
+                >
+                  <div className="iphone-banner-icon">
+                    <Image
+                      src="/imagens/logo/icone-caixa.png"
+                      width={38}
+                      height={38}
+                      alt="Máquina de Vendas"
+                      priority
+                    />
+                  </div>
+                  <div className="iphone-banner-content">
+                    <span className="iphone-banner-app">MÁQUINA DE VENDAS</span>
+                    <span className="iphone-banner-text">
+                      <strong>{process.env.VENDAS_BASE || "177"}</strong> pessoas já compraram o curso
+                    </span>
+                  </div>
                 </div>
-                <div className="iphone-banner-content">
-                  <span className="iphone-banner-app">MÁQUINA DE VENDAS</span>
-                  <span className="iphone-banner-text">
-                    <strong>{process.env.VENDAS_BASE || "177"}</strong> pessoas já compraram o curso
+              ) : null}
+
+              <h1 className="payment-headline">
+                {valorResposta !== null ? (
+                  <>
+                    Você disse que pagaria R$&nbsp;{valorResposta.toLocaleString("pt-BR")}, mas o curso sai por{" "}
+                    <span className="yellow">menos de R$&nbsp;2 por dia</span>
+                  </>
+                ) : (
+                  <>
+                    O curso completo sai por{" "}
+                    <span className="yellow">menos de R$&nbsp;2 por dia</span>
+                  </>
+                )}
+              </h1>
+
+              <div className="offer-card payment-card">
+                <Image
+                  className="logo"
+                  src="/imagens/logo/logo-maquina-de-vendas-sm.webp"
+                  width={190}
+                  height={122}
+                  alt="Máquina de Vendas 2.0"
+                />
+                <h2>Máquina de Vendas 2.0</h2>
+                <div className="price-single-line">
+                  <span className="price-installment-label">12x de</span>
+                  <span className="price-installment-value">
+                    R$ {process.env.NEXT_PUBLIC_PRECO_PARCELA || "30,72"}
                   </span>
                 </div>
+                <p className="price-cash">
+                  ou R$ {process.env.NEXT_PUBLIC_PRECO_AVISTA || "297"} à vista
+                </p>
+                <button
+                  className="btn-primary payment-content-btn content-action-btn"
+                  onClick={checkout}
+                >
+                  QUERO PAGAR AGORA
+                </button>
+                <p className="lock">🔒 Acesso imediato após pagamento</p>
               </div>
-            ) : null}
 
-            <h1 className="payment-headline">
-              {valorResposta !== null ? (
-                <>
-                  Você disse que pagaria R$&nbsp;{valorResposta.toLocaleString("pt-BR")}, mas o curso sai por{" "}
-                  <span className="yellow">menos de R$&nbsp;2 por dia</span>
-                </>
-              ) : (
-                <>
-                  O curso completo sai por{" "}
-                  <span className="yellow">menos de R$&nbsp;2 por dia</span>
-                </>
-              )}
-            </h1>
+              <section className="payment-proofs-section">
+                <h3>
+                  <span className="yellow">Resultados</span> de quem aplica o método do Nathan
+                </h3>
+                <ProofCarousel items={offerProofs} />
+              </section>
 
-            <div className="offer-card payment-card">
-              <Image
-                className="logo"
-                src="/imagens/logo/logo-maquina-de-vendas-sm.webp"
-                width={190}
-                height={122}
-                alt="Máquina de Vendas 2.0"
-              />
-              <h2>Máquina de Vendas 2.0</h2>
-              <div className="price-single-line">
-                <span className="price-installment-label">12x de</span>
-                <span className="price-installment-value">
-                  R$ {process.env.NEXT_PUBLIC_PRECO_PARCELA || "30,72"}
-                </span>
+              <div className="payment-secondary-cta">
+                <button
+                  className="btn-primary payment-content-btn content-action-btn"
+                  onClick={checkout}
+                >
+                  QUERO PAGAR AGORA
+                </button>
+                <p className="lock">🔒 Acesso imediato após pagamento</p>
               </div>
-              <p className="price-cash">
-                ou R$ {process.env.NEXT_PUBLIC_PRECO_AVISTA || "297"} à vista
-              </p>
-              <button className="btn-primary" onClick={checkout}>
-                QUERO PAGAR AGORA
-              </button>
-              <p className="lock">🔒 Acesso imediato após pagamento</p>
-            </div>
 
-            <section className="payment-proofs-section">
-              <h3>
-                <span className="yellow">Resultados</span> de quem aplica o método do Nathan
-              </h3>
-              <ProofCarousel items={offerProofs} />
+              {showBuyerToast ? (
+                <aside className="buyer-toast" role="status" aria-live="polite">
+                  <span className="buyer-toast-dot" aria-hidden="true" />
+                  <span>
+                    {buyerInfo.latestBuyer} entrou no Máquina de Vendas
+                    {buyerInfo.timeAgo ? ` · há ${buyerInfo.timeAgo}` : ""}
+                  </span>
+                </aside>
+              ) : null}
             </section>
-
-            <div className="payment-secondary-cta">
-              <button className="btn-primary" onClick={checkout}>
-                QUERO PAGAR AGORA
-              </button>
-              <p className="lock">🔒 Acesso imediato após pagamento</p>
-            </div>
-
-            {showBuyerToast ? (
-              <aside className="buyer-toast" role="status" aria-live="polite">
-                <span className="buyer-toast-dot" aria-hidden="true" />
-                <span>
-                  {buyerInfo.latestBuyer} entrou no Máquina de Vendas
-                  {buyerInfo.timeAgo ? ` · há ${buyerInfo.timeAgo}` : ""}
-                </span>
-              </aside>
-            ) : null}
-          </section>
+            <aside
+              className={`sticky-cta-bar ${isPaymentStickyVisible ? "is-active" : ""}`}
+              aria-label="Ação de pagamento"
+            >
+              <div className="fixed-cta-inner">
+                <button
+                  className="btn-primary btn-fixed-bar"
+                  onClick={checkout}
+                >
+                  QUERO PAGAR AGORA
+                </button>
+              </div>
+            </aside>
+          </>
         ) : null}
         {screen === "mentoria" ? (
-          <section className="screen mentor-flow">
-            <div className="mentor-copy">
-              <span className="eyebrow">ACOMPANHAMENTO INDIVIDUAL</span>
-              <h2>
-                Pelo seu faturamento, você pode precisar de um acompanhamento
-                individual
-              </h2>
-              <p className="muted">
-                Quem já fatura acima de R$ 30 mil por mês costuma ter decisões
-                mais específicas sobre estoque, caixa e escala. Nesses casos, o
-                Nathan acompanha a operação de perto, na mentoria individual. Se
-                tiver interesse, preencha o formulário. O próprio Nathan entra
-                em contato com você.
-              </p>
-              <button className="btn-primary" onClick={mentoring}>
-                Quero falar sobre a mentoria
-              </button>
-              <p className="mentor-results-callout">
-                Veja abaixo os resultados de alguns mentorados do Nathan.
-              </p>
-            </div>
-            <Image
-              className="mentor-photo"
-              src="/imagens/nathan/nathan-recorte.webp"
-              width={680}
-              height={900}
-              alt="Nathan Ritter de braços cruzados"
-              priority
-            />
-            <section className="mentor-results">
-              <h3>
-                <span className="yellow">Resultados</span> dos mentorados do
-                Nathan
-              </h3>
-              <ProofCarousel items={mentoringProofs} />
+          <>
+            <section className="screen mentor-flow">
+              <div className="mentor-copy">
+                <span className="eyebrow">ACOMPANHAMENTO INDIVIDUAL</span>
+                <h2>
+                  Pelo seu faturamento, você pode precisar de um acompanhamento
+                  individual
+                </h2>
+                <p className="muted">
+                  Quem já fatura acima de R$ 30 mil por mês costuma ter decisões
+                  mais específicas sobre estoque, caixa e escala. Nesses casos, o
+                  Nathan acompanha a operação de perto, na mentoria individual. Se
+                  tiver interesse, preencha o formulário. O próprio Nathan entra
+                  em contato com você.
+                </p>
+                <p className="mentor-results-callout">
+                  Veja abaixo os resultados de alguns mentorados do Nathan.
+                </p>
+              </div>
+              <Image
+                className="mentor-photo"
+                src="/imagens/nathan/nathan-recorte.webp"
+                width={680}
+                height={900}
+                alt="Nathan Ritter de braços cruzados"
+                priority
+              />
+              <section className="mentor-results">
+                <h3>
+                  <span className="yellow">Resultados</span> dos mentorados do
+                  Nathan
+                </h3>
+                <ProofCarousel items={mentoringProofs} />
+              </section>
             </section>
-            <button className="btn-primary" onClick={mentoring}>
-              Quero falar sobre a mentoria
-            </button>
-          </section>
+            <aside className="fixed-cta-bar" aria-label="Ação da mentoria">
+              <div className="fixed-cta-inner">
+                <button
+                  className="btn-primary btn-fixed-bar"
+                  onClick={mentoring}
+                >
+                  Quero falar sobre a mentoria
+                </button>
+              </div>
+            </aside>
+          </>
         ) : null}
       </div>
     </main>
