@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Poppins, Sora } from "next/font/google";
+import { Sora } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 
@@ -9,12 +9,6 @@ const sora = Sora({
   weight: ["400", "700", "800"],
   display: "swap",
   preload: true,
-});
-const poppins = Poppins({
-  variable: "--font-poppins",
-  subsets: ["latin"],
-  weight: ["400", "600", "800"],
-  display: "swap",
 });
 const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
 
@@ -48,7 +42,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="pt-BR"
-      className={`${sora.variable} ${poppins.variable} antialiased`}
+      className={`${sora.variable} antialiased`}
     >
       <head>
         <link rel="preconnect" href="https://connect.facebook.net" crossOrigin="anonymous" />
