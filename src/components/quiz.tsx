@@ -851,41 +851,47 @@ export function Quiz() {
           <BackButton onClick={goBack} disabled={busy || Boolean(selected)} />
         ) : null}
         {screen === "inicio" ? (
-          <section className="screen screen-inicio" style={{ textAlign: "center" }}>
-            <span className="eyebrow">DIAGNÓSTICO GRATUITO</span>
-            <div className="print-container print-container-capa">
-              <div className="print-card print-card-capa">
-                <Image
-                  src={capaPrint.src}
-                  alt={capaPrint.alt}
-                  width={capaPrint.width}
-                  height={capaPrint.height}
-                  priority
-                  className="print-img"
-                />
+          <>
+            <section className="screen screen-inicio">
+              <span className="eyebrow eyebrow-capa">DIAGNÓSTICO GRATUITO</span>
+              <h1 className="headline-capa">
+                Descubra em 5 perguntas se você está{" "}
+                <span className="yellow">
+                  pronto para vender no Mercado Livre
+                </span>{" "}
+                sem quebrar nos primeiros 3 meses
+              </h1>
+              <p className="subtitle-capa">
+                O diagnóstico mostra o que você já sabe e o que ainda falta para
+                vender com margem desde o primeiro produto.
+              </p>
+              <div className="print-container print-container-capa">
+                <div className="print-card print-card-capa">
+                  <Image
+                    src={capaPrint.src}
+                    alt={capaPrint.alt}
+                    width={capaPrint.width}
+                    height={capaPrint.height}
+                    sizes="(max-width: 600px) 100vw, 560px"
+                    priority
+                    className="print-img"
+                  />
+                </div>
+                {renderPrintLegend(capaPrint, true)}
               </div>
-              {renderPrintLegend(capaPrint, true)}
-            </div>
-            <h1>
-              Descubra em 5 perguntas se você está{" "}
-              <span className="yellow">
-                pronto para vender no Mercado Livre
-              </span>{" "}
-              sem quebrar nos primeiros 3 meses
-            </h1>
-            <p className="muted">
-              O diagnóstico mostra o que você já sabe e o que ainda falta para
-              vender com margem desde o primeiro produto.
-            </p>
-            <div style={{ marginTop: 20 }}>
-              <button
-                className="btn-primary"
-                onClick={() => setScreen("cadastro")}
-              >
-                Fazer o diagnóstico
-              </button>
-            </div>
-          </section>
+            </section>
+            <aside className="fixed-cta-bar" aria-label="Ação da capa">
+              <div className="fixed-cta-inner">
+                <button
+                  className="btn-primary btn-capa-fixed"
+                  onClick={() => setScreen("cadastro")}
+                >
+                  FAZER O DIAGNÓSTICO
+                </button>
+                <p className="fixed-cta-subline">Leva menos de 1 minuto</p>
+              </div>
+            </aside>
+          </>
         ) : null}
         {screen === "cadastro" ? (
           <form className="screen" onSubmit={submitLead}>
