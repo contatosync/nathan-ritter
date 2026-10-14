@@ -145,6 +145,7 @@ Os textos abaixo estão aprovados. Não reescrever sem pedido explícito.
 - **Headline:** Descubra em 5 perguntas se você está pronto para vender no Mercado Livre sem quebrar nos primeiros 3 meses
   - Destaque em amarelo: "pronto para vender no Mercado Livre"
 - **Subtítulo:** O diagnóstico mostra o que você já sabe e o que ainda falta para vender com margem desde o primeiro produto.
+- **Print real:** `capa-480k-faturamento-30-dias.webp` posicionado entre o subtítulo e o botão de ação. Card com cantos de 16 px, borda amarela fina (`rgba(255, 212, 0, 0.45)`), brilho amarelo suave (`box-shadow`), leve inclinação de -2° (desativada sob `prefers-reduced-motion`) e chip no canto inferior esquerdo com fundo `#0A0F1C` a 85% e texto `"Painel real: R$ 480 mil em 30 dias"` ("R$ 480 mil" em amarelo). Altura máxima de 190 px, ajustada responsivamente para garantir que o botão principal permaneça 100% visível sem rolagem em 375×667.
 - **Botão:** FAZER O DIAGNÓSTICO
 
 ### Tela 2 · Nome e WhatsApp
@@ -152,6 +153,7 @@ Os textos abaixo estão aprovados. Não reescrever sem pedido explícito.
 - **Campos:** Seu nome · Seu WhatsApp com DDD
 - **Botão:** CONTINUAR
 - **Rodapé:** Seus dados ficam só com a equipe do Nathan.
+- **Sem imagem/print:** mantida estritamente limpa e focada no cadastro.
 
 ### Tela 3 · Você já vende no Mercado Livre?
 - Ainda não
@@ -166,13 +168,15 @@ Os textos abaixo estão aprovados. Não reescrever sem pedido explícito.
 ### Telas 5 a 9 · As 5 perguntas
 Respostas iguais para todas: **Sim, sei fazer** · **Mais ou menos** · **Não sei**
 
-| # | Pergunta | Ponto exibido no diagnóstico |
-|---|---|---|
-| 1 | Você sabe encontrar um produto com procura e pouca concorrência no Mercado Livre? | Como encontrar produtos com procura e pouca concorrência |
-| 2 | Você sabe encontrar fornecedores nacionais confiáveis para revender? | Como encontrar fornecedores nacionais confiáveis |
-| 3 | Você sabe calcular a margem antes de vender, considerando taxa do Mercado Livre, frete e imposto? | Como calcular a margem antes de vender |
-| 4 | Você sabe montar um anúncio que apareça na busca do Mercado Livre (título, fotos e ficha técnica)? | Como montar anúncios que aparecem na busca |
-| 5 | Você sabe quanto precisa investir para começar e como girar o estoque sem travar o dinheiro? | Como planejar o investimento inicial e o giro de estoque |
+Cada pergunta exibe um print real demonstrativo imediatamente acima do título (`<h2>`), com altura de 140 px em 375 px (adaptada a 120 px em telas compactas de até 720 px de altura para que as 3 opções de resposta fiquem visíveis sem rolagem num iPhone de 375×667), cantos arredondados de 14 px, borda `--border`, chip de legenda no canto inferior esquerdo e animação de entrada fade + 8 px de subida (200 ms). A imagem da próxima pergunta é pré-carregada em segundo plano enquanto a atual é exibida para garantir transição suave em até 200 ms.
+
+| # | Pergunta | Print exibido | Legenda (chip) | Posição | Ponto exibido no diagnóstico |
+|---|---|---|---|---|---|
+| 1 | Você sabe encontrar um produto com procura e pouca concorrência no Mercado Livre? | `p1-produto-campeao-chocadeira.webp` | Produto validado: 1.194 avaliações | center | Como encontrar produtos com procura e pouca concorrência |
+| 2 | Você sabe encontrar fornecedores nacionais confiáveis para revender? | `p2-fornecedores-nacionais.webp` | 13 fornecedores nacionais para um único produto | top | Como encontrar fornecedores nacionais confiáveis |
+| 3 | Você sabe calcular a margem antes de vender, considerando taxa do Mercado Livre, frete e imposto? | `p3-painel-lucro-margem.webp` | Lucro e margem acompanhados em cada venda | center | Como calcular a margem antes de vender |
+| 4 | Você sabe montar um anúncio que apareça na busca do Mercado Livre (título, fotos e ficha técnica)? | `p4-campanhas-roas-receita.webp` | Anúncios com retorno acima de 16x | center | Como montar anúncios que aparecem na busca |
+| 5 | Você sabe quanto precisa investir para começar e como girar o estoque sem travar o dinheiro? | `p5-roas-retorno-investimento.webp` | ROAS de 1.055x em uma campanha | center | Como planejar o investimento inicial e o giro de estoque |
 
 ### Tela 10 · Diagnóstico
 **Lógica:** todo item com resposta "Mais ou menos" ou "Não sei" entra na lista de pontos a estudar (card com X vermelho). Itens com "Sim, sei fazer" entram na lista do que a pessoa já domina (card com check amarelo).
@@ -326,6 +330,11 @@ O degradê amarelo (`#FFE100` → `#F5B700`) fica restrito ao logo e ao preço e
 - **Barra de progresso:** amarela, com a seta do logo na ponta. Texto "Pergunta X de 5".
 - **Card de diagnóstico:** X vermelho em círculo vermelho escuro (pontos a estudar) e check amarelo (o que já domina).
 - **Faixa de resultados:** fundo amarelo, texto preto em caixa alta, rolagem horizontal.
+- **Cards de prints reais (Capa e Perguntas):**
+  - **Capa:** card com cantos de 16 px, borda amarela fina (`rgba(255, 212, 0, 0.45)`), brilho amarelo suave (`box-shadow`), leve inclinação (-2°), chip de legenda no canto inferior esquerdo com fundo `#0A0F1C` a 85% e destaque no faturamento, altura máxima de 190 px adaptada para 375×667.
+  - **Perguntas (P1 a P5):** container posicionado imediatamente acima do `<h2>`, altura 140 px (120 px em telas compactas <= 720 px), cantos de 14 px, borda `--border`, chip de legenda no canto inferior esquerdo, animação de entrada com fade e subida de 8 px em 200 ms.
+  - **Pré-carregamento contínuo:** a imagem da próxima pergunta é pré-carregada em background via `Image` no navegador para garantir troca sem latência (<= 200 ms).
+  - **Acessibilidade:** sob `prefers-reduced-motion: reduce`, anula inclinação e animações de entrada.
 
 ### Logo
 - O arquivo atual tem fundo azul-marinho embutido (`#0B1226`). Pedir versão PNG transparente ou SVG. Até lá, usar essa cor exata atrás do logo.

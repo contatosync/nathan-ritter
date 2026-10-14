@@ -1283,3 +1283,167 @@ h2 {
   line-height: 1.4;
   margin: 0;
 }
+
+/* Prints Reais no Quiz (Capa e Perguntas) */
+.capa-print-card-wrap {
+  width: 100%;
+  margin: 14px auto 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  perspective: 1000px;
+}
+
+.capa-print-card {
+  position: relative;
+  width: calc(100% - 16px);
+  max-width: 440px;
+  height: 175px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 212, 0, 0.45);
+  box-shadow: 0 8px 30px rgba(255, 212, 0, 0.15);
+  transform: rotate(-2deg);
+  background: #0a0f1c;
+  transition: transform 0.2s ease;
+}
+
+.capa-print-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.question-print-wrap {
+  position: relative;
+  width: 100%;
+  height: 140px;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: #0a0f1c;
+  margin: 12px 0 14px;
+  animation: printEntry 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.question-print-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.print-chip {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  z-index: 2;
+  background: rgba(10, 15, 28, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 1.25;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+}
+
+@keyframes printEntry {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Otimização para viewports compactos (ex: iPhone SE / 375x667) */
+@media (max-height: 720px) and (max-width: 600px) {
+  .quiz-content {
+    padding-top: 14px;
+    padding-bottom: 16px;
+  }
+  .screen-inicio .eyebrow {
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+  }
+  .screen-inicio .logo-hero {
+    width: min(44vw, 160px);
+    margin: 4px auto 6px;
+  }
+  .screen-inicio h1 {
+    font-size: clamp(1.1rem, 4.4vw, 1.35rem);
+    line-height: 1.15;
+    margin: 6px 0;
+  }
+  .screen-inicio p.muted {
+    font-size: 0.8rem;
+    line-height: 1.3;
+  }
+  .capa-print-card-wrap {
+    margin: 8px auto;
+  }
+  .capa-print-card {
+    height: 140px;
+  }
+  .screen-inicio .btn-primary {
+    min-height: 48px;
+    padding: 12px 20px;
+    font-size: 0.95rem;
+  }
+  .screen-inicio div[style*="marginTop"] {
+    margin-top: 10px !important;
+  }
+
+  .logo-small {
+    width: 65px;
+    margin-bottom: 8px;
+  }
+  .btn-back {
+    margin: 0 0 6px;
+    padding: 2px;
+  }
+  .screen-pergunta {
+    justify-content: flex-start;
+  }
+  .screen-pergunta h2 {
+    font-size: clamp(1.05rem, 4vw, 1.25rem);
+    line-height: 1.2;
+    margin: 8px 0;
+  }
+  .question-print-wrap {
+    height: 120px;
+    margin: 8px 0;
+  }
+  .answers {
+    gap: 8px;
+    margin: 10px 0;
+  }
+  .answer {
+    padding: 12px 16px;
+    font-size: 0.92rem;
+    border-radius: 14px;
+  }
+}
+
+/* Acessibilidade: prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .capa-print-card {
+    transform: none !important;
+    transition: none !important;
+  }
+  .question-print-wrap {
+    animation: none !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+

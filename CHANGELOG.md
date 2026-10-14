@@ -14,6 +14,18 @@ Formato de cada entrada:
 
 ---
 
+## 2026-10-13 23:05 · Antigravity
+**O que mudou:** inserção de prints reais no quiz (Capa e Perguntas P1 a P5):
+- Criação do módulo de configuração isolado `src/config/prints-quiz.ts` mapeando arquivo, legenda com chip, destaque amarelo, alt descritivo e alinhamento de imagem.
+- **Tela 1 (Capa):** print do painel de faturamento (`capa-480k-faturamento-30-dias.webp`) posicionado entre o subtítulo e o botão de ação em card com cantos de 16 px, borda amarela fina, brilho suave (`box-shadow`), leve inclinação de -2° e chip com legenda "Painel real: R$ 480 mil em 30 dias" ("R$ 480 mil" em amarelo). Altura máxima de 190 px, otimizada para manter o botão 100% visível sem rolagem em viewports compactos (375×667).
+- **Tela 2 (Cadastro):** mantida limpa e sem imagem, focada exclusivamente na captura de nome e WhatsApp.
+- **Telas 5 a 9 (Perguntas P1 a P5):** prints reais posicionados imediatamente acima do título da pergunta com cantos de 14 px, borda `--border`, chip de legenda no canto inferior esquerdo e `object-position: top` na P2 (fornecedores nacionais). As 3 opções de resposta permanecem visíveis sem rolagem em 375×667.
+- **Pré-carregamento e animação:** pré-carregamento contínuo em background da próxima imagem garantindo troca instantânea (< 200 ms); leve animação de entrada com fade e subida de 8 px (200 ms) junto com a pergunta; respeito integral a `prefers-reduced-motion` (desativação de inclinação e animações).
+- Atualização das seções 5 e 6 de `ESPECIFICACAO.md`, documentação em `docs/rodada-antigravity-prints.md` e changelog.
+**Arquivos:** `src/config/prints-quiz.ts`, `src/components/quiz.tsx`, `src/app/globals.css`, `ESPECIFICACAO.md`, `CHANGELOG.md`, `docs/rodada-antigravity-prints.md`.
+**Recursos externos criados/alterados:** nenhum. Todos os recursos usam prefixo `NR`.
+**Pendências:** nenhuma.
+
 ## 2026-10-13 22:48 · Antigravity
 **O que mudou:** ajuste na headline da Tela 12 (Pagamento):
 - Nova redação com resposta da pergunta de valor: "Você disse que pagaria R$&nbsp;{valor}, mas o curso sai por menos de R$&nbsp;2 por dia" ("menos de R$&nbsp;2 por dia" em amarelo), válida para as 4 opções (R$ 1.500, R$ 1.000, R$ 600, R$ 300).

@@ -12,6 +12,11 @@ import {
   ProofCarousel,
   ProofItem,
 } from "./carousel";
+import {
+  capaPrint,
+  questionPrints,
+  QuizPrintItem,
+} from "@/config/prints-quiz";
 type Answer = "sim" | "mais_ou_menos" | "nao";
 type QuizAnswers = Partial<Record<`p${1 | 2 | 3 | 4 | 5}`, Answer>>;
 type Screen =
@@ -209,6 +214,25 @@ function normalizePhone(value: string) {
 function validPhone(value: string) {
   return /^55\d{10,11}$/.test(normalizePhone(value));
 }
+function renderPrintChip(item: QuizPrintItem) {
+  if (item.legendaHighlight && item.legenda.includes(item.legendaHighlight)) {
+    const parts = item.legenda.split(item.legendaHighlight);
+    return (
+      <div className="print-chip">
+        <span>
+          {parts[0]}
+          <span className="yellow">{item.legendaHighlight}</span>
+          {parts[1]}
+        </span>
+      </div>
+    );
+  }
+  return (
+    <div className="print-chip">
+      <span>{item.legenda}</span>
+    </div>
+  );
+}
 export function Quiz() {
   const [screen, setScreen] = useState<Screen>("inicio");
   const [name, setName] = useState("");
@@ -317,6 +341,18 @@ export function Quiz() {
     },
     [],
   );
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (screen === "inicio" || screen === "cadastro" || screen === "ja_vende") {
+      const img = new window.Image();
+      img.src = questionPrints[0].src;
+    }
+    if (screen === "pergunta" && question < questionPrints.length - 1) {
+      const nextImg = new window.Image();
+      nextImg.src = questionPrints[question + 1].src;
+    }
+  }, [screen, question]);
+
   useEffect(() => {
     const p = new URLSearchParams(location.search);
     for (const key of [
@@ -816,7 +852,7 @@ export function Quiz() {
           <BackButton onClick={goBack} disabled={busy || Boolean(selected)} />
         ) : null}
         {screen === "inicio" ? (
-          <section className="screen" style={{ textAlign: "center" }}>
+          <section className="screen screen-inicio" style={{ textAlign: "center" }}>
             <span className="eyebrow">DIAGNÓSTICO GRATUITO</span>
             <Image
               className="logo logo-hero"
@@ -837,7 +873,20 @@ export function Quiz() {
               O diagnóstico mostra o que você já sabe e o que ainda falta para
               vender com margem desde o primeiro produto.
             </p>
-            <div style={{ marginTop: 28 }}>
+            <div className="capa-print-card-wrap">
+              <div className="capa-print-card">
+                <Image
+                  src={capaPrint.src}
+                  alt={capaPrint.alt}
+                  width={800}
+                  height={500}
+                  priority
+                  className="capa-print-img"
+                />
+                {renderPrintChip(capaPrint)}
+              </div>
+            </div>
+            <div style={{ marginTop: 24 }}>
               <button
                 className="btn-primary"
                 onClick={() => setScreen("cadastro")}
@@ -904,8 +953,23 @@ export function Quiz() {
           />
         ) : null}
         {screen === "pergunta" ? (
-          <section className="screen">
+          <section className="screen screen-pergunta">
             <Progress current={question + 1} />
+            <div key={question} className="question-print-wrap">
+              <Image
+                src={questionPrints[question].src}
+                alt={questionPrints[question].alt}
+                width={800}
+                height={500}
+                loading="lazy"
+                style={{
+                  objectPosition:
+                    questionPrints[question].objectPosition || "center",
+                }}
+                className="question-print-img"
+              />
+              {renderPrintChip(questionPrints[question])}
+            </div>
             <h2>{questions[question][0]}</h2>
             <div className="answers">
               {answerLabels.map(([v, l]) => (
