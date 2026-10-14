@@ -214,22 +214,21 @@ function normalizePhone(value: string) {
 function validPhone(value: string) {
   return /^55\d{10,11}$/.test(normalizePhone(value));
 }
-function renderPrintChip(item: QuizPrintItem) {
-  if (item.legendaHighlight && item.legenda.includes(item.legendaHighlight)) {
-    const parts = item.legenda.split(item.legendaHighlight);
-    return (
-      <div className="print-chip">
-        <span>
-          {parts[0]}
-          <span className="yellow">{item.legendaHighlight}</span>
-          {parts[1]}
-        </span>
-      </div>
-    );
-  }
+function renderPrintLegend(item: QuizPrintItem, isCapa = false) {
   return (
-    <div className="print-chip">
-      <span>{item.legenda}</span>
+    <div className={`print-legend ${isCapa ? "print-legend-capa" : ""}`}>
+      <span className="print-legend-dot" aria-hidden="true" />
+      <span>
+        {item.legendaHighlight && item.legenda.includes(item.legendaHighlight) ? (
+          <>
+            {item.legenda.split(item.legendaHighlight)[0]}
+            <span className="yellow">{item.legendaHighlight}</span>
+            {item.legenda.split(item.legendaHighlight)[1]}
+          </>
+        ) : (
+          item.legenda
+        )}
+      </span>
     </div>
   );
 }
@@ -854,14 +853,19 @@ export function Quiz() {
         {screen === "inicio" ? (
           <section className="screen screen-inicio" style={{ textAlign: "center" }}>
             <span className="eyebrow">DIAGNÓSTICO GRATUITO</span>
-            <Image
-              className="logo logo-hero"
-              src="/imagens/logo/logo-maquina-de-vendas-md.webp"
-              width={720}
-              height={460}
-              alt="Máquina de Vendas 2.0"
-              priority
-            />
+            <div className="print-container print-container-capa">
+              <div className="print-card print-card-capa">
+                <Image
+                  src={capaPrint.src}
+                  alt={capaPrint.alt}
+                  width={capaPrint.width}
+                  height={capaPrint.height}
+                  priority
+                  className="print-img"
+                />
+              </div>
+              {renderPrintLegend(capaPrint, true)}
+            </div>
             <h1>
               Descubra em 5 perguntas se você está{" "}
               <span className="yellow">
@@ -873,20 +877,7 @@ export function Quiz() {
               O diagnóstico mostra o que você já sabe e o que ainda falta para
               vender com margem desde o primeiro produto.
             </p>
-            <div className="capa-print-card-wrap">
-              <div className="capa-print-card">
-                <Image
-                  src={capaPrint.src}
-                  alt={capaPrint.alt}
-                  width={800}
-                  height={500}
-                  priority
-                  className="capa-print-img"
-                />
-                {renderPrintChip(capaPrint)}
-              </div>
-            </div>
-            <div style={{ marginTop: 24 }}>
+            <div style={{ marginTop: 20 }}>
               <button
                 className="btn-primary"
                 onClick={() => setScreen("cadastro")}
@@ -955,20 +946,18 @@ export function Quiz() {
         {screen === "pergunta" ? (
           <section className="screen screen-pergunta">
             <Progress current={question + 1} />
-            <div key={question} className="question-print-wrap">
-              <Image
-                src={questionPrints[question].src}
-                alt={questionPrints[question].alt}
-                width={800}
-                height={500}
-                loading="lazy"
-                style={{
-                  objectPosition:
-                    questionPrints[question].objectPosition || "center",
-                }}
-                className="question-print-img"
-              />
-              {renderPrintChip(questionPrints[question])}
+            <div key={question} className="print-container question-print-container">
+              <div className="print-card question-print-card">
+                <Image
+                  src={questionPrints[question].src}
+                  alt={questionPrints[question].alt}
+                  width={questionPrints[question].width}
+                  height={questionPrints[question].height}
+                  loading="lazy"
+                  className="print-img"
+                />
+              </div>
+              {renderPrintLegend(questionPrints[question])}
             </div>
             <h2>{questions[question][0]}</h2>
             <div className="answers">

@@ -14,6 +14,16 @@ Formato de cada entrada:
 
 ---
 
+## 2026-10-13 23:45 · Antigravity
+**O que mudou:** ajustes nos prints reais do quiz (Capa e Perguntas P1 a P5):
+- **Tela 1 (Capa):** remoção do logo do curso da capa; inserção do novo print reto `capa-painel-30-dias.webp` (900×494, sem rotação/transform) no lugar do logo; nova ordem de elementos: rótulo DIAGNÓSTICO GRATUITO → print → headline → subtítulo → botão FAZER O DIAGNÓSTICO; remoção do chip sobre a imagem e adição de legenda externa logo abaixo do card (12 px, `--muted`, ponto amarelo antes e "R$ 104 mil" em amarelo); remoção do arquivo `capa-480k-faturamento-30-dias.webp`.
+- **Telas 5 a 9 (Perguntas):** substituição de todas as imagens pelo novo formato recortado 860×351 (~2,45:1), exibidas inteiras sem corte (`object-fit: contain` / natural aspect ratio) e remoção dos chips de sobreposição, substituídos por legenda externa logo abaixo de cada card com texto 12 px em `--muted` precedido por ponto amarelo; atualização das imagens e legendas (P1: `p1-produto-campeao-chocadeira.webp`, P2: `p2-fornecedores-nacionais.webp`, P3: `p3-lucro-margem-20.webp` com legenda "Margem de 20% acompanhada no painel", P4: `p4-campanhas-roas-receita.webp`, P5: `p5-roas-retorno-investimento.webp`); remoção do arquivo depreciado `p3-painel-lucro-margem.webp`.
+- **Responsividade e Aceite em 375×667:** botão da capa e as 3 opções de cada pergunta visíveis sem qualquer rolagem; transição entre perguntas mantida em até 200 ms via pré-carregamento.
+- Atualização de `src/config/prints-quiz.ts`, `src/components/quiz.tsx`, `src/app/globals.css`, `ESPECIFICACAO.md` (seções 5 e 6) e changelog.
+**Arquivos:** `src/config/prints-quiz.ts`, `src/components/quiz.tsx`, `src/app/globals.css`, `ESPECIFICACAO.md`, `CHANGELOG.md`, `public/imagens/prints-reais/*`.
+**Recursos externos criados/alterados:** nenhum. Todos os recursos usam prefixo `NR`.
+**Pendências:** nenhuma.
+
 ## 2026-10-13 23:05 · Antigravity
 **O que mudou:** inserção de prints reais no quiz (Capa e Perguntas P1 a P5):
 - Criação do módulo de configuração isolado `src/config/prints-quiz.ts` mapeando arquivo, legenda com chip, destaque amarelo, alt descritivo e alinhamento de imagem.

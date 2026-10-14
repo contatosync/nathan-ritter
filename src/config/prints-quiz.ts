@@ -2,20 +2,22 @@ export interface QuizPrintItem {
   id: string;
   arquivo: string;
   src: string;
+  width: number;
+  height: number;
   legenda: string;
   legendaHighlight?: string;
   alt: string;
-  objectPosition?: string;
 }
 
 export const capaPrint: QuizPrintItem = {
   id: "capa",
-  arquivo: "capa-480k-faturamento-30-dias.webp",
-  src: "/imagens/prints-reais/capa-480k-faturamento-30-dias.webp",
-  legenda: "Painel real: R$ 480 mil em 30 dias",
-  legendaHighlight: "R$ 480 mil",
-  alt: "Painel de vendas com faturamento de R$ 480 mil em 30 dias",
-  objectPosition: "center",
+  arquivo: "capa-painel-30-dias.webp",
+  src: "/imagens/prints-reais/capa-painel-30-dias.webp",
+  width: 900,
+  height: 494,
+  legenda: "Painel real: R$ 104 mil de lucro bruto em 30 dias",
+  legendaHighlight: "R$ 104 mil",
+  alt: "Painel real com R$ 104 mil de lucro bruto em 30 dias no Mercado Livre",
 };
 
 export const questionPrints: QuizPrintItem[] = [
@@ -23,40 +25,45 @@ export const questionPrints: QuizPrintItem[] = [
     id: "p1",
     arquivo: "p1-produto-campeao-chocadeira.webp",
     src: "/imagens/prints-reais/p1-produto-campeao-chocadeira.webp",
+    width: 860,
+    height: 351,
     legenda: "Produto validado: 1.194 avaliações",
-    alt: "Produto validado com 1.194 avaliações no Mercado Livre",
-    objectPosition: "center",
+    alt: "Produto validado: 1.194 avaliações no Mercado Livre",
   },
   {
     id: "p2",
     arquivo: "p2-fornecedores-nacionais.webp",
     src: "/imagens/prints-reais/p2-fornecedores-nacionais.webp",
+    width: 860,
+    height: 351,
     legenda: "13 fornecedores nacionais para um único produto",
     alt: "13 fornecedores nacionais para um único produto",
-    objectPosition: "top",
   },
   {
     id: "p3",
-    arquivo: "p3-painel-lucro-margem.webp",
-    src: "/imagens/prints-reais/p3-painel-lucro-margem.webp",
-    legenda: "Lucro e margem acompanhados em cada venda",
-    alt: "Painel com lucro e margem acompanhados em cada venda",
-    objectPosition: "center",
+    arquivo: "p3-lucro-margem-20.webp",
+    src: "/imagens/prints-reais/p3-lucro-margem-20.webp",
+    width: 860,
+    height: 351,
+    legenda: "Margem de 20% acompanhada no painel",
+    alt: "Margem de 20% acompanhada no painel",
   },
   {
     id: "p4",
     arquivo: "p4-campanhas-roas-receita.webp",
     src: "/imagens/prints-reais/p4-campanhas-roas-receita.webp",
+    width: 860,
+    height: 351,
     legenda: "Anúncios com retorno acima de 16x",
-    alt: "Campanhas de anúncios com retorno acima de 16x no Mercado Livre",
-    objectPosition: "center",
+    alt: "Anúncios com retorno acima de 16x no Mercado Livre",
   },
   {
     id: "p5",
     arquivo: "p5-roas-retorno-investimento.webp",
     src: "/imagens/prints-reais/p5-roas-retorno-investimento.webp",
+    width: 860,
+    height: 351,
     legenda: "ROAS de 1.055x em uma campanha",
-    alt: "Campanha com ROAS de 1.055x de retorno sobre investimento",
-    objectPosition: "center",
+    alt: "ROAS de 1.055x em uma campanha",
   },
 ];
