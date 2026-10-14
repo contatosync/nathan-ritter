@@ -355,6 +355,131 @@ export function Quiz() {
     },
     [],
   );
+
+  const saveSession = useCallback(
+    (
+      s: Screen,
+      q: number,
+      a: QuizAnswers,
+      n: string,
+      p: string,
+      sid: string,
+      v: number | null,
+    ) => {
+      if (typeof window === "undefined") return;
+      try {
+        sessionStorage.setItem(
+          "nr_quiz_state",
+          JSON.stringify({
+            screen: s,
+            question: q,
+            answers: a,
+            name: n,
+            phone: p,
+            sessionId: sid,
+            valorResposta: v,
+          }),
+        );
+      } catch {}
+    },
+    [],
+  );
+
+  const pushScreenState = useCallback(
+    (
+      nextScreen: Screen,
+      nextQuestion = 0,
+      overrideAnswers?: QuizAnswers,
+      overrideName?: string,
+      overridePhone?: string,
+      overrideSessionId?: string,
+      overrideValor?: number | null,
+    ) => {
+      const curAnswers = overrideAnswers ?? answers;
+      const curName = overrideName ?? name;
+      const curPhone = overridePhone ?? phone;
+      const curSessionId = overrideSessionId ?? sessionId;
+      const curValor =
+        overrideValor !== undefined ? overrideValor : valorResposta;
+
+      setScreen(nextScreen);
+      setQuestion(nextQuestion);
+      if (typeof window !== "undefined") {
+        window.history.pushState(
+          { screen: nextScreen, question: nextQuestion },
+          "",
+        );
+        saveSession(
+          nextScreen,
+          nextQuestion,
+          curAnswers,
+          curName,
+          curPhone,
+          curSessionId,
+          curValor,
+        );
+      }
+    },
+    [answers, name, phone, sessionId, valorResposta, saveSession],
+  );
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    try {
+      const saved = sessionStorage.getItem("nr_quiz_state");
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed && parsed.screen) {
+          setScreen(parsed.screen);
+          if (typeof parsed.question === "number") setQuestion(parsed.question);
+          if (parsed.answers) setAnswers(parsed.answers);
+          if (parsed.name) setName(parsed.name);
+          if (parsed.phone) setPhone(parsed.phone);
+          if (parsed.sessionId) setSessionId(parsed.sessionId);
+          if (parsed.valorResposta !== undefined) {
+            setValorResposta(parsed.valorResposta);
+          }
+          window.history.replaceState(
+            { screen: parsed.screen, question: parsed.question || 0 },
+            "",
+          );
+          return;
+        }
+      }
+    } catch {}
+
+    if (!window.history.state || !window.history.state.screen) {
+      window.history.replaceState({ screen: "inicio", question: 0 }, "");
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const onPop = (e: PopStateEvent) => {
+      if (e.state && e.state.screen) {
+        setScreen(e.state.screen);
+        setQuestion(e.state.question || 0);
+        setSelected(undefined);
+        setNameError("");
+        setPhoneError("");
+        saveSession(
+          e.state.screen,
+          e.state.question || 0,
+          answers,
+          name,
+          phone,
+          sessionId,
+          valorResposta,
+        );
+      }
+    };
+
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, [answers, name, phone, sessionId, valorResposta, saveSession]);
+
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (screen === "inicio" || screen === "cadastro" || screen === "ja_vende") {
@@ -706,7 +831,7 @@ export function Quiz() {
       }),
     });
     setBusy(false);
-    setScreen("ja_vende");
+    pushScreenState("ja_vende", 0, answers, name.trim(), normalized, id);
   }
   function chooseSeller(value: "sim" | "nao") {
     if (selected !== undefined || busy) return;
@@ -714,30 +839,67 @@ export function Quiz() {
     record("ja_vende", 20, { ja_vende: value });
     setTimeout(() => {
       setSelected(undefined);
-      if (value === "sim") setScreen("faturamento");
+      if (value === "sim") pushScreenState("faturamento");
       else startQuestions();
     }, 150);
   }
   function startQuestions() {
-    setQuestion(0);
-    setScreen("pergunta");
+    pushScreenState("pergunta", 0);
   }
-  function goBack() {
-    if (selected !== undefined || busy) return;
+  const goBackInternal = useCallback(() => {
     setNameError("");
     setPhoneError("");
-    if (screen === "cadastro") setScreen("inicio");
-    else if (screen === "ja_vende") setScreen("cadastro");
-    else if (screen === "faturamento") setScreen("ja_vende");
-    else if (screen === "pergunta") {
-      if (question > 0) setQuestion((q) => q - 1);
-      else setScreen("ja_vende");
-    } else if (screen === "diagnostico") setScreen("pergunta");
-    else if (screen === "oferta") setScreen("diagnostico");
-    else if (screen === "pergunta_valor") setScreen("oferta");
-    else if (screen === "pagamento") setScreen("pergunta_valor");
-    else if (screen === "mentoria") setScreen("faturamento");
-  }
+    setSelected(undefined);
+    if (screen === "cadastro") {
+      setScreen("inicio");
+      saveSession("inicio", 0, answers, name, phone, sessionId, valorResposta);
+    } else if (screen === "ja_vende") {
+      setScreen("cadastro");
+      saveSession("cadastro", 0, answers, name, phone, sessionId, valorResposta);
+    } else if (screen === "faturamento") {
+      setScreen("ja_vende");
+      saveSession("ja_vende", 0, answers, name, phone, sessionId, valorResposta);
+    } else if (screen === "pergunta") {
+      if (question > 0) {
+        setQuestion((q) => q - 1);
+        saveSession("pergunta", question - 1, answers, name, phone, sessionId, valorResposta);
+      } else {
+        setScreen("ja_vende");
+        saveSession("ja_vende", 0, answers, name, phone, sessionId, valorResposta);
+      }
+    } else if (screen === "diagnostico") {
+      setQuestion(4);
+      setScreen("pergunta");
+      saveSession("pergunta", 4, answers, name, phone, sessionId, valorResposta);
+    } else if (screen === "oferta") {
+      setScreen("diagnostico");
+      saveSession("diagnostico", 4, answers, name, phone, sessionId, valorResposta);
+    } else if (screen === "pergunta_valor") {
+      setScreen("oferta");
+      saveSession("oferta", 0, answers, name, phone, sessionId, valorResposta);
+    } else if (screen === "pagamento") {
+      setScreen("pergunta_valor");
+      saveSession("pergunta_valor", 0, answers, name, phone, sessionId, valorResposta);
+    } else if (screen === "mentoria") {
+      setScreen("faturamento");
+      saveSession("faturamento", 0, answers, name, phone, sessionId, valorResposta);
+    }
+  }, [screen, question, answers, name, phone, sessionId, valorResposta, saveSession]);
+
+  const handleBack = useCallback(() => {
+    if (selected !== undefined || busy) return;
+    if (
+      typeof window !== "undefined" &&
+      window.history.state &&
+      window.history.state.screen &&
+      window.history.state.screen !== "inicio"
+    ) {
+      window.history.back();
+    } else {
+      goBackInternal();
+    }
+  }, [selected, busy, goBackInternal]);
+
   function chooseValor(valor: number) {
     if (selected !== undefined || busy) return;
     setSelected(String(valor));
@@ -773,7 +935,15 @@ export function Quiz() {
     }
     setTimeout(() => {
       setSelected(undefined);
-      setScreen("pagamento");
+      pushScreenState(
+        "pagamento",
+        0,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        valor,
+      );
     }, 150);
   }
   function chooseRevenue(value: string) {
@@ -788,7 +958,7 @@ export function Quiz() {
     if (mentoring) meta("LeadMentoria");
     setTimeout(() => {
       setSelected(undefined);
-      if (mentoring) setScreen("mentoria");
+      if (mentoring) pushScreenState("mentoria");
       else startQuestions();
     }, 150);
   }
@@ -801,7 +971,7 @@ export function Quiz() {
     record(key, 41 + question, { [key]: value });
     setTimeout(() => {
       setSelected(undefined);
-      if (question < 4) setQuestion((q) => q + 1);
+      if (question < 4) pushScreenState("pergunta", question + 1, next);
       else {
         const points = questions
           .filter((_, i) => next[`p${i + 1}` as keyof QuizAnswers] !== "sim")
@@ -811,13 +981,13 @@ export function Quiz() {
           qtd_pontos: points.length,
         });
         meta("DiagnosticoConcluido", { qtd_pontos: points.length });
-        setScreen("diagnostico");
+        pushScreenState("diagnostico", 4, next);
       }
     }, 150);
   }
   function showOffer() {
     record("oferta", 60, { viu_oferta_em: new Date().toISOString() });
-    setScreen("oferta");
+    pushScreenState("oferta", 0);
   }
   function playCourseVideo() {
     setVideoPlayed(true);
@@ -885,7 +1055,7 @@ export function Quiz() {
         setIsVideoPlaying(false);
       } catch {}
     }
-    setScreen("pergunta_valor");
+    pushScreenState("pergunta_valor", 0);
   }
   function checkout() {
     const eventId = meta("CliqueCheckout");
@@ -929,7 +1099,7 @@ export function Quiz() {
           />
         ) : null}
         {screen !== "inicio" ? (
-          <BackButton onClick={goBack} disabled={busy || Boolean(selected)} />
+          <BackButton onClick={handleBack} disabled={busy || Boolean(selected)} />
         ) : null}
         {screen === "inicio" ? (
           <>
@@ -965,7 +1135,7 @@ export function Quiz() {
               <div className="fixed-cta-inner">
                 <button
                   className="btn-primary btn-capa-fixed"
-                  onClick={() => setScreen("cadastro")}
+                  onClick={() => pushScreenState("cadastro")}
                 >
                   FAZER O DIAGNÓSTICO
                 </button>
