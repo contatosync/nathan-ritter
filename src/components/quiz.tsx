@@ -302,6 +302,15 @@ export function Quiz() {
   }, [answers]);
   function sendBackground(url: string, payload: unknown, retries = 2) {
     const body = JSON.stringify(payload);
+    if (
+      typeof navigator !== "undefined" &&
+      typeof navigator.sendBeacon === "function"
+    ) {
+      try {
+        const blob = new Blob([body], { type: "application/json" });
+        if (navigator.sendBeacon(url, blob)) return;
+      } catch {}
+    }
     const attempt = (remaining: number) => {
       fetch(url, {
         method: "POST",
@@ -1070,7 +1079,8 @@ export function Quiz() {
     Object.entries(utms.current).forEach(([k, v]) => {
       if (v) target.searchParams.set(k, v);
     });
-    location.href = target.toString();
+    // Navegadores de app (Instagram, Facebook, WhatsApp): abrir na mesma aba para não abrir tela branca
+    window.location.href = target.toString();
   }
   async function mentoring() {
     await meta("AplicacaoMentoria");
@@ -1078,8 +1088,50 @@ export function Quiz() {
       clicou_mentoria_em: new Date().toISOString(),
     });
     const url = process.env.NEXT_PUBLIC_FORM_MENTORIA_URL;
-    if (url) location.href = url;
+    if (url) {
+      try {
+        const target = new URL(url);
+        Object.entries(utms.current).forEach(([k, v]) => {
+          if (v) target.searchParams.set(k, v);
+        });
+        window.location.href = target.toString();
+      } catch {
+        window.location.href = url;
+      }
+    }
   }
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const unlockAudio = () => {
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (AudioCtx) {
+          const ctx = new AudioCtx();
+          if (ctx.state === "suspended") {
+            ctx.resume().catch(() => {});
+          }
+          setTimeout(() => {
+            try {
+              ctx.close().catch(() => {});
+            } catch {}
+          }, 60);
+        }
+      } catch {}
+    };
+    window.addEventListener("touchstart", unlockAudio, {
+      passive: true,
+      once: true,
+    });
+    window.addEventListener("click", unlockAudio, {
+      passive: true,
+      once: true,
+    });
+    return () => {
+      window.removeEventListener("touchstart", unlockAudio);
+      window.removeEventListener("click", unlockAudio);
+    };
+  }, []);
   return (
     <main
       className={`quiz-shell ${screen === "inicio" ? "is-hero" : ""} ${screen === "oferta" || screen === "mentoria" || screen === "pagamento" ? "is-long" : ""}`}
