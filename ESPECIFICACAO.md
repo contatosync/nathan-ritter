@@ -529,8 +529,8 @@ Todos novos, com prefixo `NR ·`. Não duplicar e editar um workflow do GMN no l
 | Workflow | Gatilho | Função |
 |---|---|---|
 | `NR · Registro de leads` | Webhook POST com header secreto | Cria ou atualiza uma linha por `session_id`, impede regressão de `etapa_max` e registra todos os eventos na aba `eventos` |
-| `NR · Agendador de recuperação` | A cada 1 minuto | Seleciona leads elegíveis, monta a mensagem A, B, C ou D, limita a 60 envios/dia, aplica intervalo aleatório de 40 a 120 segundos e envia texto pela instância `Nathan` |
-| `NR · Mensagens recebidas` | A cada 2 minutos | Consulta `/chat/findMessages/Nathan` para recuperações das últimas 72 h, registra mensagens recebidas e classifica `recuperou` |
+| `NR · Agendador de recuperação` | A cada 1 minuto | Seleciona leads elegíveis, monta a mensagem A, B, C ou D, limita a 60 envios/dia, aplica intervalo aleatório de 40 a 120 segundos, envia texto pela instância `Nathan` e anexa o log de saída atomicamente na aba `mensagens` |
+| `NR · Mensagens recebidas` | A cada 2 minutos | Consulta `/chat/findMessages/Nathan` para todas as recuperações pendentes das últimas 72 h, reconhece tanto `remoteJid` quanto `remoteJidAlt` (incluindo conversas entregues como `@lid`), consolida gravações simultâneas, anexa os logs na aba `mensagens`, cancela as pendências e classifica `recuperou` |
 | `NR · Links de recuperação` | Webhook POST protegido | Resolve o código curto, registra o clique e devolve etapa e campanha para o redirecionamento do site |
 | `NR · Compra Kiwify` | Webhook da Kiwify | Opcional, se o webhook não ficar na API do Next.js |
 

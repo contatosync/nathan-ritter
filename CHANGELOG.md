@@ -14,6 +14,12 @@ Formato de cada entrada:
 
 ---
 
+## 2026-10-15 · Codex · validação da resposta WhatsApp
+**O que mudou:** validada a resposta real “Tudo certo” enviada pelo número externo de teste; corrigido o reconhecimento de conversas que a Evolution entrega por `@lid`, usando também `remoteJidAlt`; o receptor passou a processar todas as conversas pendentes do ciclo e cancelou corretamente as quatro recuperações ligadas ao telefone; os registros de mensagens enviadas e recebidas agora usam `values.append`, com as gravações simultâneas consolidadas em uma única operação para evitar colisões.
+**Arquivos:** `CHANGELOG.md`, `RECURSOS.md`.
+**Recursos externos criados/alterados:** workflows `NR · Mensagens recebidas` e `NR · Agendador de recuperação`; planilha `NR · Diagnóstico ML · Leads`. Nenhum recurso GMN e nenhuma configuração da instância Evolution foram alterados.
+**Pendências:** recuperação permanece em `RECUPERACAO_MODO=teste`; mudança para produção depende de aprovação expressa. `META_TEST_EVENT_CODE` e `KIWIFY_WEBHOOK_TOKEN` continuam pendentes.
+
 ## 2026-10-15 · Codex · rodada limpa WhatsApp
 **O que mudou:** executado teste A/B/C/D no número externo autorizado, mantendo `RECUPERACAO_MODO=teste`; atualizada a allowlist local e da Vercel; criadas quatro sessões isoladas nas linhas 86–89; confirmados quatro envios únicos na Evolution, um por código, sem duplicidade; corrigida colisão concorrente do log da aba `mensagens`, que agora usa uma linha determinística por sessão/lead.
 **Arquivos:** `.env.local` (não versionado), `CHANGELOG.md`, `docs/rodada-recuperacao.md`.
