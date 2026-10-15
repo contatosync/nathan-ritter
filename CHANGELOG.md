@@ -14,6 +14,12 @@ Formato de cada entrada:
 
 ---
 
+## 2026-10-14 · Codex
+**O que mudou:** iniciada a Fase 5 em modo de teste; lida e documentada sem alterações a configuração da instância existente `Nathan`; removido o áudio comercial; adicionadas as rotas rastreadas `/c/{codigo}` e `/p/{codigo}`; adicionadas as colunas `codigo_curto`, `clicou_comunidade_em` e `clicou_pagamento_wpp_em`; criado o workflow ativo `NR · Links de recuperação`; criados e validados `NR · Agendador de recuperação` e `NR · Mensagens recebidas`; configuradas as variáveis locais e da Vercel para Production e Preview, mantendo `RECUPERACAO_MODO=teste`.
+**Arquivos:** `src/app/c/[codigo]/route.ts`, `src/app/p/[codigo]/route.ts`, `src/lib/recovery-links.ts`, `.env.example`, `AGENTS.md`, `ESPECIFICACAO.md`, `RECURSOS.md`, `CHANGELOG.md`, `docs/rodada-recuperacao.md`.
+**Recursos externos criados/alterados:** planilha `NR · Diagnóstico ML · Leads`; workflows `NR · Registro de leads` e `NR · Links de recuperação`; workflows novos `NR · Agendador de recuperação` e `NR · Mensagens recebidas`; credencial nova `NR · Evolution Nathan · API Key`; variáveis do projeto Vercel `nr-diagnostico-ml`. Nenhum workflow, webhook, setting ou recurso GMN foi alterado.
+**Pendências:** executar e revisar os quatro testes A/B/C/D, validar resposta recebida por um número diferente da própria instância, validar janela das 21:30 e obter aprovação antes de mudar para produção.
+
 ## 2026-10-14 11:25 · Antigravity
 **O que mudou:** rodada final de otimização mobile para anúncios e navegadores in-app (Instagram, Facebook e WhatsApp WebViews, Android e iOS):
 - **Capa (Tela 1):** nova estrutura compacta sem rolagem em 375×667 — rótulo "DIAGNÓSTICO GRATUITO" encostado no topo, headline 30 px (`clamp(26px, 8vw, 34px)` font-black), subtítulo 16 px, print do painel com `max-height: 30dvh` e legenda externa; barra fixa no rodapé com fundo `#0A0F1C`, degradê suave, botão FAZER O DIAGNÓSTICO de 56 px de altura, texto "Leva menos de 1 minuto" (12 px) e safe-area insets.

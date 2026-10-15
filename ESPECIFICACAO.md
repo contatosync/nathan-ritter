@@ -30,7 +30,7 @@ Quem já vende e fatura acima de R$ 30 mil por mês sai do fluxo do curso e é d
 - Rota da mentoria por faturamento
 - Rastreio Meta (Pixel + API de Conversões)
 - Planilha Google com uma linha por lead
-- Recuperação por WhatsApp (Evolution API) e áudio comercial
+- Recuperação única por WhatsApp (Evolution API), com convite para a comunidade e link de pagamento rastreado quando aplicável
 - Webhook da Kiwify para marcar compra e cancelar recuperação
 
 ### Fora da v1
@@ -50,7 +50,7 @@ Quem já vende e fatura acima de R$ 30 mil por mês sai do fluxo do curso e é d
 | Back-end | API Routes do próprio Next.js na Vercel |
 | Banco de dados | Google Sheets, planilha `NR · Diagnóstico ML · Leads`. O site envia dados ao n8n; não acessa a planilha diretamente |
 | Automações | Workflows novos no n8n, todos com prefixo `NR ·` |
-| WhatsApp | Evolution API, **instância nova e própria do Nathan** (número ainda não conectado) |
+| WhatsApp | Evolution API, instância existente `Nathan` (`5511976896161`), preservando webhook, integrações e settings atuais |
 | Pagamento | Kiwify (link ainda não existe) |
 | Pixel Meta | `2015455052410421` |
 
@@ -82,11 +82,16 @@ Tudo que ainda não existe fica em variável, para ser trocado sem mexer no cód
 | `N8N_WEBHOOK_URL` | configurada fora do código | Webhook do workflow `NR · Registro de leads` |
 | `N8N_WEBHOOK_SECRET` | configurada fora do código | Segredo do header `x-nr-webhook-secret` |
 | `KIWIFY_WEBHOOK_TOKEN` | a criar | Validar origem do webhook |
-| `EVOLUTION_API_URL` | a definir | |
+| `EVOLUTION_API_URL` | `https://evolution-evolution-api.5hv2sw.easypanel.host` | |
 | `EVOLUTION_API_KEY` | a definir | |
-| `EVOLUTION_INSTANCE` | `nr-nathan` (a criar) | Nunca usar a instância da Notake |
-| `RECUPERACAO_ATIVA` | `false` | Só virar `true` com o número conectado e testado |
-| `AUDIO_COMERCIAL_URL` | vazio | Áudio comercial fora do escopo atual; lógica desligada |
+| `EVOLUTION_INSTANCE` | `Nathan` | Não alterar as configurações da instância |
+| `RECUPERACAO_ATIVA` | `true` | Recuperação autorizada somente nos limites do modo atual |
+| `RECUPERACAO_MODO` | `teste` | Só envia para `RECUPERACAO_TELEFONES_TESTE`; mudar para `producao` apenas após aprovação |
+| `RECUPERACAO_TELEFONES_TESTE` | configurada fora do código | Números permitidos no modo de teste, separados por vírgula |
+| `LINK_COMUNIDADE` | `https://chat.whatsapp.com/F6ZFqDnzdR8Lh5Pl6L2bNZ` | Destino da rota curta de comunidade |
+| `RECUPERACAO_INTERVALO_MIN_S` / `MAX_S` | `40` / `120` | Pausa aleatória entre envios |
+| `RECUPERACAO_LIMITE_DIARIO` | `60` | Limite de mensagens automáticas por dia |
+| `N8N_RECOVERY_LINK_URL` | configurada fora do código | Webhook protegido do workflow `NR · Links de recuperação` |
 | `HORARIO_ENVIO_INICIO` | `08:00` | America/Sao_Paulo |
 | `HORARIO_ENVIO_FIM` | `21:00` | America/Sao_Paulo |
 
@@ -437,7 +442,10 @@ Criar do zero. Não copiar a planilha do funil GMN.
 | `audio_enviado_em` | |
 | `audio_msg_id` | |
 | `primeira_resposta_em` | Primeira mensagem real da pessoa |
-| `classificacao_resposta` | `conversou` / `recuperou` / `respondeu_audio` |
+| `classificacao_resposta` | `conversou` / `recuperou` (`respondeu_audio` deixa de ser usado) |
+| `codigo_curto` | Código único de 6 a 8 caracteres usado nas rotas `/c/` e `/p/` |
+| `clicou_comunidade_em` | Data e hora do clique no convite da comunidade |
+| `clicou_pagamento_wpp_em` | Data e hora do clique no pagamento enviado por WhatsApp |
 
 ### Aba `eventos` (log, uma linha por evento)
 `registrado_em` · `session_id` · `evento` · `etapa` · `dados_json` · `event_id_meta`
@@ -449,7 +457,7 @@ Criar do zero. Não copiar a planilha do funil GMN.
 
 ## 10. Abandono e recuperação
 
-Regras de tempo herdadas do funil GMN. Nada é enviado enquanto `RECUPERACAO_ATIVA=false`; nesse modo, o sistema só calcula e grava o que **seria** enviado, para teste.
+Uma única mensagem automática é enviada por pessoa. No modo `teste`, apenas os telefones listados em `RECUPERACAO_TELEFONES_TESTE` são elegíveis. O modo `producao` depende de aprovação expressa após os testes.
 
 ### Detecção
 | Situação | Espera |
@@ -467,8 +475,8 @@ Regras de tempo herdadas do funil GMN. Nada é enviado enquanto `RECUPERACAO_ATI
 - Mesma recuperação ainda não enviada
 - Horário entre 08:00 e 21:00 (America/Sao_Paulo). Fora disso, agendar para 08:00 do dia seguinte.
 
-### Mensagens (sem link de retomada)
-Variáveis: `{nome}` (primeiro nome) e `{primeiro_ponto}` (primeiro item da lista do diagnóstico, em minúsculas).
+### Mensagens
+Variáveis: `{nome}` (primeiro nome), `{primeiro_ponto}` (primeiro item da lista do diagnóstico, em minúsculas), `{link_comunidade}` e `{link_pagamento}`. São usados os textos A, B, C e D aprovados na rodada de recuperação de 2026-10-14. A mensagem C inclui pagamento e comunidade; as demais incluem a comunidade.
 
 **`parou_cadastro`** (etapa 10 a 30)
 > Oi, {nome}! Aqui é da equipe do Nathan Ritter. Vi que você começou o diagnóstico para vender no Mercado Livre e parou logo no início. Ficou alguma dúvida? Se quiser, te ajudo por aqui.
@@ -485,12 +493,13 @@ Variáveis: `{nome}` (primeiro nome) e `{primeiro_ponto}` (primeiro item da list
 **`mentoria`** (etapa 35 e 36, sem aplicação)
 > Oi, {nome}! Aqui é da equipe do Nathan Ritter. Pelo faturamento que você informou, o Nathan costuma indicar o acompanhamento individual. Quer que eu te conte como funciona a mentoria?
 
-### Áudio comercial (adiado)
-- Fora do escopo atual. `AUDIO_COMERCIAL_URL` permanece vazio e nenhuma automação de áudio deve ser ativada.
-- Quando retomado: 24 horas depois da recuperação padrão, se não houver resposta.
-- Arquivo em `AUDIO_COMERCIAL_URL`, gravado pela equipe.
-- Não enviar se: respondeu, retomou, comprou, telefone inválido, áudio já enviado ou fora do horário.
-- Última abordagem automática da sequência.
+### Áudio comercial
+Removido do fluxo. Não existe segundo toque automático e as colunas históricas `audio_enviado_em` e `audio_msg_id` permanecem vazias, sem serem apagadas.
+
+### Links rastreados
+- Comunidade: `https://nr-diagnostico-ml.vercel.app/c/{codigo}` registra `clicou_comunidade_em` e redireciona para `LINK_COMUNIDADE`.
+- Pagamento: `https://nr-diagnostico-ml.vercel.app/p/{codigo}` registra `clicou_pagamento_wpp_em` e redireciona para a Kiwify com `utm_source=whatsapp`, `utm_medium=recuperacao`, `utm_campaign=quiz-ml-recuperacao`, `utm_content=etapa-{etapa_max}`, `utm_term={utm_campaign original}`, `src=whatsapp-recuperacao` e `sck=rec-{codigo}`.
+- Código inexistente redireciona para a capa do quiz.
 
 ### Classificação de respostas
 Webhook de mensagens recebidas da Evolution (instância `nr-nathan`):
@@ -500,7 +509,7 @@ Webhook de mensagens recebidas da Evolution (instância `nr-nathan`):
 - Classificar:
   - `conversou`: mandou mensagem sem ter recebido recuperação
   - `recuperou`: mandou mensagem depois da recuperação padrão
-  - `respondeu_audio`: mandou mensagem depois do áudio comercial
+  - `respondeu_audio` deixa de ser usado
 
 ---
 
@@ -520,9 +529,9 @@ Todos novos, com prefixo `NR ·`. Não duplicar e editar um workflow do GMN no l
 | Workflow | Gatilho | Função |
 |---|---|---|
 | `NR · Registro de leads` | Webhook POST com header secreto | Cria ou atualiza uma linha por `session_id`, impede regressão de `etapa_max` e registra todos os eventos na aba `eventos` |
-| `NR · Agendador de recuperação` | A cada 1 minuto | Lê leads elegíveis, aplica as verificações e envia a recuperação padrão |
-| `NR · Áudio comercial` | A cada 5 minutos | Envia o áudio 24 h após a recuperação sem resposta |
-| `NR · Mensagens recebidas` | Webhook da Evolution `nr-nathan` | Classifica respostas e cancela pendências |
+| `NR · Agendador de recuperação` | A cada 1 minuto | Seleciona leads elegíveis, monta a mensagem A, B, C ou D, limita a 60 envios/dia, aplica intervalo aleatório de 40 a 120 segundos e envia texto pela instância `Nathan` |
+| `NR · Mensagens recebidas` | A cada 2 minutos | Consulta `/chat/findMessages/Nathan` para recuperações das últimas 72 h, registra mensagens recebidas e classifica `recuperou` |
+| `NR · Links de recuperação` | Webhook POST protegido | Resolve o código curto, registra o clique e devolve etapa e campanha para o redirecionamento do site |
 | `NR · Compra Kiwify` | Webhook da Kiwify | Opcional, se o webhook não ficar na API do Next.js |
 
 As API Routes do Next.js enviam os eventos ao webhook `NR · Registro de leads`; somente o n8n usa a credencial Google e grava na planilha. A credencial Google existente foi apenas selecionada no workflow novo e não pode ser editada, renomeada ou reautenticada.
@@ -553,6 +562,6 @@ Cada fase termina com registro no CHANGELOG e os critérios de aceite conferidos
 - Usar `https://pay.kiwify.com.br/InK3eLE`, os preços reais e ligar o webhook.
 - Aceite: compra de teste marca `comprou` na planilha.
 
-**Fase 5 · Recuperação** (quando o número for conectado)
-- Instância `nr-nathan`, workflows, áudio.
-- Aceite: com `RECUPERACAO_ATIVA=true`, testar cada tipo de recuperação com um número interno, incluindo horário fora da janela e resposta que cancela o áudio.
+**Fase 5 · Recuperação**
+- Instância existente `Nathan`, preservada sem mudanças; workflows NR de envio, consulta de respostas e links rastreados; sem áudio comercial.
+- Aceite: com `RECUPERACAO_MODO=teste`, testar A, B, C e D, links, resposta, janela de horário e ausência de duplicidade. Produção somente após aprovação.
