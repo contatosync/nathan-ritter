@@ -10,12 +10,13 @@ Inventário de tudo que existe fora do código. Atualizar no mesmo momento em qu
 | Projeto Vercel | `nr-diagnostico-ml` | `prj_psW6Ob5p0L2fcyxn7vnRNDQq22ED` | 2026-10-13 | Codex |
 | URL pública | URL padrão da Vercel | `https://nr-diagnostico-ml.vercel.app` | 2026-10-13 | Codex |
 | Deploy Vercel | Primeiro deploy de produção | `dpl_ECABgEwvDkiffJekeiDsmseURyrs` · READY | 2026-10-13 | Codex |
+| Deploy Vercel | Recuperação WhatsApp e proteção contra preview | `dpl_F7fAvygGxMiTuqEBjw2pjLMVugm8` · READY | 2026-10-15 | Codex |
 | Formulário de mentoria | Respondi | `https://form.respondi.app/6ZJ4HSZC` | já existente | Nathan |
 | Checkout Kiwify | Máquina de Vendas 2.0 | `https://pay.kiwify.com.br/InK3eLE` | já existente | Nathan |
 | Planilha Google | `NR · Diagnóstico ML · Leads` | `1RDYGQsl3PcRjYiCHwERy2sEcnV5Z-u87zyocUUYG6a0` · `https://docs.google.com/spreadsheets/d/1RDYGQsl3PcRjYiCHwERy2sEcnV5Z-u87zyocUUYG6a0/edit` | 2026-10-13 | Codex |
 | Conta de serviço Google | | | | |
-| Workflow | `NR · Agendador de recuperação` | `Znc53yNJVuRk9jRX` · modo teste | 2026-10-14 | Codex |
-| Workflow | `NR · Mensagens recebidas` | `GRgcmYKPBdcc4njc` · consulta a cada 2 min | 2026-10-14 | Codex |
+| Workflow | `NR · Agendador de recuperação` | `Znc53yNJVuRk9jRX` · ativo · modo teste | 2026-10-14 | Codex |
+| Workflow | `NR · Mensagens recebidas` | `GRgcmYKPBdcc4njc` · ativo · consulta a cada 2 min | 2026-10-14 | Codex |
 | Workflow | `NR · Links de recuperação` | `0pczy18HNqWoxWbs` · ativo | 2026-10-14 | Codex |
 | Workflow | `NR · Registro de leads` | `tm3Yl3j6e6gyxU6K` · ativo | 2026-10-13 | Codex |
 | Credencial n8n | `NR · Registro de leads · Segredo` | `9WxqOUdKGTeHMyiu` | 2026-10-13 | Codex |

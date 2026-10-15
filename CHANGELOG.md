@@ -14,6 +14,12 @@ Formato de cada entrada:
 
 ---
 
+## 2026-10-15 · Codex
+**O que mudou:** concluída a rodada técnica da Fase 5 em modo de teste; corrigido `NR · Registro de leads` para nunca reutilizar por telefone uma linha quando existe `session_id`; executados os cenários A, B, C e D nas linhas 82–85; ativados e validados `NR · Agendador de recuperação` e `NR · Mensagens recebidas`; corrigidos o registro final do envio e a trava de reserva contra disparos concorrentes; desativado o preview de link na Evolution; as rotas `/c/{codigo}` e `/p/{codigo}` agora usam um redirecionamento executado pelo navegador para que o crawler de preview do WhatsApp não seja contado como clique; links de comunidade e pagamento testados, incluindo UTMs do checkout; janela simulada com 21:30 bloqueado e 08:00 permitido.
+**Arquivos:** `src/app/c/[codigo]/route.ts`, `src/app/p/[codigo]/route.ts`, `ESPECIFICACAO.md`, `RECURSOS.md`, `CHANGELOG.md`, `docs/rodada-recuperacao.md`.
+**Recursos externos criados/alterados:** workflows NR `Registro de leads`, `Agendador de recuperação`, `Mensagens recebidas` e `Links de recuperação`; planilha `NR · Diagnóstico ML · Leads`; deploy Vercel `dpl_F7fAvygGxMiTuqEBjw2pjLMVugm8`. Nenhum recurso GMN e nenhuma configuração da instância Evolution foram alterados.
+**Pendências:** repetir a prova de ausência de duplicidade em um número externo limpo (a execução inicial gerou repetições A/B/C antes das correções) e testar resposta recebida (`fromMe=false`); o número informado para teste é o mesmo da instância remetente e não permite validar resposta externa. Produção continua bloqueada até aprovação expressa.
+
 ## 2026-10-14 · Codex
 **O que mudou:** iniciada a Fase 5 em modo de teste; lida e documentada sem alterações a configuração da instância existente `Nathan`; removido o áudio comercial; adicionadas as rotas rastreadas `/c/{codigo}` e `/p/{codigo}`; adicionadas as colunas `codigo_curto`, `clicou_comunidade_em` e `clicou_pagamento_wpp_em`; criado o workflow ativo `NR · Links de recuperação`; criados e validados `NR · Agendador de recuperação` e `NR · Mensagens recebidas`; configuradas as variáveis locais e da Vercel para Production e Preview, mantendo `RECUPERACAO_MODO=teste`.
 **Arquivos:** `src/app/c/[codigo]/route.ts`, `src/app/p/[codigo]/route.ts`, `src/lib/recovery-links.ts`, `.env.example`, `AGENTS.md`, `ESPECIFICACAO.md`, `RECURSOS.md`, `CHANGELOG.md`, `docs/rodada-recuperacao.md`.

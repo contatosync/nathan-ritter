@@ -536,6 +536,8 @@ Todos novos, com prefixo `NR ·`. Não duplicar e editar um workflow do GMN no l
 
 As API Routes do Next.js enviam os eventos ao webhook `NR · Registro de leads`; somente o n8n usa a credencial Google e grava na planilha. A credencial Google existente foi apenas selecionada no workflow novo e não pode ser editada, renomeada ou reautenticada.
 
+As rotas rastreadas respondem primeiro com uma página mínima que redireciona por JavaScript para `?go=1`. Assim, o crawler usado pelo WhatsApp para gerar preview não grava um clique falso; somente a navegação de um navegador executa o segundo pedido rastreado.
+
 ---
 
 ## 13. Fases de implementação
