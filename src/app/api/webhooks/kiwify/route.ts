@@ -13,6 +13,18 @@ type KiwifyPayload = {
 
 const APPROVED_EVENTS = new Set(["order_approved", "paid", "approved"]);
 
+function signaturesMatch(supplied: string | null, expected: string) {
+  if (!supplied) return false;
+
+  const suppliedBuffer = Buffer.from(supplied.toLowerCase(), "utf8");
+  const expectedBuffer = Buffer.from(expected.toLowerCase(), "utf8");
+
+  return (
+    suppliedBuffer.length === expectedBuffer.length &&
+    timingSafeEqual(suppliedBuffer, expectedBuffer)
+  );
+}
+
 export async function POST(request: Request) {
   const token = process.env.KIWIFY_WEBHOOK_TOKEN;
 
@@ -23,18 +35,28 @@ export async function POST(request: Request) {
     );
   }
 
-  const supplied =
-    request.headers.get("x-kiwify-token") ??
-    new URL(request.url).searchParams.get("token");
+  const rawBody = await request.text();
+  const url = new URL(request.url);
+  const suppliedSignature =
+    url.searchParams.get("signature") ??
+    request.headers.get("x-kiwify-signature");
+  const expectedSignature = createHmac("sha1", token)
+    .update(rawBody)
+    .digest("hex");
+  const legacyToken =
+    request.headers.get("x-kiwify-token") ?? url.searchParams.get("token");
 
-  if (supplied !== token) {
+  if (
+    !signaturesMatch(suppliedSignature, expectedSignature) &&
+    legacyToken !== token
+  ) {
     return Response.json({ error: "Não autorizado" }, { status: 401 });
   }
 
   let payload: KiwifyPayload;
 
   try {
-    payload = (await request.json()) as KiwifyPayload;
+    payload = JSON.parse(rawBody) as KiwifyPayload;
   } catch {
     return Response.json({ error: "JSON inválido" }, { status: 400 });
   }
@@ -86,3 +108,5 @@ export async function POST(request: Request) {
 
   return Response.json({ ok: response.ok }, { status: response.ok ? 200 : 502 });
 }
+import { createHmac, timingSafeEqual } from "node:crypto";
+

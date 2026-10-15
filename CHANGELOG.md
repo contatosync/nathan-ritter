@@ -15,7 +15,7 @@ Formato de cada entrada:
 ---
 
 ## 2026-10-15 · Codex · preparação do webhook Kiwify
-**O que mudou:** corrigido o endpoint Kiwify para o payload oficial (`webhook_event_type`, `order_status` e `Customer.mobile`); criado e configurado `KIWIFY_WEBHOOK_TOKEN` fora do código, em Production, Preview e `.env.local`; sincronizadas no Preview as variáveis que ainda existiam apenas em Production; mantida a regra de não enviar `Purchase` novamente ao Meta.
+**O que mudou:** corrigido o endpoint Kiwify para o payload oficial (`webhook_event_type`, `order_status` e `Customer.mobile`); configurado fora do código o token oficial gerado pela Kiwify, em Production, Preview e `.env.local`; adicionada validação HMAC-SHA1 da assinatura sobre o corpo bruto com comparação em tempo constante; sincronizadas no Preview as variáveis que ainda existiam apenas em Production; mantida a regra de não enviar `Purchase` novamente ao Meta.
 **Arquivos:** `src/app/api/webhooks/kiwify/route.ts`, `.env.local` (não versionado), `ESPECIFICACAO.md`, `RECURSOS.md`, `CHANGELOG.md`.
 **Recursos externos criados/alterados:** variáveis do projeto Vercel `nr-diagnostico-ml`. Nenhum recurso GMN foi alterado.
 **Pendências:** cadastrar `NR · Compra aprovada` em `Apps → Webhooks` no painel autenticado da Kiwify, selecionar o produto Máquina de Vendas 2.0 e o evento Compra aprovada; `META_TEST_EVENT_CODE` para validação visual no Gerenciador de Eventos.
