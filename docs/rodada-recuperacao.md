@@ -68,3 +68,13 @@ Nenhum desses workflows será aberto para edição, duplicado para edição ou a
 - Durante a execução de validação, antes da trava e enquanto havia execuções já em espera, houve repetição das mensagens A, B e C. As causas foram corrigidas e não há sessões elegíveis restantes, mas a prova limpa de ausência de duplicidade precisa ser repetida em outro número.
 - Pendente: validar mensagem recebida com `fromMe=false`. O único número autorizado para teste é o mesmo número da instância remetente, portanto respostas para si próprio aparecem como `fromMe=true` e são corretamente ignoradas.
 - `RECUPERACAO_MODO=teste` permanece ativo; nenhuma mudança para produção foi feita.
+
+### Rodada limpa com número externo — 2026-10-15
+
+- Número autorizado adicionado à allowlist de teste local e da Vercel.
+- Sessões A, B, C e D criadas nas linhas 86, 87, 88 e 89 da aba `leads`.
+- Os quatro disparos foram executados em paralelo com a reserva prévia da sessão.
+- A consulta direta somente leitura à Evolution encontrou exatamente uma mensagem para cada código: `49C188F6`, `B7582685`, `BF86234D` e `42281C01`.
+- Todos os quatro envios possuem `msg_id` distinto e `recuperacao_enviada_em` preenchido.
+- Foi identificada e corrigida uma colisão apenas no log da aba `mensagens`: execuções paralelas calculavam a mesma próxima linha. O workflow agora grava o log na linha determinística correspondente à sessão, sem afetar o envio ao WhatsApp.
+- Nenhuma mensagem recebida (`fromMe=false`) havia chegado até o encerramento desta rodada; essa validação depende de uma resposta manual pelo aparelho externo.
