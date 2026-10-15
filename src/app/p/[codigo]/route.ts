@@ -6,6 +6,23 @@ export async function GET(
   { params }: { params: Promise<{ codigo: string }> },
 ) {
   const { codigo } = await params;
+  const requestUrl = new URL(request.url);
+
+  // Link-preview crawlers do not execute JavaScript, so only a real browser
+  // reaches the tracked request below.
+  if (requestUrl.searchParams.get("go") !== "1") {
+    const next = new URL(`/p/${encodeURIComponent(codigo)}?go=1`, request.url);
+    return new Response(
+      `<!doctype html><html><head><meta name="robots" content="noindex"><script>location.replace(${JSON.stringify(next.toString())})</script></head><body><a href="${next.toString()}">Continuar</a></body></html>`,
+      {
+        headers: {
+          "content-type": "text/html; charset=utf-8",
+          "cache-control": "no-store",
+        },
+      },
+    );
+  }
+
   const result = await trackRecoveryLink(codigo, "payment");
 
   if (!result.found) {
