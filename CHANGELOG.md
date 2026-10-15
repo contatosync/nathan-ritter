@@ -14,6 +14,12 @@ Formato de cada entrada:
 
 ---
 
+## 2026-10-15 · Codex · recuperação liberada para produção
+**O que mudou:** alterado `RECUPERACAO_MODO` de `teste` para `producao` no workflow `NR · Agendador de recuperação`, na Vercel (Production e Preview) e no ambiente local, após autorização expressa; preservadas a janela de 08h–21h, o limite de 60 envios por dia e a trava de envio único por telefone; corrigidas duas violações de `react-hooks/set-state-in-effect` na restauração da sessão e no controle dos CTAs fixos.
+**Arquivos:** `src/components/quiz.tsx`, `.env.local` (não versionado), `AGENTS.md`, `ESPECIFICACAO.md`, `RECURSOS.md`, `CHANGELOG.md`.
+**Recursos externos criados/alterados:** workflow `NR · Agendador de recuperação`; variável `RECUPERACAO_MODO` do projeto Vercel `nr-diagnostico-ml`. Nenhum recurso GMN foi alterado.
+**Pendências:** `META_TEST_EVENT_CODE` para validação visual no Gerenciador de Eventos; `KIWIFY_WEBHOOK_TOKEN` para confirmação automática de compras; completar as variáveis não críticas do ambiente Preview.
+
 ## 2026-10-15 · Codex · validação da resposta WhatsApp
 **O que mudou:** validada a resposta real “Tudo certo” enviada pelo número externo de teste; corrigido o reconhecimento de conversas que a Evolution entrega por `@lid`, usando também `remoteJidAlt`; o receptor passou a processar todas as conversas pendentes do ciclo e cancelou corretamente as quatro recuperações ligadas ao telefone; os registros de mensagens enviadas e recebidas agora usam `values.append`, com as gravações simultâneas consolidadas em uma única operação para evitar colisões.
 **Arquivos:** `CHANGELOG.md`, `RECURSOS.md`.

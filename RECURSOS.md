@@ -15,7 +15,7 @@ Inventário de tudo que existe fora do código. Atualizar no mesmo momento em qu
 | Checkout Kiwify | Máquina de Vendas 2.0 | `https://pay.kiwify.com.br/InK3eLE` | já existente | Nathan |
 | Planilha Google | `NR · Diagnóstico ML · Leads` | `1RDYGQsl3PcRjYiCHwERy2sEcnV5Z-u87zyocUUYG6a0` · `https://docs.google.com/spreadsheets/d/1RDYGQsl3PcRjYiCHwERy2sEcnV5Z-u87zyocUUYG6a0/edit` | 2026-10-13 | Codex |
 | Conta de serviço Google | | | | |
-| Workflow | `NR · Agendador de recuperação` | `Znc53yNJVuRk9jRX` · ativo · modo teste · log por append atômico | 2026-10-14 | Codex |
+| Workflow | `NR · Agendador de recuperação` | `Znc53yNJVuRk9jRX` · ativo · modo produção · log por append atômico | 2026-10-14 | Codex |
 | Workflow | `NR · Mensagens recebidas` | `GRgcmYKPBdcc4njc` · ativo · consulta a cada 2 min · compatível com `@lid`/`remoteJidAlt` | 2026-10-14 | Codex |
 | Workflow | `NR · Links de recuperação` | `0pczy18HNqWoxWbs` · ativo | 2026-10-14 | Codex |
 | Workflow | `NR · Registro de leads` | `tm3Yl3j6e6gyxU6K` · ativo | 2026-10-13 | Codex |

@@ -440,20 +440,22 @@ export function Quiz() {
       if (saved) {
         const parsed = JSON.parse(saved);
         if (parsed && parsed.screen) {
-          setScreen(parsed.screen);
-          if (typeof parsed.question === "number") setQuestion(parsed.question);
-          if (parsed.answers) setAnswers(parsed.answers);
-          if (parsed.name) setName(parsed.name);
-          if (parsed.phone) setPhone(parsed.phone);
-          if (parsed.sessionId) setSessionId(parsed.sessionId);
-          if (parsed.valorResposta !== undefined) {
-            setValorResposta(parsed.valorResposta);
-          }
+          const restoreTimer = window.setTimeout(() => {
+            setScreen(parsed.screen);
+            if (typeof parsed.question === "number") setQuestion(parsed.question);
+            if (parsed.answers) setAnswers(parsed.answers);
+            if (parsed.name) setName(parsed.name);
+            if (parsed.phone) setPhone(parsed.phone);
+            if (parsed.sessionId) setSessionId(parsed.sessionId);
+            if (parsed.valorResposta !== undefined) {
+              setValorResposta(parsed.valorResposta);
+            }
+          }, 0);
           window.history.replaceState(
             { screen: parsed.screen, question: parsed.question || 0 },
             "",
           );
-          return;
+          return () => window.clearTimeout(restoreTimer);
         }
       }
     } catch {}
@@ -609,9 +611,11 @@ export function Quiz() {
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (screen !== "oferta" && screen !== "pagamento") {
-      setIsOfferStickyVisible(false);
-      setIsPaymentStickyVisible(false);
-      return;
+      const resetTimer = window.setTimeout(() => {
+        setIsOfferStickyVisible(false);
+        setIsPaymentStickyVisible(false);
+      }, 0);
+      return () => window.clearTimeout(resetTimer);
     }
 
     const isOffer = screen === "oferta";

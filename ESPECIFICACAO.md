@@ -86,7 +86,7 @@ Tudo que ainda não existe fica em variável, para ser trocado sem mexer no cód
 | `EVOLUTION_API_KEY` | a definir | |
 | `EVOLUTION_INSTANCE` | `Nathan` | Não alterar as configurações da instância |
 | `RECUPERACAO_ATIVA` | `true` | Recuperação autorizada somente nos limites do modo atual |
-| `RECUPERACAO_MODO` | `teste` | Só envia para `RECUPERACAO_TELEFONES_TESTE`; mudar para `producao` apenas após aprovação |
+| `RECUPERACAO_MODO` | `producao` | Produção autorizada em 2026-10-15; mantém janela de 08h–21h, limite diário e envio único por telefone |
 | `RECUPERACAO_TELEFONES_TESTE` | configurada fora do código | Números permitidos no modo de teste, separados por vírgula |
 | `LINK_COMUNIDADE` | `https://chat.whatsapp.com/F6ZFqDnzdR8Lh5Pl6L2bNZ` | Destino da rota curta de comunidade |
 | `RECUPERACAO_INTERVALO_MIN_S` / `MAX_S` | `40` / `120` | Pausa aleatória entre envios |

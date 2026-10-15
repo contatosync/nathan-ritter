@@ -18,7 +18,7 @@ Antes de qualquer tarefa, leia `ESPECIFICACAO.md`, `CHANGELOG.md` e `RECURSOS.md
 - Os textos aprovados em `ESPECIFICACAO.md` não devem ser reescritos sem pedido explícito.
 - Nunca commitar `.env`, `.env.local`, tokens ou outros segredos. Variáveis novas entram em `.env.example` sem valor.
 - A recuperação usa a instância existente `Nathan`, sem alterar webhook, integrações ou settings. Nunca reiniciar, desconectar, fazer logout ou gerar QR Code.
-- `RECUPERACAO_ATIVA=true`, mas `RECUPERACAO_MODO=teste` restringe os envios aos números autorizados em `RECUPERACAO_TELEFONES_TESTE`. Só mudar para `producao` com aprovação expressa.
+- `RECUPERACAO_ATIVA=true` e `RECUPERACAO_MODO=producao`, conforme autorização expressa de 2026-10-15. Preservar janela de envio, limite diário e regra de envio único; qualquer retorno ao modo de teste deve ser documentado.
 - O áudio comercial foi removido. Não criar o workflow `NR · Áudio comercial` e não recriar `AUDIO_COMERCIAL_URL`.
 
 ## Agentes do projeto
