@@ -14,6 +14,12 @@ Formato de cada entrada:
 
 ---
 
+## 2026-10-15 · Codex · preparação do webhook Kiwify
+**O que mudou:** corrigido o endpoint Kiwify para o payload oficial (`webhook_event_type`, `order_status` e `Customer.mobile`); criado e configurado `KIWIFY_WEBHOOK_TOKEN` fora do código, em Production, Preview e `.env.local`; sincronizadas no Preview as variáveis que ainda existiam apenas em Production; mantida a regra de não enviar `Purchase` novamente ao Meta.
+**Arquivos:** `src/app/api/webhooks/kiwify/route.ts`, `.env.local` (não versionado), `ESPECIFICACAO.md`, `RECURSOS.md`, `CHANGELOG.md`.
+**Recursos externos criados/alterados:** variáveis do projeto Vercel `nr-diagnostico-ml`. Nenhum recurso GMN foi alterado.
+**Pendências:** cadastrar `NR · Compra aprovada` em `Apps → Webhooks` no painel autenticado da Kiwify, selecionar o produto Máquina de Vendas 2.0 e o evento Compra aprovada; `META_TEST_EVENT_CODE` para validação visual no Gerenciador de Eventos.
+
 ## 2026-10-15 · Codex · recuperação liberada para produção
 **O que mudou:** alterado `RECUPERACAO_MODO` de `teste` para `producao` no workflow `NR · Agendador de recuperação`, na Vercel (Production e Preview) e no ambiente local, após autorização expressa; preservadas a janela de 08h–21h, o limite de 60 envios por dia e a trava de envio único por telefone; para impedir que a base histórica de QA entre na fila, produção passou a considerar somente leads criados após `2026-10-15T14:43:00Z` e também ignora nomes com `Teste`; no intervalo entre a ativação e a aplicação do corte, um número fictício foi recusado sem entrega e três mensagens genéricas foram aceitas pela Evolution para números placeholder antigos, sem dados sensíveis; corrigidas duas violações de `react-hooks/set-state-in-effect` na restauração da sessão e no controle dos CTAs fixos.
 **Arquivos:** `src/components/quiz.tsx`, `.env.local` (não versionado), `AGENTS.md`, `ESPECIFICACAO.md`, `RECURSOS.md`, `CHANGELOG.md`.

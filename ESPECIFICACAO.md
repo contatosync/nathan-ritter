@@ -81,7 +81,7 @@ Tudo que ainda não existe fica em variável, para ser trocado sem mexer no cód
 | `GOOGLE_SHEETS_ID` | `1RDYGQsl3PcRjYiCHwERy2sEcnV5Z-u87zyocUUYG6a0` | Planilha `NR`; usada pelo workflow do n8n |
 | `N8N_WEBHOOK_URL` | configurada fora do código | Webhook do workflow `NR · Registro de leads` |
 | `N8N_WEBHOOK_SECRET` | configurada fora do código | Segredo do header `x-nr-webhook-secret` |
-| `KIWIFY_WEBHOOK_TOKEN` | a criar | Validar origem do webhook |
+| `KIWIFY_WEBHOOK_TOKEN` | configurada fora do código | Segredo próprio na URL do webhook para validar a origem |
 | `EVOLUTION_API_URL` | `https://evolution-evolution-api.5hv2sw.easypanel.host` | |
 | `EVOLUTION_API_KEY` | a definir | |
 | `EVOLUTION_INSTANCE` | `Nathan` | Não alterar as configurações da instância |
@@ -516,9 +516,11 @@ Webhook de mensagens recebidas da Evolution (instância `nr-nathan`):
 ## 11. Webhook da Kiwify
 
 - Endpoint: `POST /api/webhooks/kiwify`, validado por `KIWIFY_WEBHOOK_TOKEN`.
+- A Kiwify não fornece esse token no painel: ele é um segredo próprio gerado pelo projeto e anexado à URL como query `token`.
+- Payload oficial aceito: `webhook_event_type=order_approved` ou `order_status=paid`; telefone lido de `Customer.mobile`.
 - Evento de compra aprovada: localizar o lead por telefone (e e-mail, se vier), gravar `comprou_em`, `kiwify_order_id`, `status=comprou`, `etapa_max=80`, cancelar recuperações.
 - Não enviar `Purchase` ao Meta (a Kiwify já envia).
-- Implementar quando o produto existir na Kiwify. Até lá, deixar o endpoint pronto e testado com payload de exemplo.
+- No painel Kiwify, cadastrar em `Apps → Webhooks`, selecionar o produto Máquina de Vendas 2.0 e somente o evento Compra aprovada.
 
 ---
 
