@@ -14,6 +14,12 @@ Formato de cada entrada:
 
 ---
 
+## 2026-10-15 · Codex · webhook Kiwify validado
+**O que mudou:** confirmado o teste oficial de Compra aprovada enviado pelo painel Kiwify; a assinatura HMAC-SHA1 foi aceita pela rota de produção, o evento foi encaminhado ao workflow `NR · Registro de leads` e gravado com `status=comprou` e `etapa_max=80`.
+**Arquivos:** `RECURSOS.md`, `CHANGELOG.md`.
+**Recursos externos criados/alterados:** webhook `NR · Compra aprovada` ativo; execução n8n `103665` concluída com sucesso; exemplo da Kiwify registrado em `leads!A90:AO90` e `eventos!A564:F564`. Nenhum recurso GMN foi alterado.
+**Pendências:** decidir se as duas linhas do teste oficial devem ser preservadas ou removidas; `META_TEST_EVENT_CODE` para validação visual no Gerenciador de Eventos.
+
 ## 2026-10-15 · Codex · preparação do webhook Kiwify
 **O que mudou:** corrigido o endpoint Kiwify para o payload oficial (`webhook_event_type`, `order_status` e `Customer.mobile`); configurado fora do código o token oficial gerado pela Kiwify, em Production, Preview e `.env.local`; adicionada validação HMAC-SHA1 da assinatura sobre o corpo bruto com comparação em tempo constante; sincronizadas no Preview as variáveis que ainda existiam apenas em Production; mantida a regra de não enviar `Purchase` novamente ao Meta.
 **Arquivos:** `src/app/api/webhooks/kiwify/route.ts`, `.env.local` (não versionado), `ESPECIFICACAO.md`, `RECURSOS.md`, `CHANGELOG.md`.

@@ -24,7 +24,7 @@ Inventário de tudo que existe fora do código. Atualizar no mesmo momento em qu
 | Instância Evolution | `Nathan` | `3b1ca9e5-1cac-4afa-bee4-0afde4657213` · conectada · `5511976896161` | já existente | Nathan |
 | Rota rastreada | Comunidade | `https://nr-diagnostico-ml.vercel.app/c/{codigo}` | 2026-10-14 | Codex |
 | Rota rastreada | Pagamento WhatsApp | `https://nr-diagnostico-ml.vercel.app/p/{codigo}` | 2026-10-14 | Codex |
-| Webhook Kiwify | `NR · Compra aprovada` | `POST https://nr-diagnostico-ml.vercel.app/api/webhooks/kiwify` · token oficial configurado · cadastro no painel pendente | 2026-10-15 | Codex |
+| Webhook Kiwify | `NR · Compra aprovada` | `POST https://nr-diagnostico-ml.vercel.app/api/webhooks/kiwify` · ativo · assinatura oficial validada · teste Kiwify confirmado | 2026-10-15 | Nathan / Codex |
 | Pixel Meta | Nathan Ritter | `2015455052410421` | já existente | |
 
 Observação: o repositório oficial está conectado ao projeto Vercel `nr-diagnostico-ml`; pushes na branch `main` disparam deploy de produção automaticamente.
