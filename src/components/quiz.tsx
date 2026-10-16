@@ -920,11 +920,10 @@ export function Quiz() {
     let alreadyTracked = hasTrackedValor.current;
     if (!alreadyTracked && typeof window !== "undefined") {
       try {
-        if (
-          sessionStorage.getItem("nr_respondeu_valor") === "1" ||
-          (sessionId &&
-            sessionStorage.getItem(`nr_respondeu_valor_${sessionId}`) === "1")
-        ) {
+        const storageKey = sessionId
+          ? `nr_respondeu_valor_${sessionId}`
+          : "nr_respondeu_valor";
+        if (sessionStorage.getItem(storageKey) === "1") {
           alreadyTracked = true;
         }
       } catch {
@@ -935,10 +934,10 @@ export function Quiz() {
       hasTrackedValor.current = true;
       if (typeof window !== "undefined") {
         try {
-          sessionStorage.setItem("nr_respondeu_valor", "1");
-          if (sessionId) {
-            sessionStorage.setItem(`nr_respondeu_valor_${sessionId}`, "1");
-          }
+          const storageKey = sessionId
+            ? `nr_respondeu_valor_${sessionId}`
+            : "nr_respondeu_valor";
+          sessionStorage.setItem(storageKey, "1");
         } catch {
           // fallback silencioso
         }
