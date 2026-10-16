@@ -15,10 +15,10 @@ Formato de cada entrada:
 ---
 
 ## 2026-10-16 · Codex · captura de valor corrigida
-**O que mudou:** adicionada a coluna `quanto_pagaria` à aba `leads`; atualizado o workflow `NR · Registro de leads` para ler e gravar até a coluna AP; corrigida a trava de sessão no navegador para que cada `session_id` registre sua própria resposta de valor; validado o fluxo completo com uma sessão sintética de R$ 1.000, confirmando etapa 62 e persistência na coluna, e removidos em seguida somente o lead e o evento sintéticos criados pela validação.
+**O que mudou:** adicionada a coluna `quanto_pagaria` à aba `leads`; atualizado o workflow `NR · Registro de leads` para ler e gravar até a coluna AP; corrigida a trava de sessão no navegador para que cada `session_id` registre sua própria resposta de valor; o valor agora é reenviado também nos eventos `pagamento` e `clique_checkout`, criando redundância caso o evento original da pergunta falhe; validado o fluxo completo com uma sessão sintética de R$ 1.000, confirmando etapa 62 e persistência na coluna, e removidos em seguida somente o lead e o evento sintéticos criados pela validação.
 **Arquivos:** `src/components/quiz.tsx`, `RECURSOS.md`, `CHANGELOG.md`.
 **Recursos externos criados/alterados:** planilha `NR · Diagnóstico ML · Leads` e workflow `NR · Registro de leads` (`tm3Yl3j6e6gyxU6K`). Nenhum recurso GMN foi alterado.
-**Pendências:** respostas históricas continuam disponíveis em `eventos.dados_json`; não havia uma resposta recuperável para os dois leads atuais da aba `leads`.
+**Pendências:** as respostas históricas existentes continuam disponíveis em `eventos.dados_json`; os leads atuais que passaram ao pagamento antes da correção não possuem o valor em nenhum evento, portanto não podem ser preenchidos retroativamente sem inventar dados.
 
 ## 2026-10-15 · Codex · webhook Kiwify validado
 **O que mudou:** confirmado o teste oficial de Compra aprovada enviado pelo painel Kiwify; a assinatura HMAC-SHA1 foi aceita pela rota de produção, o evento foi encaminhado ao workflow `NR · Registro de leads` e gravado com `status=comprou` e `etapa_max=80`.

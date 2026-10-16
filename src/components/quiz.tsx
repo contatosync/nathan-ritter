@@ -550,11 +550,14 @@ export function Quiz() {
             // fallback silencioso
           }
         }
-        record("pagamento", 65, { viu_pagamento_em: new Date().toISOString() });
+        record("pagamento", 65, {
+          viu_pagamento_em: new Date().toISOString(),
+          ...(valorResposta ? { quanto_pagaria: valorResposta } : {}),
+        });
         meta("ViuPagamento");
       }
     }
-  }, [screen, sessionId, meta, record]);
+  }, [screen, sessionId, valorResposta, meta, record]);
 
   useEffect(() => {
     if (screen !== "pagamento") return;
@@ -1074,6 +1077,7 @@ export function Quiz() {
     record("clique_checkout", 70, {
       clicou_checkout_em: new Date().toISOString(),
       event_id_meta: eventId,
+      ...(valorResposta ? { quanto_pagaria: valorResposta } : {}),
     });
     const url =
       process.env.NEXT_PUBLIC_CHECKOUT_URL ||
