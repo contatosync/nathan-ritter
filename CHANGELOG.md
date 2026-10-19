@@ -14,6 +14,12 @@ Formato de cada entrada:
 
 ---
 
+## 2026-10-19 · Codex · preço atualizado para R$ 97
+**O que mudou:** atualizado o preço do Máquina de Vendas 2.0 para R$ 97 à vista ou 12x de R$ 10,03; recalculado o equivalente diário para R$ 0,33 e ajustada a headline para "menos de R$ 1 por dia"; centralizados no ambiente também a quantidade de parcelas e o valor diário exibido, removendo os fallbacks antigos do componente.
+**Arquivos:** `src/components/quiz.tsx`, `.env.example`, `.env.local` (não versionado), `ESPECIFICACAO.md`, `RECURSOS.md`, `CHANGELOG.md`.
+**Recursos externos criados/alterados:** variáveis de preço do projeto Vercel `nr-diagnostico-ml` em Production e Preview. Nenhum recurso GMN foi alterado.
+**Pendências:** nenhuma relativa à atualização de preço.
+
 ## 2026-10-16 · Codex · captura de valor corrigida
 **O que mudou:** adicionada a coluna `quanto_pagaria` à aba `leads`; atualizado o workflow `NR · Registro de leads` para ler e gravar até a coluna AP; corrigida a trava de sessão no navegador para que cada `session_id` registre sua própria resposta de valor; o valor agora é reenviado também nos eventos `pagamento` e `clique_checkout`, criando redundância caso o evento original da pergunta falhe; validado o fluxo completo com uma sessão sintética de R$ 1.000, confirmando etapa 62 e persistência na coluna, e removidos em seguida somente o lead e o evento sintéticos criados pela validação.
 **Arquivos:** `src/components/quiz.tsx`, `RECURSOS.md`, `CHANGELOG.md`.

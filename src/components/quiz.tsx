@@ -30,6 +30,10 @@ type Screen =
   | "pergunta_valor"
   | "pagamento"
   | "mentoria";
+const precoParcela = process.env.NEXT_PUBLIC_PRECO_PARCELA || "10,03";
+const precoParcelasQtd = process.env.NEXT_PUBLIC_PRECO_PARCELAS_QTD || "12";
+const precoDiaTexto = process.env.NEXT_PUBLIC_PRECO_DIA_TEXTO || "1";
+const precoAvista = process.env.NEXT_PUBLIC_PRECO_AVISTA || "97";
 const questions = [
   [
     "Você sabe encontrar um produto com procura e pouca concorrência no Mercado Livre?",
@@ -1734,12 +1738,12 @@ export function Quiz() {
                 {valorResposta !== null ? (
                   <>
                     Você disse que pagaria R$&nbsp;{valorResposta.toLocaleString("pt-BR")}, mas o curso sai por{" "}
-                    <span className="yellow">menos de R$&nbsp;2 por dia</span>
+                    <span className="yellow">menos de R$&nbsp;{precoDiaTexto} por dia</span>
                   </>
                 ) : (
                   <>
                     O curso completo sai por{" "}
-                    <span className="yellow">menos de R$&nbsp;2 por dia</span>
+                    <span className="yellow">menos de R$&nbsp;{precoDiaTexto} por dia</span>
                   </>
                 )}
               </h1>
@@ -1754,13 +1758,13 @@ export function Quiz() {
                 />
                 <h2>Máquina de Vendas 2.0</h2>
                 <div className="price-single-line">
-                  <span className="price-installment-label">12x de</span>
+                  <span className="price-installment-label">{precoParcelasQtd}x de</span>
                   <span className="price-installment-value">
-                    R$ {process.env.NEXT_PUBLIC_PRECO_PARCELA || "30,72"}
+                    R$ {precoParcela}
                   </span>
                 </div>
                 <p className="price-cash">
-                  ou R$ {process.env.NEXT_PUBLIC_PRECO_AVISTA || "297"} à vista
+                  ou R$ {precoAvista} à vista
                 </p>
                 <button
                   className="btn-primary payment-content-btn content-action-btn"
