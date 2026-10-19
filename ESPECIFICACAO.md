@@ -248,19 +248,19 @@ Tela intermediária disparada por todos os botões "QUERO O CURSO MÁQUINA DE VE
 - **Subtítulo (--muted, 16 px):** Um curso com módulos que vão do primeiro passo à escala no Mercado Livre, incluindo cada ponto que apareceu no seu diagnóstico.
 - **Card de aviso:** card baixo com borda amarela fina, ícone de cadeado em amarelo e texto em branco (15 px): "Esse não é o valor que você vai pagar. Queremos saber quanto o curso vale para você, e o preço real é menor do que qualquer uma das opções."
 - **Opções de resposta:**
-  - R$ 1.500
-  - R$ 1.000
-  - R$ 600
+  - R$ 150
+  - R$ 200
+  - R$ 250
   - R$ 300
 - **Avanço:** transição rápida (~150 ms) para a Tela 12.
-- **Rastreio e persistência:** dispara o evento personalizado `RespondeuValor` com o valor selecionado, grava na coluna `quanto_pagaria` da planilha (1500, 1000, 600 ou 300) e registra a etapa 62 (`pergunta_valor`).
+- **Rastreio e persistência:** dispara o evento personalizado `RespondeuValor` com o valor selecionado, grava na coluna `quanto_pagaria` da planilha (150, 200, 250 ou 300) e registra a etapa 62 (`pergunta_valor`).
 
 ### Tela 12 · Pagamento e Prova Social (redesenho completo)
 Tela curta e limpa, focada exclusivamente em finalizar a matrícula com alta conversão e prova social.
 - **Logo:** logo pequeno no topo removido (o logo dentro do card de oferta é mantido).
 - **Rótulo "ÚLTIMO PASSO":** removido.
 - **Headline dominante:**
-  - Com resposta da Tela 11B: "Você disse que pagaria R$&nbsp;{valor}, mas o curso sai por menos de R$&nbsp;1 por dia" (destaque em amarelo em "menos de R$&nbsp;1 por dia"). Válido para as 4 opções (1.500, 1.000, 600, 300) com espaço não separável (`&nbsp;`) para evitar quebra de linha entre "R$" e os números.
+  - Com resposta da Tela 11B: "Você disse que pagaria R$&nbsp;{valor}, mas o curso sai por menos de R$&nbsp;1 por dia" (destaque em amarelo em "menos de R$&nbsp;1 por dia"). Válido para as 4 opções (150, 200, 250, 300) com espaço não separável (`&nbsp;`) para evitar quebra de linha entre "R$" e os números.
   - Sem resposta: "O curso completo sai por menos de R$&nbsp;1 por dia" (mesmo destaque em amarelo e espaço não separável).
   - A linha antiga de retorno ("Você disse que pagaria... Hoje o acesso completo sai por R$ 97") foi totalmente removida; o valor cheio (R$ 97) não aparece fora do card de preço.
 - **Notificação flutuante no estilo iPhone (contador de vendas):**
@@ -427,7 +427,7 @@ Criar do zero. Não copiar a planilha do funil GMN.
 | `qtd_pontos` | Número de pontos a estudar |
 | `viu_oferta_em` | Data e hora em que viu a oferta |
 | `assistiu_video_em` | Data e hora em que tocou no play do vídeo explicativo (Tela 11) |
-| `quanto_pagaria` | Resposta selecionada na Tela 11B (1500, 1000, 600 ou 300) |
+| `quanto_pagaria` | Resposta selecionada na Tela 11B (150, 200, 250 ou 300) |
 | `viu_pagamento_em` | Data e hora em que viu a tela de pagamento (etapa 65) |
 | `clicou_checkout_em` | |
 | `comprou_em` | Pelo webhook da Kiwify |

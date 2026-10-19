@@ -1691,9 +1691,9 @@ export function Quiz() {
             </div>
             <div className="answers">
               {[
-                [1500, "R$ 1.500"],
-                [1000, "R$ 1.000"],
-                [600, "R$ 600"],
+                [150, "R$ 150"],
+                [200, "R$ 200"],
+                [250, "R$ 250"],
                 [300, "R$ 300"],
               ].map(([val, label]) => (
                 <button

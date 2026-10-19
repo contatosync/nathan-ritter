@@ -14,6 +14,12 @@ Formato de cada entrada:
 
 ---
 
+## 2026-10-19 · Codex · opções de valor atualizadas
+**O que mudou:** substituídas as respostas da pergunta "Quanto você pagaria pelo Máquina de Vendas?" por R$ 150, R$ 200, R$ 250 e R$ 300; mantidos o evento `RespondeuValor`, a persistência em `quanto_pagaria` e a personalização da tela de pagamento com o valor escolhido.
+**Arquivos:** `src/components/quiz.tsx`, `ESPECIFICACAO.md`, `CHANGELOG.md`.
+**Recursos externos criados/alterados:** deploy do projeto Vercel `nr-diagnostico-ml`. Nenhum recurso GMN foi alterado.
+**Pendências:** nenhuma relativa às opções de valor.
+
 ## 2026-10-19 · Codex · preço atualizado para R$ 97
 **O que mudou:** atualizado o preço do Máquina de Vendas 2.0 para R$ 97 à vista ou 12x de R$ 10,03; recalculado o equivalente diário para R$ 0,33 e ajustada a headline para "menos de R$ 1 por dia"; centralizados no ambiente também a quantidade de parcelas e o valor diário exibido, removendo os fallbacks antigos do componente.
 **Arquivos:** `src/components/quiz.tsx`, `.env.example`, `.env.local` (não versionado), `ESPECIFICACAO.md`, `RECURSOS.md`, `CHANGELOG.md`.
