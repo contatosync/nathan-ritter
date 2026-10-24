@@ -30,10 +30,10 @@ type Screen =
   | "pergunta_valor"
   | "pagamento"
   | "mentoria";
-const precoParcela = process.env.NEXT_PUBLIC_PRECO_PARCELA || "10,03";
-const precoParcelasQtd = process.env.NEXT_PUBLIC_PRECO_PARCELAS_QTD || "12";
-const precoDiaTexto = process.env.NEXT_PUBLIC_PRECO_DIA_TEXTO || "1";
-const precoAvista = process.env.NEXT_PUBLIC_PRECO_AVISTA || "97";
+const precoParcela = process.env.NEXT_PUBLIC_PRECO_PARCELA || "5,32";
+const precoParcelasQtd = process.env.NEXT_PUBLIC_PRECO_PARCELAS_QTD || "11";
+const precoDiaTexto = process.env.NEXT_PUBLIC_PRECO_DIA_TEXTO || "0,17";
+const precoAvista = process.env.NEXT_PUBLIC_PRECO_AVISTA || "47,90";
 const questions = [
   [
     "Você sabe encontrar um produto com procura e pouca concorrência no Mercado Livre?",

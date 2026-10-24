@@ -69,10 +69,11 @@ Tudo que ainda não existe fica em variável, para ser trocado sem mexer no cód
 | `META_CAPI_TOKEN` | a gerar | Gerenciador de Eventos do Meta |
 | `META_TEST_EVENT_CODE` | opcional | Usar só em teste |
 | `NEXT_PUBLIC_CHECKOUT_URL` | `https://pay.kiwify.com.br/InK3eLE` | Checkout da Kiwify |
-| `NEXT_PUBLIC_PRECO_PARCELA` | `10,03` | Valor exibido pela Kiwify para 12 parcelas |
-| `NEXT_PUBLIC_PRECO_PARCELAS_QTD` | `12` | |
-| `NEXT_PUBLIC_PRECO_DIA` | `0,33` | Regra: (parcela × 12) ÷ 365, arredondado para centavos |
-| `NEXT_PUBLIC_PRECO_DIA_TEXTO` | `1` | Texto para subtítulo "menos de R$ 1 por dia" |
+| `NEXT_PUBLIC_PRECO_PARCELA` | `5,32` | Valor exibido pela Kiwify para 11 parcelas |
+| `NEXT_PUBLIC_PRECO_PARCELAS_QTD` | `11` | |
+| `NEXT_PUBLIC_PRECO_DIA` | `0,16` | Regra: (parcela × quantidade de parcelas) ÷ 365, arredondado para centavos |
+| `NEXT_PUBLIC_PRECO_DIA_TEXTO` | `0,17` | Texto para subtítulo "menos de R$ 0,17 por dia" |
+| `NEXT_PUBLIC_PRECO_AVISTA` | `47,90` | Valor à vista exibido no card de pagamento |
 | `VENDAS_BASE` | `177` | Total fixo de compradores exibido no contador da Tela 12. Para mudar o número no futuro, basta alterar esta variável na Vercel e fazer redeploy (sem consultas dinâmicas ou polling) |
 | `VENDAS_BASE_DATA` | `2026-10-13` | Data de corte das vendas base |
 | `ULTIMO_COMPRADOR_BASE` | `Marcos C.` | Comprador base para o toast de prova social |
@@ -260,9 +261,9 @@ Tela curta e limpa, focada exclusivamente em finalizar a matrícula com alta con
 - **Logo:** logo pequeno no topo removido (o logo dentro do card de oferta é mantido).
 - **Rótulo "ÚLTIMO PASSO":** removido.
 - **Headline dominante:**
-  - Com resposta da Tela 11B: "Você disse que pagaria R$&nbsp;{valor}, mas o curso sai por menos de R$&nbsp;1 por dia" (destaque em amarelo em "menos de R$&nbsp;1 por dia"). Válido para as 4 opções (150, 200, 250, 300) com espaço não separável (`&nbsp;`) para evitar quebra de linha entre "R$" e os números.
-  - Sem resposta: "O curso completo sai por menos de R$&nbsp;1 por dia" (mesmo destaque em amarelo e espaço não separável).
-  - A linha antiga de retorno ("Você disse que pagaria... Hoje o acesso completo sai por R$ 97") foi totalmente removida; o valor cheio (R$ 97) não aparece fora do card de preço.
+  - Com resposta da Tela 11B: "Você disse que pagaria R$&nbsp;{valor}, mas o curso sai por menos de R$&nbsp;0,17 por dia" (destaque em amarelo em "menos de R$&nbsp;0,17 por dia"). Válido para as 4 opções (150, 200, 250, 300) com espaço não separável (`&nbsp;`) para evitar quebra de linha entre "R$" e os números.
+  - Sem resposta: "O curso completo sai por menos de R$&nbsp;0,17 por dia" (mesmo destaque em amarelo e espaço não separável).
+  - O valor cheio (R$ 47,90) aparece somente no card de preço.
 - **Notificação flutuante no estilo iPhone (contador de vendas):**
   - Banner flutuante fixado no topo da tela, sobre o conteúdo (`position: fixed`), largura ~92%, cantos arredondados (18 px), fundo translúcido escuro com desfoque (`backdrop-filter: blur(20px)`), sombra suave.
   - À esquerda: ícone quadrado arredondado de 38 px com a caixa amarela do logo (`public/imagens/logo/icone-caixa.png`).
@@ -273,8 +274,8 @@ Tela curta e limpa, focada exclusivamente em finalizar a matrícula com alta con
   - Total fixo: valor fixado em 177 vindo de `VENDAS_BASE`, sem "agora" ou "há X min". Para atualizar o número no futuro, basta alterar `VENDAS_BASE` na Vercel e fazer redeploy.
 - **Card de preço:**
   - Logo do curso no topo do card.
-  - Preço em linha única em 375 px sem quebra: "12x de" em branco menor e "R$ 10,03" grande em amarelo gradiente (`white-space: nowrap`, `clamp()`).
-  - Linha abaixo: "ou R$ 97 à vista" em cinza muted (16 px, line-height 1.4).
+  - Preço em linha única em 375 px sem quebra: "11x de" em branco menor e "R$ 5,32" grande em amarelo gradiente (`white-space: nowrap`, `clamp()`).
+  - Linha abaixo: "ou R$ 47,90 à vista" em cinza muted (16 px, line-height 1.4).
   - Botão principal: **QUERO PAGAR AGORA** (dispara `CliqueCheckout` com o mesmo `event_id` no Pixel e CAPI, registra `clicou_checkout_em` e etapa 70, e redireciona para `https://pay.kiwify.com.br/InK3eLE` preservando `utm_*`, `src`, `sck`, `fbclid` e `gclid`).
   - Abaixo do botão: 🔒 Acesso imediato após pagamento (16 px, line-height 1.4).
 - **Carrossel de provas sociais (abaixo do card de preço):**

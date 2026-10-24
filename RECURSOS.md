@@ -12,7 +12,7 @@ Inventário de tudo que existe fora do código. Atualizar no mesmo momento em qu
 | Deploy Vercel | Primeiro deploy de produção | `dpl_ECABgEwvDkiffJekeiDsmseURyrs` · READY | 2026-10-13 | Codex |
 | Deploy Vercel | Recuperação WhatsApp e proteção contra preview | `dpl_F7fAvygGxMiTuqEBjw2pjLMVugm8` · READY | 2026-10-15 | Codex |
 | Formulário de mentoria | Respondi | `https://form.respondi.app/6ZJ4HSZC` | já existente | Nathan |
-| Checkout Kiwify | Máquina de Vendas 2.0 | `https://pay.kiwify.com.br/InK3eLE` · R$ 97 à vista ou 12x de R$ 10,03 | atualizado em 2026-10-19 | Nathan |
+| Checkout Kiwify | Máquina de Vendas 2.0 | `https://pay.kiwify.com.br/InK3eLE` · R$ 47,90 à vista ou 11x de R$ 5,32 | atualizado em 2026-10-24 | Nathan |
 | Planilha Google | `NR · Diagnóstico ML · Leads` | `1RDYGQsl3PcRjYiCHwERy2sEcnV5Z-u87zyocUUYG6a0` · `https://docs.google.com/spreadsheets/d/1RDYGQsl3PcRjYiCHwERy2sEcnV5Z-u87zyocUUYG6a0/edit` | 2026-10-13 | Codex |
 | Conta de serviço Google | | | | |
 | Workflow | `NR · Agendador de recuperação` | `Znc53yNJVuRk9jRX` · ativo · modo produção · log por append atômico | 2026-10-14 | Codex |
