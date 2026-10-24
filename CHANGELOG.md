@@ -14,6 +14,12 @@ Formato de cada entrada:
 
 ---
 
+## 2026-10-24 · Codex · plano inicial de criativos
+**O que mudou:** registradas as regras confirmadas para uso dos assets e definidas oito linhas de design substancialmente diferentes para testar o funil: editorial, interface de diagnóstico, prova em primeiro plano, autoridade, colagem, alerta operacional, produto digital premium e oferta direta.
+**Arquivos:** `docs/PLANO-CRIATIVOS.md`, `CHANGELOG.md`.
+**Recursos externos criados/alterados:** nenhum.
+**Pendências:** produzir os prompts em 1:1 e 9:16 para cada linha e gerar o primeiro lote de artes.
+
 ## 2026-10-24 · Codex · preço atualizado para R$ 47,90
 **O que mudou:** atualizado o preço do Máquina de Vendas 2.0 para R$ 47,90 à vista ou 11x de R$ 5,32; recalculado o equivalente diário para R$ 0,16 e ajustada a headline para "menos de R$ 0,17 por dia"; atualizados os fallbacks do componente, as variáveis documentadas e o inventário do checkout.
 **Arquivos:** `src/components/quiz.tsx`, `.env.example`, `ESPECIFICACAO.md`, `RECURSOS.md`, `CHANGELOG.md`.
