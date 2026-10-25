@@ -14,15 +14,21 @@ Formato de cada entrada:
 
 ---
 
+## 2026-10-24 · Codex · biblioteca permanente de assets
+**O que mudou:** removidos prompts e copys temporários do lote encerrado; assets reutilizáveis separados em marca, Nathan, mockups ilustrativos, prints reais e capas de módulos; artes aprovadas arquivadas por lote e formato; criado catálogo com regras de uso e atualizadas as instruções dos agentes para manter a biblioteca organizada nos próximos trabalhos.
+**Arquivos:** `../Biblioteca de Assets - Máquina de Vendas 2.0/CATALOGO.md`, `AGENTS.md`, `docs/PLANO-CRIATIVOS.md`, `CHANGELOG.md`.
+**Recursos externos criados/alterados:** nenhum.
+**Pendências:** nenhuma relativa à organização da biblioteca.
+
 ## 2026-10-24 · Codex · encerramento do lote 01 de criativos
 **O que mudou:** consolidados os aprendizados do lote, registrada a regra de réplica entre 1:1 e 9:16 e documentado o mapeamento das sete artes quadradas recebidas. As artes foram movidas de Downloads para a pasta definitiva do lote com nomes padronizados.
-**Arquivos:** `docs/PLANO-CRIATIVOS.md`, `../Criativos - Lote 01 - Prompts/*`, `CHANGELOG.md`.
+**Arquivos:** `docs/PLANO-CRIATIVOS.md`, `../Biblioteca de Assets - Máquina de Vendas 2.0/06 - Artes Finais/Lote 01/1x1/*`, `CHANGELOG.md`.
 **Recursos externos criados/alterados:** nenhum.
 **Pendências:** o conceito 01, editorial minimalista, não apareceu entre os arquivos recebidos no encerramento.
 
 ## 2026-10-24 · Codex · copys do primeiro lote de anúncios
 **O que mudou:** criadas cinco opções de título, descrição e texto principal para cada uma das oito linhas visuais do primeiro lote, totalizando 120 opções de copy. Os textos preservam a distinção entre prints reais e montagens ilustrativas e mantêm a oferta em R$ 47,90 ou 11x de R$ 5,32.
-**Arquivos:** `../Criativos - Lote 01 - Prompts/COPYS-META-ADS-LOTE-01.md`, `CHANGELOG.md`.
+**Arquivos:** artefato temporário removido no encerramento; registro preservado no `CHANGELOG.md`.
 **Recursos externos criados/alterados:** nenhum.
 **Pendências:** gerar as artes, configurar os anúncios e registrar as combinações publicadas para comparar os resultados.
 

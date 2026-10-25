@@ -2,6 +2,8 @@
 
 Atualizado em 24/10/2026 a partir das confirmações do Nathan.
 
+Biblioteca permanente: `../Biblioteca de Assets - Máquina de Vendas 2.0/`. O inventário e as regras de reutilização ficam no `CATALOGO.md` dessa pasta.
+
 ## Regras confirmadas dos assets
 
 - `nathan-boxes.png` e `macbook-mockup.png` são composições ilustrativas. Os números inseridos nessas duas artes não devem ser apresentados como prova, faturamento comprovado ou resultado de aluno.

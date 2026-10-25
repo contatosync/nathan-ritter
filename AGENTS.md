@@ -12,6 +12,8 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 Antes de qualquer tarefa, leia `ESPECIFICACAO.md`, `CHANGELOG.md` e `RECURSOS.md`.
 
+Antes de criar ou revisar anúncios, leia também `../Biblioteca de Assets - Máquina de Vendas 2.0/CATALOGO.md`.
+
 - O funil Google Meu Negócio da Notake é somente leitura. Nunca alterar seus repositórios, projetos, planilhas, workflows, credenciais, instâncias, pixels, variáveis, webhooks ou DNS.
 - Todo recurso novo deste projeto usa o prefixo `NR` e deve ser registrado em `RECURSOS.md` no mesmo momento.
 - Toda alteração entra no `CHANGELOG.md` antes do commit. Decisões de produto também atualizam `ESPECIFICACAO.md`.
@@ -20,6 +22,10 @@ Antes de qualquer tarefa, leia `ESPECIFICACAO.md`, `CHANGELOG.md` e `RECURSOS.md
 - A recuperação usa a instância existente `Nathan`, sem alterar webhook, integrações ou settings. Nunca reiniciar, desconectar, fazer logout ou gerar QR Code.
 - `RECUPERACAO_ATIVA=true` e `RECUPERACAO_MODO=producao`, conforme autorização expressa de 2026-10-15. Preservar janela de envio, limite diário e regra de envio único; qualquer retorno ao modo de teste deve ser documentado.
 - O áudio comercial foi removido. Não criar o workflow `NR · Áudio comercial` e não recriar `AUDIO_COMERCIAL_URL`.
+- A biblioteca permanente de mídia fica em `../Biblioteca de Assets - Máquina de Vendas 2.0/`. Reutilize os arquivos catalogados e evite duplicatas.
+- Prompts, copys, exports intermediários e imagens de teste são temporários. Ao encerrar uma tarefa de criativos, remova esses arquivos e preserve somente assets reutilizáveis catalogados e artes finais aprovadas.
+- Novos assets reutilizáveis devem entrar na categoria correta e no `CATALOGO.md` no mesmo momento.
+- Artes finais devem ser arquivadas por lote e formato em `06 - Artes Finais`. A versão 9:16 replica a versão 1:1; muda a composição, não o conceito.
 
 ## Agentes do projeto
 - Claude (planejamento inicial)
