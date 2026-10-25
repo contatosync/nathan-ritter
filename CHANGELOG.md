@@ -14,6 +14,12 @@ Formato de cada entrada:
 
 ---
 
+## 2026-10-24 · Codex · copys do primeiro lote de anúncios
+**O que mudou:** criadas cinco opções de título, descrição e texto principal para cada uma das oito linhas visuais do primeiro lote, totalizando 120 opções de copy. Os textos preservam a distinção entre prints reais e montagens ilustrativas e mantêm a oferta em R$ 47,90 ou 11x de R$ 5,32.
+**Arquivos:** `../Criativos - Lote 01 - Prompts/COPYS-META-ADS-LOTE-01.md`, `CHANGELOG.md`.
+**Recursos externos criados/alterados:** nenhum.
+**Pendências:** gerar as artes, configurar os anúncios e registrar as combinações publicadas para comparar os resultados.
+
 ## 2026-10-24 · Codex · plano inicial de criativos
 **O que mudou:** registradas as regras confirmadas para uso dos assets e definidas oito linhas de design substancialmente diferentes para testar o funil: editorial, interface de diagnóstico, prova em primeiro plano, autoridade, colagem, alerta operacional, produto digital premium e oferta direta.
 **Arquivos:** `docs/PLANO-CRIATIVOS.md`, `CHANGELOG.md`.
