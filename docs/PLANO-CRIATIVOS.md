@@ -73,3 +73,27 @@ Preço de R$ 47,90 como informação principal, acompanhado do logo, acesso ao c
 - Cada peça deve ter uma mensagem principal e um CTA.
 - O arquivo 9:16 deve reservar margens seguras para a interface de Stories e Reels.
 - Toda afirmação numérica deve vir de um print público autorizado ou do preço atual do produto.
+
+## Aprendizados do lote 01
+
+- Cada conceito tem uma versão 1:1 e uma réplica em 9:16. A peça vertical mantém headline, mensagem, assets, cores e direção de arte; somente a distribuição é adaptada ao espaço vertical.
+- O teste precisa comparar direções de design substancialmente diferentes. Trocar cor, headline ou posição de um mesmo layout não constitui uma nova linha visual.
+- `nathan-boxes.png` e `macbook-mockup.png` são composições ilustrativas. Seus números não sustentam alegações de faturamento, prova ou resultado.
+- Os prints reais usados nas perguntas do quiz são conteúdos públicos e podem aparecer nos anúncios com seus números originais.
+- Não há banco adicional de poses do Nathan. As artes devem preservar o recorte existente, sem gerar novas expressões, mãos, poses ou alterações faciais.
+- Para gerar o 9:16, deve-se anexar a arte 1:1 aprovada junto dos assets originais. Isso reduz mudanças involuntárias de conceito.
+- O lote recebeu cinco títulos, cinco descrições e cinco textos principais para cada linha, totalizando 120 opções de copy.
+
+## Mapeamento das artes 1:1 recebidas
+
+| Arquivo final | Linha de design |
+|---|---|
+| `criativo-02-interface-diagnostico-1x1.png` | Interface de diagnóstico |
+| `criativo-03-print-real-1x1.png` | Print real em primeiro plano |
+| `criativo-04-nathan-autoridade-1x1.png` | Nathan como autoridade |
+| `criativo-05-colagem-marketplace-1x1.png` | Colagem de marketplace |
+| `criativo-06-alerta-margem-1x1.png` | Alerta de margem |
+| `criativo-07-produto-premium-1x1.png` | Produto digital premium |
+| `criativo-08-oferta-direta-1x1.png` | Oferta direta |
+
+O conceito 01, editorial minimalista, não apareceu entre os sete arquivos recebidos ao encerrar esta tarefa.
