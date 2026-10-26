@@ -225,7 +225,7 @@ function metaCookies() {
   let fbc = readCookie("_fbc");
   if (!fbc) {
     const fbclid = new URLSearchParams(location.search).get("fbclid");
-    if (fbclid) {
+    if (fbclid && /^[A-Za-z0-9_-]{1,500}$/.test(fbclid)) {
       fbc = `fb.1.${Date.now()}.${fbclid}`;
       document.cookie = `_fbc=${fbc}; path=/; max-age=7776000; SameSite=Lax`;
     }

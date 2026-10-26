@@ -2,6 +2,8 @@ import { createHash } from "node:crypto";
 
 const hash = (value: string) =>
   createHash("sha256").update(value.trim().toLowerCase()).digest("hex");
+// Formato dos cookies _fbp/_fbc: fb.<subdomínio>.<timestamp>.<id>
+const FB_COOKIE = /^fb\.[0-9]\.\d{10,13}\.[A-Za-z0-9_-]{1,500}$/;
 
 export async function POST(request: Request) {
   const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID,
@@ -25,8 +27,8 @@ export async function POST(request: Request) {
   }
   if (input.external_id) userData.external_id = [hash(input.external_id)];
   // fbp e fbc vão sem hash, como a Meta pede
-  if (input.fbp) userData.fbp = input.fbp;
-  if (input.fbc) userData.fbc = input.fbc;
+  if (input.fbp && FB_COOKIE.test(input.fbp)) userData.fbp = input.fbp;
+  if (input.fbc && FB_COOKIE.test(input.fbc)) userData.fbc = input.fbc;
   const payload = {
     data: [
       {
