@@ -215,6 +215,23 @@ function normalizePhone(value: string) {
   const digits = value.replace(/\D/g, "").replace(/^0+/, "");
   return digits.startsWith("55") ? digits : `55${digits}`;
 }
+function readCookie(key: string) {
+  const match = document.cookie.match(new RegExp(`(?:^|; )${key}=([^;]*)`));
+  return match ? decodeURIComponent(match[1]) : "";
+}
+// _fbp e _fbc do Pixel; sem _fbc, monta a partir do fbclid da URL (formato fb.1.<ms>.<fbclid>)
+function metaCookies() {
+  const fbp = readCookie("_fbp");
+  let fbc = readCookie("_fbc");
+  if (!fbc) {
+    const fbclid = new URLSearchParams(location.search).get("fbclid");
+    if (fbclid) {
+      fbc = `fb.1.${Date.now()}.${fbclid}`;
+      document.cookie = `_fbc=${fbc}; path=/; max-age=7776000; SameSite=Lax`;
+    }
+  }
+  return { ...(fbp ? { fbp } : {}), ...(fbc ? { fbc } : {}) };
+}
 function validPhone(value: string) {
   return /^55\d{10,11}$/.test(normalizePhone(value));
 }
@@ -284,6 +301,10 @@ export function Quiz() {
   const [isOfferStickyVisible, setIsOfferStickyVisible] = useState(false);
   const [isPaymentStickyVisible, setIsPaymentStickyVisible] = useState(false);
   const utms = useRef<Record<string, string>>({});
+  const identity = useRef({ nome: "", telefone: "", sessionId: "" });
+  useEffect(() => {
+    identity.current = { nome: name.trim(), telefone: phone, sessionId };
+  }, [name, phone, sessionId]);
   const missing = useMemo(
     () =>
       questions
@@ -357,11 +378,19 @@ export function Quiz() {
       window.fbq?.(standard ? "track" : "trackCustom", eventName, customData, {
         eventID: eventId,
       });
+      // Dados da pessoa em todos os eventos para a CAPI casar o evento com o perfil (EMQ)
+      const id = identity.current;
       sendBackground("/api/meta", {
         eventName,
         eventId,
         customData,
-        userData,
+        userData: {
+          ...(id.nome ? { nome: id.nome } : {}),
+          ...(validPhone(id.telefone) ? { telefone: normalizePhone(id.telefone) } : {}),
+          ...(id.sessionId ? { external_id: id.sessionId } : {}),
+          ...metaCookies(),
+          ...userData,
+        },
         eventSourceUrl: location.href,
       });
       return eventId;
@@ -832,7 +861,7 @@ export function Quiz() {
     const eventId = meta(
       "Lead",
       {},
-      { nome: name.trim(), telefone: normalized },
+      { nome: name.trim(), telefone: normalized, external_id: id },
     );
     await fetch("/api/events", {
       method: "POST",
@@ -847,6 +876,7 @@ export function Quiz() {
         status: "em_andamento",
         rota: "curso",
         event_id_meta: eventId,
+        ...metaCookies(),
         ...utms.current,
       }),
     });
@@ -1090,6 +1120,12 @@ export function Quiz() {
     Object.entries(utms.current).forEach(([k, v]) => {
       if (v) target.searchParams.set(k, v);
     });
+    // sck leva a sessão para o webhook da Kiwify ligar a compra ao lead e à campanha
+    if (sessionId) target.searchParams.set("sck", sessionId);
+    // Pré-preenche o checkout da Kiwify (aceita name e phone; telefone só com DDD + número)
+    if (name.trim()) target.searchParams.set("name", name.trim());
+    if (validPhone(phone))
+      target.searchParams.set("phone", normalizePhone(phone).slice(2));
     // Navegadores de app (Instagram, Facebook, WhatsApp): abrir na mesma aba para não abrir tela branca
     window.location.href = target.toString();
   }

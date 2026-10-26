@@ -276,7 +276,7 @@ Tela curta e limpa, focada exclusivamente em finalizar a matrícula com alta con
   - Logo do curso no topo do card.
   - Preço em linha única em 375 px sem quebra: "11x de" em branco menor e "R$ 5,32" grande em amarelo gradiente (`white-space: nowrap`, `clamp()`).
   - Linha abaixo: "ou R$ 47,90 à vista" em cinza muted (16 px, line-height 1.4).
-  - Botão principal: **QUERO PAGAR AGORA** (dispara `CliqueCheckout` com o mesmo `event_id` no Pixel e CAPI, registra `clicou_checkout_em` e etapa 70, e redireciona para `https://pay.kiwify.com.br/InK3eLE` preservando `utm_*`, `src`, `sck`, `fbclid` e `gclid`).
+  - Botão principal: **QUERO PAGAR AGORA** (dispara `CliqueCheckout` com o mesmo `event_id` no Pixel e CAPI, registra `clicou_checkout_em` e etapa 70, e redireciona para `https://pay.kiwify.com.br/InK3eLE` preservando `utm_*`, `src`, `sck`, `fbclid` e `gclid`, e pré-preenchendo o checkout com `name` (nome digitado no quiz) e `phone` (DDD + número, sem o 55), parâmetros aceitos pela Kiwify).
   - Abaixo do botão: 🔒 Acesso imediato após pagamento (16 px, line-height 1.4).
 - **Carrossel de provas sociais (abaixo do card de preço):**
   - Mesmo componente `ProofCarousel` da Tela 11, com suporte a visualização ampliada via lightbox.
@@ -389,9 +389,11 @@ Pixel `2015455052410421`. Todos os eventos disparados pela página vão pelo Pix
 
 Regras:
 - A página **não** dispara `InitiateCheckout` nem `Purchase`. A integração da Kiwify já faz isso; disparar dos dois lados duplica.
-- CAPI envia telefone e nome com hash SHA-256, além de `fbp`, `fbc`, IP e user agent.
+- CAPI envia em **todos** os eventos (não só no `Lead`) os dados que a sessão já tem: telefone (`ph`), primeiro nome (`fn`), sobrenome (`ln`), país (`country=br`) e `external_id` (o `session_id`), todos com hash SHA-256, além de `fbp` e `fbc` sem hash, IP e user agent.
+- `fbp` e `fbc` vêm dos cookies do Pixel. Sem o cookie `_fbc`, a página monta o valor a partir do `fbclid` da URL (`fb.1.<ms>.<fbclid>`) e grava o cookie. Os dois também vão para as colunas `fbp` e `fbc` da planilha no cadastro.
 - Capturar e salvar na sessão: `utm_source`, `utm_medium`, `utm_campaign`, `utm_content`, `utm_term`, `fbclid`.
 - Repassar as UTMs para o link da Kiwify.
+- `sck` do checkout leva o `session_id` do lead (substitui um `sck` vindo do anúncio). A Kiwify devolve esse valor no webhook de compra, o que liga cada venda à linha do lead e à campanha e ao criativo de origem.
 
 ---
 
@@ -499,7 +501,7 @@ Removido do fluxo. Não existe segundo toque automático e as colunas histórica
 
 ### Links rastreados
 - Comunidade: `https://nr-diagnostico-ml.vercel.app/c/{codigo}` registra `clicou_comunidade_em` e redireciona para `LINK_COMUNIDADE`.
-- Pagamento: `https://nr-diagnostico-ml.vercel.app/p/{codigo}` registra `clicou_pagamento_wpp_em` e redireciona para a Kiwify com `utm_source=whatsapp`, `utm_medium=recuperacao`, `utm_campaign=quiz-ml-recuperacao`, `utm_content=etapa-{etapa_max}`, `utm_term={utm_campaign original}`, `src=whatsapp-recuperacao` e `sck=rec-{codigo}`.
+- Pagamento: `https://nr-diagnostico-ml.vercel.app/p/{codigo}` registra `clicou_pagamento_wpp_em` e redireciona para a Kiwify com `utm_source=whatsapp`, `utm_medium=recuperacao`, `utm_campaign=quiz-ml-recuperacao`, `utm_content=etapa-{etapa_max}`, `utm_term={utm_campaign original}`, `src=whatsapp-recuperacao` e `sck={session_id do lead}` (ou `rec-{codigo}` se a linha não tiver sessão). Também pré-preenche o checkout com `name` e `phone` (DDD + número), que o workflow `NR · Links de recuperação` devolve junto com a etapa.
 - Código inexistente redireciona para a capa do quiz.
 
 ### Classificação de respostas
@@ -519,7 +521,7 @@ Webhook de mensagens recebidas da Evolution (instância `nr-nathan`):
 - Endpoint: `POST /api/webhooks/kiwify`, validado por `KIWIFY_WEBHOOK_TOKEN`.
 - O token é gerado pela própria Kiwify no formulário de criação. Cada chamada traz uma assinatura HMAC-SHA1 do corpo, validada antes do processamento.
 - Payload oficial aceito: `webhook_event_type=order_approved` ou `order_status=paid`; telefone lido de `Customer.mobile`.
-- Evento de compra aprovada: localizar o lead por telefone (e e-mail, se vier), gravar `comprou_em`, `kiwify_order_id`, `status=comprou`, `etapa_max=80`, cancelar recuperações.
+- Evento de compra aprovada: localizar o lead pelo `session_id` que vem em `TrackingParameters.sck` e, se não houver ou não for encontrado, pelo telefone (e e-mail, se vier); gravar `comprou_em`, `kiwify_order_id`, `status=comprou`, `etapa_max=80`, cancelar recuperações.
 - Não enviar `Purchase` ao Meta (a Kiwify já envia).
 - No painel Kiwify, cadastrar em `Apps → Webhooks`, selecionar o produto Máquina de Vendas 2.0 e somente o evento Compra aprovada.
 

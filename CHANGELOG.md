@@ -14,6 +14,16 @@ Formato de cada entrada:
 
 ---
 
+## 2026-10-26 · Claude · checkout pré-preenchido e tracking
+**O que mudou:**
+- Checkout pré-preenchido: o botão de pagamento do quiz e o link de recuperação `/p/{codigo}` passam `name` e `phone` (DDD + número) para a Kiwify, que preenche esses campos. Testado no checkout real.
+- CAPI: todos os eventos levam telefone, nome, sobrenome, país, `external_id` (sessão), `fbp` e `fbc`, e não só o `Lead`. Sem cookie `_fbc`, ele é montado a partir do `fbclid`. `fbp` e `fbc` passam a ser gravados na planilha no cadastro.
+- Venda ligada ao lead: o `sck` do checkout leva o `session_id` (quiz e recuperação). O webhook da Kiwify lê `TrackingParameters.sck` e manda `session_id` ao registro; sem sessão válida, o registro cai no telefone como antes.
+- `src/app/api/meta/route.ts` reformatado (estava minificado).
+**Arquivos:** `src/components/quiz.tsx`, `src/app/api/meta/route.ts`, `src/app/api/webhooks/kiwify/route.ts`, `src/app/p/[codigo]/route.ts`, `src/lib/recovery-links.ts`, `ESPECIFICACAO.md`, `RECURSOS.md`, `CHANGELOG.md`.
+**Recursos externos criados/alterados:** workflow `NR · Links de recuperação` (`0pczy18HNqWoxWbs`) agora devolve `session_id`, `nome` e `telefone`; workflow `NR · Registro de leads` (`tm3Yl3j6e6gyxU6K`) procura pelo telefone quando um evento `comprou` traz `session_id` não encontrado. Os dois seguem ativos e compatíveis com o código anterior.
+**Pendências:** conferir a qualidade de correspondência (EMQ) dos eventos no Gerenciador de Eventos depois de alguns dias; conferir na primeira venda real se a Kiwify devolveu o `sck` no webhook.
+
 ## 2026-10-24 · Codex · biblioteca permanente de assets
 **O que mudou:** removidos prompts e copys temporários do lote encerrado; assets reutilizáveis separados em marca, Nathan, mockups ilustrativos, prints reais e capas de módulos; artes aprovadas arquivadas por lote e formato; criado catálogo com regras de uso e atualizadas as instruções dos agentes para manter a biblioteca organizada nos próximos trabalhos.
 **Arquivos:** `../Biblioteca de Assets - Máquina de Vendas 2.0/CATALOGO.md`, `AGENTS.md`, `docs/PLANO-CRIATIVOS.md`, `CHANGELOG.md`.

@@ -9,7 +9,10 @@ type KiwifyPayload = {
   customer?: { mobile?: string; phone?: string };
   phone?: string;
   id?: string;
+  TrackingParameters?: { sck?: string | null; src?: string | null };
 };
+
+const SESSION_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 const APPROVED_EVENTS = new Set(["order_approved", "paid", "approved"]);
 
@@ -87,6 +90,10 @@ export async function POST(request: Request) {
     payload.customer?.phone ??
     payload.phone;
 
+  // O quiz e o link de recuperação mandam a sessão do lead no sck do checkout
+  const sck = String(payload.TrackingParameters?.sck ?? "").trim();
+  const sessionId = SESSION_ID.test(sck) ? sck : undefined;
+
   const response = await fetch(webhookUrl, {
     method: "POST",
     headers: {
@@ -94,6 +101,7 @@ export async function POST(request: Request) {
       "x-nr-webhook-secret": secret,
     },
     body: JSON.stringify({
+      ...(sessionId ? { session_id: sessionId } : {}),
       evento: "comprou",
       etapa: 80,
       etapa_nome: "comprou",

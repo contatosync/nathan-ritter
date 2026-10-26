@@ -39,7 +39,12 @@ export async function GET(
   checkout.searchParams.set("utm_content", `etapa-${result.etapa_max ?? ""}`);
   checkout.searchParams.set("utm_term", result.utm_campaign ?? "");
   checkout.searchParams.set("src", "whatsapp-recuperacao");
-  checkout.searchParams.set("sck", `rec-${codigo}`);
+  // sck leva a sessão do lead para o webhook da Kiwify ligar a compra à linha da planilha
+  checkout.searchParams.set("sck", result.session_id || `rec-${codigo}`);
+  // Pré-preenche o checkout da Kiwify (telefone só com DDD + número)
+  if (result.nome) checkout.searchParams.set("name", result.nome);
+  const phone = (result.telefone ?? "").replace(/\D/g, "").replace(/^55(?=\d{10,11}$)/, "");
+  if (/^\d{10,11}$/.test(phone)) checkout.searchParams.set("phone", phone);
 
   return NextResponse.redirect(checkout, 302);
 }

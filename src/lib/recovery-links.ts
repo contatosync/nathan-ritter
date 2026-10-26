@@ -4,6 +4,9 @@ type RecoveryLinkResult = {
   found: boolean;
   etapa_max?: number;
   utm_campaign?: string;
+  session_id?: string;
+  nome?: string;
+  telefone?: string;
 };
 
 export async function trackRecoveryLink(

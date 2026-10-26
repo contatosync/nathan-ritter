@@ -17,8 +17,8 @@ Inventário de tudo que existe fora do código. Atualizar no mesmo momento em qu
 | Conta de serviço Google | | | | |
 | Workflow | `NR · Agendador de recuperação` | `Znc53yNJVuRk9jRX` · ativo · modo produção · log por append atômico | 2026-10-14 | Codex |
 | Workflow | `NR · Mensagens recebidas` | `GRgcmYKPBdcc4njc` · ativo · consulta a cada 2 min · compatível com `@lid`/`remoteJidAlt` | 2026-10-14 | Codex |
-| Workflow | `NR · Links de recuperação` | `0pczy18HNqWoxWbs` · ativo | 2026-10-14 | Codex |
-| Workflow | `NR · Registro de leads` | `tm3Yl3j6e6gyxU6K` · ativo · persiste `quanto_pagaria` | 2026-10-13 | Codex |
+| Workflow | `NR · Links de recuperação` | `0pczy18HNqWoxWbs` · ativo · devolve `session_id`, `nome` e `telefone` para pré-preencher o checkout (2026-10-26) | 2026-10-14 | Codex |
+| Workflow | `NR · Registro de leads` | `tm3Yl3j6e6gyxU6K` · ativo · persiste `quanto_pagaria` · compra casa por `session_id` (sck) com fallback no telefone (2026-10-26) | 2026-10-13 | Codex |
 | Credencial n8n | `NR · Registro de leads · Segredo` | `9WxqOUdKGTeHMyiu` | 2026-10-13 | Codex |
 | Credencial n8n | `NR · Evolution Nathan · API Key` | `5MszQ2kaC345fN66` | 2026-10-14 | Codex |
 | Instância Evolution | `Nathan` | `3b1ca9e5-1cac-4afa-bee4-0afde4657213` · conectada · `5511976896161` | já existente | Nathan |
