@@ -153,7 +153,7 @@ Os textos abaixo estão aprovados. Não reescrever sem pedido explícito.
   - Deve ocupar exatamente duas linhas: "Sua primeira venda no" e "Mercado Livre em 48 horas".
   - Destaques em amarelo: "venda no Mercado Livre" e "48 horas".
 - **Subtítulo:** Responda **5 perguntas rápidas** e descubra o que falta para vender no Mercado Livre.
-- **Print:** `capa-painel-30-dias.webp`, preservado sem alterar os números, com a legenda "Print do meu painel de vendas".
+- **Print:** `capa-painel-30-dias.webp`, exportado em 1350×736 px a partir do original de alta qualidade, preservando os números, com a legenda "Print do meu painel de vendas".
 - **Botão:** FAZER O DIAGNÓSTICO com seta à direita, no fluxo da página.
 
 ### Tela 2 · Nome e WhatsApp

@@ -13,8 +13,8 @@ export const capaPrint: QuizPrintItem = {
   id: "capa",
   arquivo: "capa-painel-30-dias.webp",
   src: "/imagens/prints-reais/capa-painel-30-dias.webp",
-  width: 900,
-  height: 494,
+  width: 1350,
+  height: 736,
   legenda: "Print do meu painel de vendas",
   alt: "Print do meu painel de vendas no Mercado Livre",
 };

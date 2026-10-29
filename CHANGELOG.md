@@ -14,6 +14,13 @@ Formato de cada entrada:
 
 ---
 
+## 2026-10-29 · Codex · substituição do print da capa
+**O que mudou:** o print da capa foi substituído pela imagem `Painel SaaS com métricas financeiras.png` enviada pelo Nathan. O arquivo foi convertido para WebP em 1350×736 px, com qualidade 92, mantendo os valores visíveis e o peso final em aproximadamente 52 KB.
+**Arquivos:** `public/imagens/prints-reais/capa-painel-30-dias.webp`, `src/config/prints-quiz.ts`, `ESPECIFICACAO.md`, `CHANGELOG.md`.
+**Recursos externos criados/alterados:** nenhum nesta etapa local.
+**Validação:** `npm run lint`, `npm run build` e enquadramento conferido em 375×667, com os dois valores legíveis dentro do card.
+**Pendências:** publicar em produção.
+
 ## 2026-10-29 · Codex · refinamento de leitura da capa
 **O que mudou:** a headline da Tela 1 passou a ocupar exatamente duas linhas, o brilho laranja central foi removido para aumentar o contraste e a legenda passou a ser "Print do meu painel de vendas".
 **Arquivos:** `src/components/quiz.tsx`, `src/config/prints-quiz.ts`, `src/app/globals.css`, `ESPECIFICACAO.md`, `CHANGELOG.md`.
