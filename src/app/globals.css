@@ -1436,9 +1436,10 @@ p {
    RODADA MOBILE: CAPA (TELA 1)
    ======================================================== */
 .screen-inicio {
-  justify-content: center !important;
+  justify-content: flex-start !important;
   text-align: center;
-  padding: 16px 0;
+  position: relative;
+  padding: 0;
 }
 
 /* Capa limpa: só o brilho laranja, sem a foto de fundo */
@@ -1451,7 +1452,11 @@ p {
 }
 
 .quiz-shell.is-hero {
-  background: linear-gradient(180deg, #07101f 0%, #0a0f1c 58%, #11182b 100%);
+  background-color: #06101b;
+  background-image: url("/imagens/fundo/hero-capa-48h.webp");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: auto 100dvh;
 }
 
 .capa-beneficios {
@@ -1500,7 +1505,11 @@ p {
 }
 
 .btn-capa {
-  margin-top: 18px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 4.4dvh;
+  margin: 0;
   height: 58px;
   display: flex;
   align-items: center;
@@ -1509,8 +1518,10 @@ p {
   font-size: clamp(0.9rem, 4.2vw, 1.05rem);
   font-weight: 900;
   letter-spacing: 0.02em;
+  color: #06101b;
+  background: linear-gradient(90deg, #efff3a 0%, #bdff32 100%);
   box-shadow:
-    0 12px 36px -8px rgba(255, 212, 0, 0.6),
+    0 12px 36px -8px rgba(157, 255, 43, 0.75),
     inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 
@@ -1538,6 +1549,18 @@ p {
   text-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
 }
 
+.hero-title-accessible {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .headline-capa-linha {
   display: block;
   white-space: nowrap;
@@ -1548,11 +1571,16 @@ p {
 }
 
 .subtitle-capa {
+  position: absolute;
+  top: 41.5dvh;
+  left: 7%;
+  right: 7%;
   font-size: clamp(15px, 4.4vw, 18px) !important;
   line-height: 1.42 !important;
   color: #e9ecf4 !important;
-  margin: 16px auto 0 !important;
-  max-width: 480px;
+  margin: 0 auto !important;
+  max-width: 440px;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9);
 }
 
 .subtitle-capa strong {
@@ -1597,7 +1625,7 @@ p {
 
 @media (max-height: 720px) {
   .screen-inicio {
-    padding: 4px 0;
+    padding: 0;
   }
 
   .headline-capa {
@@ -1605,7 +1633,6 @@ p {
   }
 
   .subtitle-capa {
-    margin-top: 12px !important;
     font-size: 15px !important;
   }
 
@@ -1619,8 +1646,29 @@ p {
   }
 
   .btn-capa {
-    margin-top: 12px;
     height: 54px;
+  }
+}
+
+@media (max-width: 767px) {
+  .quiz-shell.is-hero {
+    background-size: cover;
+  }
+}
+
+@media (min-width: 768px) {
+  .quiz-shell.is-hero {
+    background-image:
+      linear-gradient(90deg, #06101b 0%, transparent 28%, transparent 72%, #06101b 100%),
+      url("/imagens/fundo/hero-capa-48h.webp");
+  }
+
+  .subtitle-capa {
+    font-size: 18px !important;
+  }
+
+  .quiz-shell.is-hero .quiz-content {
+    width: min(100%, 56.28dvh);
   }
 }
 

@@ -14,6 +14,13 @@ Formato de cada entrada:
 
 ---
 
+## 2026-10-29 · Codex · capa integral com arte final
+**O que mudou:** a primeira tela passou a usar a arte `Primeira venda no Mercado Livre em 48 horas.png` como fundo integral. A headline e o painel já presentes na imagem deixaram de ser duplicados no HTML visível. Foram mantidos em HTML apenas o subtítulo e o botão clicável, agora com o texto "QUERO VENDER EM 48 HORAS". No computador, a arte vertical fica centralizada com laterais azul-marinho.
+**Arquivos:** `public/imagens/fundo/hero-capa-48h.webp`, `src/components/quiz.tsx`, `src/app/globals.css`, `ESPECIFICACAO.md`, `CHANGELOG.md`.
+**Recursos externos criados/alterados:** nenhum nesta etapa local.
+**Validação:** `npm run lint`, `npm run build`, capa conferida em 375×667 e 1440×900 e CTA testado até a tela de cadastro.
+**Pendências:** publicar em produção.
+
 ## 2026-10-29 · Codex · substituição do print da capa
 **O que mudou:** o print da capa foi substituído pela imagem `Painel SaaS com métricas financeiras.png` enviada pelo Nathan. O arquivo foi convertido para WebP em 1350×736 px, com qualidade 92, mantendo os valores visíveis e o peso final em aproximadamente 52 KB.
 **Arquivos:** `public/imagens/prints-reais/capa-painel-30-dias.webp`, `src/config/prints-quiz.ts`, `ESPECIFICACAO.md`, `CHANGELOG.md`.

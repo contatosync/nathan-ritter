@@ -12,11 +12,7 @@ import {
   ProofCarousel,
   ProofItem,
 } from "./carousel";
-import {
-  capaPrint,
-  questionPrints,
-  QuizPrintItem,
-} from "@/config/prints-quiz";
+import { questionPrints, QuizPrintItem } from "@/config/prints-quiz";
 type Answer = "sim" | "mais_ou_menos" | "nao";
 type QuizAnswers = Partial<Record<`p${1 | 2 | 3 | 4 | 5}`, Answer>>;
 type Screen =
@@ -1203,37 +1199,18 @@ export function Quiz() {
         {screen === "inicio" ? (
           <>
             <section className="screen screen-inicio">
-              <h1 className="headline-capa">
-                <span className="headline-capa-linha">
-                  Sua primeira venda no
-                </span>
-                <span className="headline-capa-linha yellow">
-                  Mercado Livre <span className="headline-capa-em">em</span> 48 horas
-                </span>
+              <h1 className="hero-title-accessible">
+                Sua primeira venda no Mercado Livre em 48 horas
               </h1>
               <p className="subtitle-capa">
                 Responda <strong>5 perguntas rápidas</strong> e descubra o que
                 falta para vender no Mercado Livre.
               </p>
-              <div className="print-container print-container-capa">
-                <div className="print-card print-card-capa">
-                  <Image
-                    className="print-img"
-                    src={capaPrint.src}
-                    width={capaPrint.width}
-                    height={capaPrint.height}
-                    sizes="(max-width: 560px) calc(100vw - 40px), 520px"
-                    alt={capaPrint.alt}
-                    priority
-                  />
-                </div>
-                {renderPrintLegend(capaPrint, true)}
-              </div>
               <button
                 className="btn-primary btn-capa"
                 onClick={() => pushScreenState("cadastro")}
               >
-                FAZER O DIAGNÓSTICO
+                QUERO VENDER EM 48 HORAS
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                   <path d="M5 12h14M13 6l6 6-6 6" />
                 </svg>

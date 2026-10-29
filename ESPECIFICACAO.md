@@ -146,15 +146,15 @@ Valores numéricos para permitir comparação. A etapa só avança, nunca volta.
 
 Os textos abaixo estão aprovados. Não reescrever sem pedido explícito.
 
-### Tela 1 · Início (redesenho de 2026-10-29, a partir do modelo enviado pelo Nathan)
-- **Direção visual:** fundo azul-marinho quase preto, sem brilho laranja atrás do texto, com composição tipográfica em branco e amarelo. Sem rótulo e sem logo.
-- **Ordem dos elementos:** headline → subtítulo → print real do painel → botão FAZER O DIAGNÓSTICO, tudo centralizado no fluxo da página.
+### Tela 1 · Início (redesenho de 2026-10-29, a partir da arte final enviada pelo Nathan)
+- **Direção visual:** usar `hero-capa-48h.webp` como arte integral da primeira tela. A imagem já contém a headline, os cubos do Mercado Livre, o notebook e o painel de vendas.
+- **Responsividade:** no celular, a arte ocupa toda a tela sem bordas. No computador, mantém a proporção vertical centralizada, com laterais azul-marinho, sem cortar a headline ou o notebook.
+- **Elementos HTML visíveis:** somente subtítulo e botão. A headline permanece no HTML apenas para acessibilidade.
 - **Headline:** Sua primeira venda no Mercado Livre em 48 horas
   - Deve ocupar exatamente duas linhas: "Sua primeira venda no" e "Mercado Livre em 48 horas".
   - Destaques em amarelo: "venda no Mercado Livre" e "48 horas".
 - **Subtítulo:** Responda **5 perguntas rápidas** e descubra o que falta para vender no Mercado Livre.
-- **Print:** `capa-painel-30-dias.webp`, exportado em 1350×736 px a partir do original de alta qualidade, preservando os números, com a legenda "Print do meu painel de vendas".
-- **Botão:** FAZER O DIAGNÓSTICO com seta à direita, no fluxo da página.
+- **Botão:** QUERO VENDER EM 48 HORAS com seta à direita.
 
 ### Tela 2 · Nome e WhatsApp
 - **Título:** Para onde enviamos seu diagnóstico?
