@@ -15,9 +15,8 @@ export const capaPrint: QuizPrintItem = {
   src: "/imagens/prints-reais/capa-painel-30-dias.webp",
   width: 900,
   height: 494,
-  legenda: "Painel real: R$ 104 mil de lucro bruto em 30 dias",
-  legendaHighlight: "R$ 104 mil",
-  alt: "Painel real com R$ 104 mil de lucro bruto em 30 dias no Mercado Livre",
+  legenda: "Print do meu painel de vendas",
+  alt: "Print do meu painel de vendas no Mercado Livre",
 };
 
 export const questionPrints: QuizPrintItem[] = [

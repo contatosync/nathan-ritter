@@ -1447,17 +1447,11 @@ p {
 }
 
 .quiz-shell.is-hero:after {
-  content: "";
-  position: absolute;
-  inset: 18% -15% 8%;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(255, 159, 10, 0.38) 0%,
-    rgba(255, 142, 0, 0.16) 35%,
-    transparent 70%
-  );
-  filter: blur(14px);
-  pointer-events: none;
+  display: none;
+}
+
+.quiz-shell.is-hero {
+  background: linear-gradient(180deg, #07101f 0%, #0a0f1c 58%, #11182b 100%);
 }
 
 .capa-beneficios {
@@ -1535,7 +1529,7 @@ p {
 }
 
 .headline-capa {
-  font-size: clamp(34px, 10.6vw, 54px) !important;
+  font-size: clamp(22px, 7.2vw, 42px) !important;
   font-weight: 900 !important;
   line-height: 1.02 !important;
   letter-spacing: -0.05em !important;
@@ -1546,6 +1540,11 @@ p {
 
 .headline-capa-linha {
   display: block;
+  white-space: nowrap;
+}
+
+.headline-capa-em {
+  color: #fff;
 }
 
 .subtitle-capa {
@@ -1602,7 +1601,7 @@ p {
   }
 
   .headline-capa {
-    font-size: clamp(31px, 9.4vw, 42px) !important;
+    font-size: clamp(22px, 7.2vw, 38px) !important;
   }
 
   .subtitle-capa {

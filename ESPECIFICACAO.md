@@ -147,12 +147,13 @@ Valores numéricos para permitir comparação. A etapa só avança, nunca volta.
 Os textos abaixo estão aprovados. Não reescrever sem pedido explícito.
 
 ### Tela 1 · Início (redesenho de 2026-10-29, a partir do modelo enviado pelo Nathan)
-- **Direção visual:** fundo azul-marinho quase preto, com brilho laranja central e composição tipográfica grande em branco e amarelo. Sem rótulo e sem logo.
+- **Direção visual:** fundo azul-marinho quase preto, sem brilho laranja atrás do texto, com composição tipográfica em branco e amarelo. Sem rótulo e sem logo.
 - **Ordem dos elementos:** headline → subtítulo → print real do painel → botão FAZER O DIAGNÓSTICO, tudo centralizado no fluxo da página.
 - **Headline:** Sua primeira venda no Mercado Livre em 48 horas
+  - Deve ocupar exatamente duas linhas: "Sua primeira venda no" e "Mercado Livre em 48 horas".
   - Destaques em amarelo: "venda no Mercado Livre" e "48 horas".
 - **Subtítulo:** Responda **5 perguntas rápidas** e descubra o que falta para vender no Mercado Livre.
-- **Print:** `capa-painel-30-dias.webp`, preservado sem alterar os números, com a legenda "Painel real: R$ 104 mil de lucro bruto em 30 dias".
+- **Print:** `capa-painel-30-dias.webp`, preservado sem alterar os números, com a legenda "Print do meu painel de vendas".
 - **Botão:** FAZER O DIAGNÓSTICO com seta à direita, no fluxo da página.
 
 ### Tela 2 · Nome e WhatsApp

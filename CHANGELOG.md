@@ -14,6 +14,13 @@ Formato de cada entrada:
 
 ---
 
+## 2026-10-29 · Codex · refinamento de leitura da capa
+**O que mudou:** a headline da Tela 1 passou a ocupar exatamente duas linhas, o brilho laranja central foi removido para aumentar o contraste e a legenda passou a ser "Print do meu painel de vendas".
+**Arquivos:** `src/components/quiz.tsx`, `src/config/prints-quiz.ts`, `src/app/globals.css`, `ESPECIFICACAO.md`, `CHANGELOG.md`.
+**Recursos externos criados/alterados:** nenhum nesta etapa local.
+**Validação:** `npm run lint`, `npm run build` e medidas da headline conferidas em 375×667, com duas linhas de 335,2 px dentro da área útil.
+**Pendências:** publicar em produção.
+
 ## 2026-10-29 · Codex · nova capa com promessa de primeira venda e print real
 **O que mudou:** a Tela 1 foi refeita a partir da arte de referência enviada pelo Nathan. A nova capa usa a headline "Sua primeira venda no Mercado Livre em 48 horas", destaques amarelos, subtítulo sobre as cinco perguntas, brilho laranja central e botão amarelo. Os três cards de benefício foram removidos e o print real `capa-painel-30-dias.webp` voltou para a primeira tela com sua legenda original. A composição recebeu ajustes específicos para telas de até 720 px de altura.
 **Arquivos:** `src/components/quiz.tsx`, `src/app/globals.css`, `ESPECIFICACAO.md`, `CHANGELOG.md`.

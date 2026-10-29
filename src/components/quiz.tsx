@@ -1204,12 +1204,11 @@ export function Quiz() {
           <>
             <section className="screen screen-inicio">
               <h1 className="headline-capa">
-                <span className="headline-capa-linha">Sua primeira</span>
-                <span className="headline-capa-linha yellow">
-                  venda no Mercado Livre
-                </span>
                 <span className="headline-capa-linha">
-                  em <span className="yellow">48 horas</span>
+                  Sua primeira venda no
+                </span>
+                <span className="headline-capa-linha yellow">
+                  Mercado Livre <span className="headline-capa-em">em</span> 48 horas
                 </span>
               </h1>
               <p className="subtitle-capa">
