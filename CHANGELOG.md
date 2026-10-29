@@ -14,6 +14,27 @@ Formato de cada entrada:
 
 ---
 
+## 2026-10-28 · Claude · planilha limpa, nova capa e novos valores
+**O que mudou:**
+- Planilha: a aba técnica `leads` foi renomeada para `controle` e segue com as 42 colunas usadas pelas automações. Foi criada a aba `Leads`, a primeira e única visível, montada por fórmula a partir de `controle`, com 15 colunas práticas: Cadastro, Nome, WhatsApp, Status, Parou em, Já vende, Faturamento, Pagaria (R$), Clicou no checkout, Comprou em, Pontos a aprender, WhatsApp enviado em, Respondeu em, Campanha e Anúncio. As datas aparecem como `dd/mm/aaaa hh:mm` no horário de Brasília (o ISO UTC fica em `controle`), o telefone aparece como `(11) 99999-9999` e os valores internos viram texto legível. A aba é ordenada da mais recente para a mais antiga e exclui testes (nome com "teste", telefone vazio, número da instância e número de teste). `controle`, `eventos` e `mensagens` ficaram ocultas. A planilha está em pt_BR, então a fórmula usa `;` como separador.
+- Workflows `NR · Registro de leads`, `NR · Agendador de recuperação`, `NR · Mensagens recebidas` e `NR · Links de recuperação`: as referências `leads!` passaram para `controle!`, sem outra mudança de lógica. Validado: agendador e receptor rodando com sucesso, e um evento de teste gravado pelo `/api/events`.
+- Datas de cadastro dos 9 leads reprocessados voltaram ao horário real, tirado das execuções com erro. O teste de 2026-10-29 02:17 UTC (nome "teste") também foi completado.
+- Capa (Tela 1) refeita conforme o modelo enviado pelo Nathan: headline sem "sem quebrar nos primeiros 3 meses", novo subtítulo, 3 cards de benefício com ícone, botão com seta no fluxo da página, sem rótulo, sem print do painel e sem foto de fundo.
+- Pergunta de valor (Tela 11B): opções passam a ser R$ 150, R$ 125, R$ 100 e R$ 97.
+**Arquivos:** `src/components/quiz.tsx`, `src/app/globals.css`, `ESPECIFICACAO.md`, `RECURSOS.md`, `CHANGELOG.md`.
+**Recursos externos criados/alterados:** planilha `NR · Diagnóstico ML · Leads` (abas `Leads` nova e `controle` renomeada); os 4 workflows NR citados. Workflows temporários de acesso à planilha criados e apagados.
+**Pendências:** as pendências do registro de leads abaixo continuam valendo.
+
+## 2026-10-28 · Claude · registro de leads destravado
+**O que mudou:**
+- Causa: a aba `eventos` atingiu o limite padrão de 1.000 linhas da grade do Google Sheets. O workflow `NR · Registro de leads` grava em endereço fixo (`eventos!A{n}:F{n}`) e passou a falhar com "exceeds grid limits" a partir de 2026-10-27 ~13:25 UTC. O site seguiu funcionando (o pixel e a CAPI disparavam), mas `/api/events` devolvia 502 e nada entrava na planilha: 127 execuções com erro, 9 cadastros e 2 compras sem registro, e a recuperação por WhatsApp não rodou para esses leads.
+- Grade ampliada: `eventos` de 1.000 para 20.000 linhas e `leads` de 1.000 para 5.000, por um workflow temporário com a credencial Google Sheets já existente, apagado em seguida.
+- Reprocessados 117 eventos recuperados das execuções com erro, em ordem cronológica, via `/api/events` (sem `/api/meta`, para não duplicar conversões). As repetições do webhook da Kiwify (6 por compra) entraram uma vez só. As 2 compras ficaram com `status=comprou`. Os leads reprocessados têm `criado_em` da data do reprocessamento; o horário original está no `dados_json` das execuções.
+- A sessão de teste do Nathan (`4a17a6a5`, linha 43 de `leads`) foi reprocessada sem nome e telefone; não entra na recuperação.
+**Arquivos:** `CHANGELOG.md`.
+**Recursos externos criados/alterados:** planilha `NR · Diagnóstico ML · Leads` (grade e linhas reprocessadas). Workflow temporário `NR · TEMP aumentar linhas` criado e apagado. Nenhum workflow permanente foi alterado.
+**Pendências:** trocar a gravação em endereço fixo por append (o limite volta perto de 20.000 linhas, uns 1.500 leads) e criar alerta de erro no n8n para o registro.
+
 ## 2026-10-26 · Claude · checkout pré-preenchido e tracking
 **O que mudou:**
 - Checkout pré-preenchido: o botão de pagamento do quiz e o link de recuperação `/p/{codigo}` passam `name` e `phone` (DDD + número) para a Kiwify, que preenche esses campos. Testado no checkout real.

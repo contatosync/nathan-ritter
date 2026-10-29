@@ -146,16 +146,17 @@ Valores numéricos para permitir comparação. A etapa só avança, nunca volta.
 
 Os textos abaixo estão aprovados. Não reescrever sem pedido explícito.
 
-### Tela 1 · Início
-- **Rótulo:** DIAGNÓSTICO GRATUITO
-- **Logo do curso:** removido da capa; o print real entra no lugar dele.
-- **Ordem dos elementos:** rótulo DIAGNÓSTICO GRATUITO → print → headline → subtítulo → botão FAZER O DIAGNÓSTICO.
-- **Print real:** `capa-painel-30-dias.webp` (900×494), posicionado reto (sem qualquer inclinação ou rotação), largura total do conteúdo e exibido inteiro sem corte mantendo a proporção natural. Card com cantos de 16 px, borda amarela fina (`rgba(255, 212, 0, 0.45)`) e brilho amarelo suave atrás (`box-shadow`).
-- **Legenda do print:** posicionada fora e logo abaixo do card, texto de 12 px, cor `--muted`, precedida de um ponto amarelo (`#FFD400`): "Painel real: R$ 104 mil de lucro bruto em 30 dias" ("R$ 104 mil" em amarelo).
-- **Headline:** Descubra em 5 perguntas se você está pronto para vender no Mercado Livre sem quebrar nos primeiros 3 meses
+### Tela 1 · Início (redesenho de 2026-10-28, a partir do modelo enviado pelo Nathan)
+- **Sem rótulo, sem logo, sem print e sem foto de fundo:** fundo escuro com brilho laranja atrás da headline.
+- **Ordem dos elementos:** headline → subtítulo → 3 cards de benefício → botão FAZER O DIAGNÓSTICO, tudo centralizado no fluxo da página (sem barra fixa).
+- **Headline:** Descubra em 5 perguntas se você está pronto para vender no Mercado Livre
   - Destaque em amarelo: "pronto para vender no Mercado Livre"
-- **Subtítulo:** O diagnóstico mostra o que você já sabe e o que ainda falta para vender com margem desde o primeiro produto.
-- **Botão:** FAZER O DIAGNÓSTICO (visível sem qualquer rolagem num iPhone de 375×667).
+- **Subtítulo:** No final, vc recebe um diagnóstico com os pontos que ainda precisa aprender antes de vender.
+- **Cards (ícone amarelo em círculo escuro, destaque em amarelo):**
+  - Já ajudamos **mais de 150** pessoas a iniciar no Mercado Livre
+  - **Resultado baseado** nas suas respostas
+  - Leva **menos de 1 minuto**
+- **Botão:** FAZER O DIAGNÓSTICO com seta à direita (visível sem qualquer rolagem num iPhone de 375×667).
 
 ### Tela 2 · Nome e WhatsApp
 - **Título:** Para onde enviamos seu diagnóstico?
@@ -250,18 +251,18 @@ Tela intermediária disparada por todos os botões "QUERO O CURSO MÁQUINA DE VE
 - **Card de aviso:** card baixo com borda amarela fina, ícone de cadeado em amarelo e texto em branco (15 px): "Esse não é o valor que você vai pagar. Queremos saber quanto o curso vale para você, e o preço real é menor do que qualquer uma das opções."
 - **Opções de resposta:**
   - R$ 150
-  - R$ 200
-  - R$ 250
-  - R$ 300
+  - R$ 125
+  - R$ 100
+  - R$ 97
 - **Avanço:** transição rápida (~150 ms) para a Tela 12.
-- **Rastreio e persistência:** dispara o evento personalizado `RespondeuValor` com o valor selecionado, grava na coluna `quanto_pagaria` da planilha (150, 200, 250 ou 300) e registra a etapa 62 (`pergunta_valor`).
+- **Rastreio e persistência:** dispara o evento personalizado `RespondeuValor` com o valor selecionado, grava na coluna `quanto_pagaria` da planilha (150, 125, 100 ou 97) e registra a etapa 62 (`pergunta_valor`).
 
 ### Tela 12 · Pagamento e Prova Social (redesenho completo)
 Tela curta e limpa, focada exclusivamente em finalizar a matrícula com alta conversão e prova social.
 - **Logo:** logo pequeno no topo removido (o logo dentro do card de oferta é mantido).
 - **Rótulo "ÚLTIMO PASSO":** removido.
 - **Headline dominante:**
-  - Com resposta da Tela 11B: "Você disse que pagaria R$&nbsp;{valor}, mas o curso sai por menos de R$&nbsp;0,17 por dia" (destaque em amarelo em "menos de R$&nbsp;0,17 por dia"). Válido para as 4 opções (150, 200, 250, 300) com espaço não separável (`&nbsp;`) para evitar quebra de linha entre "R$" e os números.
+  - Com resposta da Tela 11B: "Você disse que pagaria R$&nbsp;{valor}, mas o curso sai por menos de R$&nbsp;0,17 por dia" (destaque em amarelo em "menos de R$&nbsp;0,17 por dia"). Válido para as 4 opções (150, 125, 100, 97) com espaço não separável (`&nbsp;`) para evitar quebra de linha entre "R$" e os números.
   - Sem resposta: "O curso completo sai por menos de R$&nbsp;0,17 por dia" (mesmo destaque em amarelo e espaço não separável).
   - O valor cheio (R$ 47,90) aparece somente no card de preço.
 - **Notificação flutuante no estilo iPhone (contador de vendas):**
@@ -357,7 +358,7 @@ O degradê amarelo (`#FFE100` → `#F5B700`) fica restrito ao logo e ao preço e
 - **Prevenção de Rolagem Horizontal:** `overflow-x: hidden` no container base; largura total de componentes e carrosséis sem transbordar viewports a partir de 360 px.
 - **Alvos de Toque e Interatividade:** alvos de toque com no mínimo 48 px de altura (cards de resposta, botão "Voltar", setas de carrossel e pontos indicadores com área ampliada via padding). `touch-action: manipulation` para remover atraso de toque de 300 ms no iOS/Android.
 - **Tipografia:** texto corrido com no mínimo 16 px (`--text-body`), rótulos e legendas secundárias com no mínimo 12 px (`--text-caption`). Contraste de `--muted` (`#B8C0D9`) atendendo WCAG AA (>= 4,5:1).
-- **Capa (Tela 1):** rótulo no topo (24 px abaixo da safe-area), headline `clamp(26px, 8vw, 34px)` font-black line-height 1.1, subtítulo 16 px, print do painel com `max-height: 30dvh` e legenda externa. Barra fixa no rodapé (`#0A0F1C`) com degradê suave, botão FAZER O DIAGNÓSTICO de 56 px de altura e legenda "Leva menos de 1 minuto". Em 375×667, rótulo, headline, subtítulo, print e botão aparecem juntos sem rolagem.
+- **Capa (Tela 1):** headline `clamp(28px, 8.6vw, 40px)` font-black line-height 1.1, subtítulo 17 px, 3 cards de 64 px e botão de 58 px no fluxo da página. Em 375×667, headline, subtítulo, cards e botão aparecem juntos sem rolagem (redesenho de 2026-10-28).
 - **Barras Fixas de Avanço:**
   - Diagnóstico e Tela M: barra fixa no rodapé com botão principal.
   - Telas 11 e 12: barra fixa inteligente via `IntersectionObserver` que surge quando o botão no conteúdo sai da viewport e se oculta quando outro botão idêntico está visível.
@@ -430,7 +431,7 @@ Criar do zero. Não copiar a planilha do funil GMN.
 | `qtd_pontos` | Número de pontos a estudar |
 | `viu_oferta_em` | Data e hora em que viu a oferta |
 | `assistiu_video_em` | Data e hora em que tocou no play do vídeo explicativo (Tela 11) |
-| `quanto_pagaria` | Resposta selecionada na Tela 11B (150, 200, 250 ou 300) |
+| `quanto_pagaria` | Resposta selecionada na Tela 11B (150, 125, 100 ou 97) |
 | `viu_pagamento_em` | Data e hora em que viu a tela de pagamento (etapa 65) |
 | `clicou_checkout_em` | |
 | `comprou_em` | Pelo webhook da Kiwify |
