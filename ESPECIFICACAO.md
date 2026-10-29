@@ -480,7 +480,7 @@ Uma única mensagem automática é enviada por pessoa. No modo `teste`, apenas o
 - Horário entre 08:00 e 21:00 (America/Sao_Paulo). Fora disso, agendar para 08:00 do dia seguinte.
 
 ### Mensagens
-Variáveis: `{nome}` (primeiro nome), `{primeiro_ponto}` (primeiro item da lista do diagnóstico, em minúsculas), `{link_comunidade}` e `{link_pagamento}`. São usados os textos A, B, C e D aprovados na rodada de recuperação de 2026-10-14. A mensagem C inclui pagamento e comunidade; as demais incluem a comunidade.
+Variáveis: `{nome}` (primeiro nome), `{primeiro_ponto}` (primeiro item da lista do diagnóstico, em minúsculas), `{link_comunidade}` e `{link_pagamento}`. São usados os textos A, B, C e D aprovados na rodada de recuperação de 2026-10-14, com a mensagem C atualizada em 2026-10-29. A mensagem C inclui o link de pagamento e oferece a comunidade como bônus após o envio do comprovante; o convite não é enviado nessa primeira mensagem. As demais abordagens mantêm o convite direto para a comunidade.
 
 **`parou_cadastro`** (etapa 10 a 30)
 > Oi, {nome}! Aqui é da equipe do Nathan Ritter. Vi que você começou o diagnóstico para vender no Mercado Livre e parou logo no início. Ficou alguma dúvida? Se quiser, te ajudo por aqui.
@@ -492,7 +492,16 @@ Variáveis: `{nome}` (primeiro nome), `{primeiro_ponto}` (primeiro item da lista
 > Oi, {nome}! Aqui é da equipe do Nathan. No seu diagnóstico, um dos pontos que apareceram foi {primeiro_ponto}. É um dos temas em que mais gente trava no começo. Quer que eu te explique como o curso trata isso?
 
 **`viu_oferta`** (etapas 60, 65 e 70)
-> Oi, {nome}, aqui é da equipe do Nathan. Vi que você chegou até a oferta do Máquina de Vendas. Ficou alguma dúvida sobre o curso ou sobre o pagamento? Posso te ajudar por aqui.
+> Oi, {nome}! Aqui é da equipe do Nathan Ritter. Vi que você chegou a acessar a oferta do Máquina de Vendas 2.0, mas ainda não concluiu a compra.
+>
+> O Nathan deixou eu te dar como bônus o acesso à comunidade de Mercado Livre dele. Se você comprar o curso e me enviar o comprovante por aqui, eu te mando o convite.
+>
+> A comunidade já tem mais de 400 pessoas, com lives mensais do Nathan e troca entre os participantes.
+>
+> Este é o link para concluir a compra:
+> {link_pagamento}
+>
+> Depois do pagamento, manda o comprovante aqui que eu libero seu convite.
 
 **`mentoria`** (etapa 35 e 36, sem aplicação)
 > Oi, {nome}! Aqui é da equipe do Nathan Ritter. Pelo faturamento que você informou, o Nathan costuma indicar o acompanhamento individual. Quer que eu te conte como funciona a mentoria?

@@ -14,6 +14,12 @@ Formato de cada entrada:
 
 ---
 
+## 2026-10-29 · Codex · nova abordagem de recuperação da oferta
+**O que mudou:** a mensagem automática `viu_oferta`, usada para leads nas etapas 60, 65 e 70, passou a contextualizar que a pessoa acessou a oferta e ainda não concluiu a compra. O texto oferece como bônus o acesso à comunidade de Mercado Livre do Nathan, informa que ela reúne mais de 400 pessoas e tem lives mensais, envia somente o link rastreado de pagamento e orienta a pessoa a mandar o comprovante para receber o convite. O link direto da comunidade foi removido dessa primeira abordagem. As mensagens A, B e D e todas as regras de elegibilidade, janela, limite diário e envio único foram preservadas.
+**Arquivos:** `ESPECIFICACAO.md`, `RECURSOS.md`, `CHANGELOG.md`.
+**Recursos externos criados/alterados:** workflow `NR · Agendador de recuperação` (`Znc53yNJVuRk9jRX`), publicado e ativo em produção; validação final com 10 nós, 9 conexões, zero erros e zero avisos.
+**Pendências:** o convite da comunidade deve ser enviado manualmente após a conferência do comprovante recebido no WhatsApp.
+
 ## 2026-10-28 · Claude · planilha limpa, nova capa e novos valores
 **O que mudou:**
 - Planilha: a aba técnica `leads` foi renomeada para `controle` e segue com as 42 colunas usadas pelas automações. Foi criada a aba `Leads`, a primeira e única visível, montada por fórmula a partir de `controle`, com 15 colunas práticas: Cadastro, Nome, WhatsApp, Status, Parou em, Já vende, Faturamento, Pagaria (R$), Clicou no checkout, Comprou em, Pontos a aprender, WhatsApp enviado em, Respondeu em, Campanha e Anúncio. As datas aparecem como `dd/mm/aaaa hh:mm` no horário de Brasília (o ISO UTC fica em `controle`), o telefone aparece como `(11) 99999-9999` e os valores internos viram texto legível. A aba é ordenada da mais recente para a mais antiga e exclui testes (nome com "teste", telefone vazio, número da instância e número de teste). `controle`, `eventos` e `mensagens` ficaram ocultas. A planilha está em pt_BR, então a fórmula usa `;` como separador.

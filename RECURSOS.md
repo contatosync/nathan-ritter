@@ -15,7 +15,7 @@ Inventário de tudo que existe fora do código. Atualizar no mesmo momento em qu
 | Checkout Kiwify | Máquina de Vendas 2.0 | `https://pay.kiwify.com.br/InK3eLE` · R$ 47,90 à vista ou 11x de R$ 5,32 | atualizado em 2026-10-24 | Nathan |
 | Planilha Google | `NR · Diagnóstico ML · Leads` | `1RDYGQsl3PcRjYiCHwERy2sEcnV5Z-u87zyocUUYG6a0` · `https://docs.google.com/spreadsheets/d/1RDYGQsl3PcRjYiCHwERy2sEcnV5Z-u87zyocUUYG6a0/edit` · abas: `Leads` (visível, fórmula de leitura), `controle` (oculta, usada pelos workflows; antiga `leads`), `eventos` e `mensagens` (ocultas) · locale pt_BR | 2026-10-13 | Codex |
 | Conta de serviço Google | | | | |
-| Workflow | `NR · Agendador de recuperação` | `Znc53yNJVuRk9jRX` · ativo · modo produção · log por append atômico | 2026-10-14 | Codex |
+| Workflow | `NR · Agendador de recuperação` | `Znc53yNJVuRk9jRX` · ativo · modo produção · log por append atômico · mensagem `viu_oferta` oferece comunidade como bônus após comprovante (2026-10-29) | 2026-10-14 | Codex |
 | Workflow | `NR · Mensagens recebidas` | `GRgcmYKPBdcc4njc` · ativo · consulta a cada 2 min · compatível com `@lid`/`remoteJidAlt` | 2026-10-14 | Codex |
 | Workflow | `NR · Links de recuperação` | `0pczy18HNqWoxWbs` · ativo · devolve `session_id`, `nome` e `telefone` para pré-preencher o checkout (2026-10-26) | 2026-10-14 | Codex |
 | Workflow | `NR · Registro de leads` | `tm3Yl3j6e6gyxU6K` · ativo · persiste `quanto_pagaria` · compra casa por `session_id` (sck) com fallback no telefone (2026-10-26) | 2026-10-13 | Codex |
