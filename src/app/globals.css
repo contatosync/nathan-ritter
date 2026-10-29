@@ -1438,12 +1438,26 @@ p {
 .screen-inicio {
   justify-content: center !important;
   text-align: center;
-  padding: 12px 0;
+  padding: 16px 0;
 }
 
 /* Capa limpa: só o brilho laranja, sem a foto de fundo */
 .quiz-shell.is-hero:before {
   display: none;
+}
+
+.quiz-shell.is-hero:after {
+  content: "";
+  position: absolute;
+  inset: 18% -15% 8%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 159, 10, 0.38) 0%,
+    rgba(255, 142, 0, 0.16) 35%,
+    transparent 70%
+  );
+  filter: blur(14px);
+  pointer-events: none;
 }
 
 .capa-beneficios {
@@ -1521,23 +1535,34 @@ p {
 }
 
 .headline-capa {
-  font-size: clamp(28px, 8.6vw, 40px) !important;
+  font-size: clamp(34px, 10.6vw, 54px) !important;
   font-weight: 900 !important;
-  line-height: 1.1 !important;
-  letter-spacing: -0.03em !important;
+  line-height: 1.02 !important;
+  letter-spacing: -0.05em !important;
   text-wrap: balance !important;
   margin: 0 !important;
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+}
+
+.headline-capa-linha {
+  display: block;
 }
 
 .subtitle-capa {
-  font-size: 17px !important;
-  line-height: 1.5 !important;
-  color: var(--muted) !important;
-  margin: 18px 0 0 !important;
+  font-size: clamp(15px, 4.4vw, 18px) !important;
+  line-height: 1.42 !important;
+  color: #e9ecf4 !important;
+  margin: 16px auto 0 !important;
+  max-width: 480px;
+}
+
+.subtitle-capa strong {
+  color: var(--yellow);
+  font-weight: 900;
 }
 
 .print-container-capa {
-  margin: 20px 0 0 !important;
+  margin: 16px 0 0 !important;
   width: 100% !important;
 }
 
@@ -1546,7 +1571,7 @@ p {
   border: 1px solid rgba(255, 212, 0, 0.45);
   box-shadow: 0 8px 30px rgba(255, 212, 0, 0.15);
   transform: none !important;
-  max-height: 30dvh !important;
+  max-height: min(22dvh, 160px) !important;
   overflow: hidden;
   background: #0a0f1c;
   display: flex;
@@ -1557,17 +1582,47 @@ p {
 .print-card-capa .print-img {
   width: 100%;
   height: auto;
-  max-height: 30dvh;
-  object-fit: contain;
+  max-height: min(22dvh, 160px);
+  object-fit: cover;
+  object-position: center 22%;
   display: block;
 }
 
 .print-legend-capa {
-  margin-top: 8px;
-  font-size: 12px;
+  margin-top: 6px;
+  font-size: 11px;
   color: var(--muted);
   justify-content: center;
   text-align: center;
+}
+
+@media (max-height: 720px) {
+  .screen-inicio {
+    padding: 4px 0;
+  }
+
+  .headline-capa {
+    font-size: clamp(31px, 9.4vw, 42px) !important;
+  }
+
+  .subtitle-capa {
+    margin-top: 12px !important;
+    font-size: 15px !important;
+  }
+
+  .print-container-capa {
+    margin-top: 12px !important;
+  }
+
+  .print-card-capa,
+  .print-card-capa .print-img {
+    max-height: 118px !important;
+  }
+
+  .btn-capa {
+    margin-top: 12px;
+    height: 54px;
+  }
 }
 
 /* ========================================================

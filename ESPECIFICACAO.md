@@ -146,17 +146,14 @@ Valores numéricos para permitir comparação. A etapa só avança, nunca volta.
 
 Os textos abaixo estão aprovados. Não reescrever sem pedido explícito.
 
-### Tela 1 · Início (redesenho de 2026-10-28, a partir do modelo enviado pelo Nathan)
-- **Sem rótulo, sem logo, sem print e sem foto de fundo:** fundo escuro com brilho laranja atrás da headline.
-- **Ordem dos elementos:** headline → subtítulo → 3 cards de benefício → botão FAZER O DIAGNÓSTICO, tudo centralizado no fluxo da página (sem barra fixa).
-- **Headline:** Descubra em 5 perguntas se você está pronto para vender no Mercado Livre
-  - Destaque em amarelo: "pronto para vender no Mercado Livre"
-- **Subtítulo:** No final, vc recebe um diagnóstico com os pontos que ainda precisa aprender antes de vender.
-- **Cards (ícone amarelo em círculo escuro, destaque em amarelo):**
-  - Já ajudamos **mais de 150** pessoas a iniciar no Mercado Livre
-  - **Resultado baseado** nas suas respostas
-  - Leva **menos de 1 minuto**
-- **Botão:** FAZER O DIAGNÓSTICO com seta à direita (visível sem qualquer rolagem num iPhone de 375×667).
+### Tela 1 · Início (redesenho de 2026-10-29, a partir do modelo enviado pelo Nathan)
+- **Direção visual:** fundo azul-marinho quase preto, com brilho laranja central e composição tipográfica grande em branco e amarelo. Sem rótulo e sem logo.
+- **Ordem dos elementos:** headline → subtítulo → print real do painel → botão FAZER O DIAGNÓSTICO, tudo centralizado no fluxo da página.
+- **Headline:** Sua primeira venda no Mercado Livre em 48 horas
+  - Destaques em amarelo: "venda no Mercado Livre" e "48 horas".
+- **Subtítulo:** Responda **5 perguntas rápidas** e descubra o que falta para vender no Mercado Livre.
+- **Print:** `capa-painel-30-dias.webp`, preservado sem alterar os números, com a legenda "Painel real: R$ 104 mil de lucro bruto em 30 dias".
+- **Botão:** FAZER O DIAGNÓSTICO com seta à direita, no fluxo da página.
 
 ### Tela 2 · Nome e WhatsApp
 - **Título:** Para onde enviamos seu diagnóstico?

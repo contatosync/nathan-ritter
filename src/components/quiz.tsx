@@ -13,6 +13,7 @@ import {
   ProofItem,
 } from "./carousel";
 import {
+  capaPrint,
   questionPrints,
   QuizPrintItem,
 } from "@/config/prints-quiz";
@@ -1203,54 +1204,32 @@ export function Quiz() {
           <>
             <section className="screen screen-inicio">
               <h1 className="headline-capa">
-                Descubra em 5 perguntas se você está{" "}
-                <span className="yellow">
-                  pronto para vender no Mercado Livre
+                <span className="headline-capa-linha">Sua primeira</span>
+                <span className="headline-capa-linha yellow">
+                  venda no Mercado Livre
+                </span>
+                <span className="headline-capa-linha">
+                  em <span className="yellow">48 horas</span>
                 </span>
               </h1>
               <p className="subtitle-capa">
-                No final, vc recebe um diagnóstico com os pontos que ainda
-                precisa aprender antes de vender.
+                Responda <strong>5 perguntas rápidas</strong> e descubra o que
+                falta para vender no Mercado Livre.
               </p>
-              <ul className="capa-beneficios">
-                <li className="capa-beneficio">
-                  <span className="capa-beneficio-icone" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                      <circle cx="9" cy="7" r="4" />
-                      <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-                      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                    </svg>
-                  </span>
-                  <span>
-                    Já ajudamos <strong>mais de 150</strong> pessoas a iniciar
-                    no Mercado Livre
-                  </span>
-                </li>
-                <li className="capa-beneficio">
-                  <span className="capa-beneficio-icone" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <rect x="5" y="2" width="14" height="20" rx="2" />
-                      <path d="M9 7h6M9 11h6M9 15h4" />
-                    </svg>
-                  </span>
-                  <span>
-                    <strong>Resultado baseado</strong>
-                    <br />
-                    nas suas respostas
-                  </span>
-                </li>
-                <li className="capa-beneficio">
-                  <span className="capa-beneficio-icone" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z" />
-                    </svg>
-                  </span>
-                  <span>
-                    Leva <strong>menos de 1 minuto</strong>
-                  </span>
-                </li>
-              </ul>
+              <div className="print-container print-container-capa">
+                <div className="print-card print-card-capa">
+                  <Image
+                    className="print-img"
+                    src={capaPrint.src}
+                    width={capaPrint.width}
+                    height={capaPrint.height}
+                    sizes="(max-width: 560px) calc(100vw - 40px), 520px"
+                    alt={capaPrint.alt}
+                    priority
+                  />
+                </div>
+                {renderPrintLegend(capaPrint, true)}
+              </div>
               <button
                 className="btn-primary btn-capa"
                 onClick={() => pushScreenState("cadastro")}

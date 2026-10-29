@@ -14,6 +14,13 @@ Formato de cada entrada:
 
 ---
 
+## 2026-10-29 · Codex · nova capa com promessa de primeira venda e print real
+**O que mudou:** a Tela 1 foi refeita a partir da arte de referência enviada pelo Nathan. A nova capa usa a headline "Sua primeira venda no Mercado Livre em 48 horas", destaques amarelos, subtítulo sobre as cinco perguntas, brilho laranja central e botão amarelo. Os três cards de benefício foram removidos e o print real `capa-painel-30-dias.webp` voltou para a primeira tela com sua legenda original. A composição recebeu ajustes específicos para telas de até 720 px de altura.
+**Arquivos:** `src/components/quiz.tsx`, `src/app/globals.css`, `ESPECIFICACAO.md`, `CHANGELOG.md`.
+**Recursos externos criados/alterados:** nenhum nesta etapa local.
+**Validação:** `npm run lint`, `npm run build` e fluxo do CTA conferido em 375×667.
+**Pendências:** publicar em produção.
+
 ## 2026-10-29 · Codex · nova abordagem de recuperação da oferta
 **O que mudou:** a mensagem automática `viu_oferta`, usada para leads nas etapas 60, 65 e 70, passou a contextualizar que a pessoa acessou a oferta e ainda não concluiu a compra. O texto oferece como bônus o acesso à comunidade de Mercado Livre do Nathan, informa que ela reúne mais de 400 pessoas e tem lives mensais, envia somente o link rastreado de pagamento e orienta a pessoa a mandar o comprovante para receber o convite. O link direto da comunidade foi removido dessa primeira abordagem. As mensagens A, B e D e todas as regras de elegibilidade, janela, limite diário e envio único foram preservadas.
 **Arquivos:** `ESPECIFICACAO.md`, `RECURSOS.md`, `CHANGELOG.md`.
